@@ -1,0 +1,122 @@
+.hero {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url('/images/hero-bg.png') center/cover no-repeat;
+  text-align: center;
+  overflow: hidden;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.9) 100%);
+}
+
+.content {
+  position: relative;
+  z-index: 10;
+  max-width: 800px;
+  padding: 0 20px;
+}
+
+.logoContainer {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.logoMain {
+  font-size: 8rem;
+  font-weight: 900;
+  color: white;
+  margin: 0;
+  text-shadow: 0 0 30px rgba(76, 175, 80, 0.5);
+  letter-spacing: -5px;
+}
+
+.glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  background: var(--money-green);
+  filter: blur(80px);
+  opacity: 0.3;
+  z-index: -1;
+}
+
+.headline {
+  font-size: 4.5rem;
+  line-height: 1;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: white;
+}
+
+.subcopy {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 40px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ctaContainer {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.primaryCta {
+  background: var(--money-green);
+  color: black;
+  padding: 18px 40px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  border-radius: 4px;
+  box-shadow: 0 0 20px rgba(76, 175, 80, 0.4);
+}
+
+.primaryCta:hover {
+  background: var(--gold);
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+}
+
+.secondaryCta {
+  border: 1px solid white;
+  color: white;
+  padding: 18px 40px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  border-radius: 4px;
+}
+
+.secondaryCta:hover {
+  background: white;
+  color: black;
+}
+
+@media (max-width: 768px) {
+  .logoMain {
+    font-size: 5rem;
+  }
+  .headline {
+    font-size: 2.5rem;
+  }
+  .ctaContainer {
+    flex-direction: column;
+  }
+}

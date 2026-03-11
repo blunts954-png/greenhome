@@ -1,0 +1,40 @@
+.section {
+  background: #050505;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 60px;
+}
+
+.item {
+  text-align: center;
+}
+
+.icon {
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: center;
+}
+
+.box {
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--money-green);
+  transform: rotate(45deg);
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.item h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: var(--gold);
+}
+
+.item p {
+  line-height: 1.6;
+  opacity: 0.7;
+}
