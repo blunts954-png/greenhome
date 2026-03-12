@@ -1,12 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@400;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
 
 :root {
   --background: #000000;
   --foreground: #ffffff;
-  --money-green: #4CAF50;
-  --gold: #FFD700;
-  --accent-glow: rgba(76, 175, 80, 0.2);
-  --font-primary: 'Outfit', sans-serif;
+  --money-green: #478527;
+  --gold: #d4af37;
+  --accent-glow: rgba(71, 133, 39, 0.3);
+  --font-primary: 'Inter', sans-serif;
   --font-secondary: 'Inter', sans-serif;
   --nav-height: 80px;
 }

@@ -14,18 +14,28 @@
   text-align: center;
 }
 
-.icon {
-  margin-bottom: 25px;
+.iconWrapper {
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
   display: flex;
+  align-items: center;
   justify-content: center;
+  margin: 0 auto 20px;
+  transition: all 0.3s ease;
 }
 
-.box {
-  width: 40px;
-  height: 40px;
-  border: 2px solid var(--money-green);
-  transform: rotate(45deg);
-  box-shadow: 0 0 15px var(--accent-glow);
+.item:hover .iconWrapper {
+  border-color: var(--money-green);
+  transform: scale(1.1) rotate(5deg);
+}
+
+.iconElement {
+  color: var(--money-green);
+  width: 24px;
+  height: 24px;
 }
 
 .item h3 {

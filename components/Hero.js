@@ -1,8 +1,10 @@
 import styles from './Hero.module.css';
+import Particles from './Particles';
 
 export default function Hero() {
   return (
     <section className={styles.hero}>
+      <Particles />
       <div className={styles.overlay}></div>
       <div className={styles.content}>
         <div className={styles.logoContainer}>

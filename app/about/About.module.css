@@ -1,0 +1,85 @@
+.wrapper {
+  padding-top: var(--nav-height);
+  min-height: 100vh;
+  background: black;
+}
+
+.hero {
+  padding: 100px 0 60px;
+  text-align: center;
+  background: linear-gradient(to bottom, #111, black);
+}
+
+.hero h1 {
+  font-size: 5rem;
+  line-height: 1;
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  font-family: var(--font-primary);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+}
+
+.storySection {
+  padding: 80px 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.content {
+  display: flex;
+  gap: 60px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.text {
+  flex: 1;
+  min-width: 300px;
+}
+
+.text h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  margin-top: 40px;
+}
+
+.text p {
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.8;
+  margin-bottom: 25px;
+  max-width: 600px;
+}
+
+.imageBox {
+  flex: 1;
+  min-width: 300px;
+  aspect-ratio: 4/5;
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.placeholderImage {
+  font-family: var(--font-primary);
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 3rem;
+  }
+}

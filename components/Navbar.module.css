@@ -67,6 +67,11 @@
   font-weight: 800;
   font-size: 0.8rem;
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .cartButton:hover {

@@ -8,6 +8,8 @@ const MOCK_PRODUCTS = [
   { id: 1, name: 'Rooted Hoodie - Black', price: 85.00, stock: 24, category: 'Hoodies' },
   { id: 2, name: 'HGM Classic Tee', price: 45.00, stock: 45, category: 'Tees' },
   { id: 3, name: 'Plant it Cap', price: 35.00, stock: 12, category: 'Accessories' },
+  { id: 4, name: 'HGM Heavyweight Sweats', price: 75.00, stock: 20, category: 'Sweats' },
+  { id: 5, name: 'Rooted Beanie', price: 30.00, stock: 50, category: 'Accessories' },
 ];
 
 export default function POSSystem() {
@@ -62,7 +64,7 @@ export default function POSSystem() {
         </header>
 
         <div className={styles.categoryFilters}>
-          {['All', 'Hoodies', 'Tees', 'Accessories'].map(cat => (
+          {['All', 'Hoodies', 'Tees', 'Accessories', 'Sweats'].map(cat => (
             <button 
               key={cat} 
               className={activeCategory === cat ? styles.catActive : ''}
@@ -118,9 +120,14 @@ export default function POSSystem() {
             <div className={styles.sumRow}><span>Tax (8%)</span> <span>${(total * 0.08).toFixed(2)}</span></div>
             <div className={`${styles.sumRow} ${styles.totalRow}`}><span>Total</span> <span>${(total * 1.08).toFixed(2)}</span></div>
           </div>
-          <button className={styles.checkoutBtn} disabled={cart.length === 0}>
-            Complete Payment
-          </button>
+          <div className={styles.actionButtons}>
+            <button className={`${styles.checkoutBtn} ${styles.pickupBtn}`} disabled={cart.length === 0}>
+              Cash on Pick Up
+            </button>
+            <button className={`${styles.checkoutBtn} ${styles.deliverBtn}`} disabled={cart.length === 0}>
+              Cash on Delivery
+            </button>
+          </div>
         </div>
       </section>
     </div>

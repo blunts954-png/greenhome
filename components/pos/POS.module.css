@@ -210,17 +210,38 @@
 
 .checkoutBtn {
   width: 100%;
-  background: var(--money-green);
   color: black;
-  padding: 18px;
-  border-radius: 10px;
-  font-size: 1.1rem;
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 1rem;
   font-weight: 900;
   text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.checkoutBtn:hover {
+  opacity: 0.9;
+}
+
+.actionButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pickupBtn {
+  background: var(--money-green);
+}
+
+.deliverBtn {
+  background: var(--gold);
 }
 
 .checkoutBtn:disabled {
   background: #333;
   color: #555;
   cursor: not-allowed;
+  opacity: 1;
 }

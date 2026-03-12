@@ -1,0 +1,46 @@
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.particle {
+  position: absolute;
+  bottom: -50px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  animation: floatUp linear infinite;
+  opacity: 0;
+}
+
+.money {
+  background: rgba(71, 133, 39, 0.3);
+  box-shadow: 0 0 15px rgba(71, 133, 39, 0.4);
+}
+
+.leaf {
+  background: rgba(212, 175, 55, 0.2);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
