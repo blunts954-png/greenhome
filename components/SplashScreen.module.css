@@ -4,105 +4,33 @@
   left: 0;
   width: 100%;
   height: 100vh;
-  background: black;
+  background: #0a0e05; /* Deep dark green-black */
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: 99999;
   overflow: hidden;
-}
-
-.logoWrapper {
-  position: relative;
-  z-index: 2;
-  transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-.mainLogo {
-  filter: drop-shadow(0 0 30px rgba(71, 133, 39, 0.4));
-  opacity: 0;
-  transform: scale(0.8) translateY(20px);
-  transition: all 1s ease;
-}
-
-.entering .mainLogo {
-  opacity: 1;
-  transform: scale(1) translateY(0);
-}
-
-.smoking .mainLogo {
-  opacity: 1;
-  transform: scale(1.1);
-  filter: drop-shadow(0 0 50px rgba(71, 133, 39, 0.8));
-}
-
-.opening .logoWrapper {
-  opacity: 0;
-  transform: scale(1.5);
-  filter: blur(10px);
-}
-
-/* Smoke implementation */
-.smokeContainer {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.smoke {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
-  border-radius: 50%;
-  filter: blur(40px);
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0);
-}
-
-.smoking .smoke1 {
-  animation: smokeBurst 2s forwards;
-}
-.smoking .smoke2 {
-  animation: smokeBurst 2s 0.2s forwards;
-}
-.smoking .smoke3 {
-  animation: smokeBurst 2s 0.4s forwards;
-}
-
-@keyframes smokeBurst {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0);
-  }
-  30% {
-    opacity: 0.6;
-    background: radial-gradient(circle, rgba(71, 133, 39, 0.3) 0%, transparent 70%);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(8);
-  }
-}
-
-/* Opening Doors Effect */
-.revealDoors {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  pointer-events: none;
+  transition: opacity 1s ease;
 }
 
 .doorLeft, .doorRight {
-  flex: 1;
-  background: black;
-  transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, #0a0e05 0%, #1a230e 100%);
+  z-index: 1;
+  transition: transform 2.5s cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+.doorLeft {
+  left: 0;
+  border-right: 1px solid rgba(71, 133, 39, 0.1);
+}
+
+.doorRight {
+  right: 0;
+  border-left: 1px solid rgba(71, 133, 39, 0.1);
 }
 
 .opening .doorLeft {
@@ -113,6 +41,144 @@
   transform: translateX(100%);
 }
 
-.opening.splashOverlay {
-  background: transparent;
+/* Logo Spitting Effect */
+.logoContainer {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  z-index: 10;
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.logoHalfLeft, .logoHalfRight {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 2.5s cubic-bezier(0.7, 0, 0.3, 1), opacity 0.5s ease;
+}
+
+.logoHalfLeft {
+  clip-path: inset(0 50% 0 0);
+}
+
+.logoHalfRight {
+  clip-path: inset(0 0 0 50%);
+}
+
+.mainLogo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 20px rgba(71, 133, 39, 0.3));
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.entering .mainLogo {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.pressurized .mainLogo {
+  animation: pressureShake 0.1s infinite;
+  filter: drop-shadow(0 0 40px rgba(71, 133, 39, 0.6));
+}
+
+.opening .logoHalfLeft {
+  transform: translateX(-100vw);
+  opacity: 0;
+}
+
+.opening .logoHalfRight {
+  transform: translateX(100vw);
+  opacity: 0;
+}
+
+@keyframes pressureShake {
+  0% { transform: translate(1px, 1px); }
+  50% { transform: translate(-1px, -1px); }
+  100% { transform: translate(1px, -1px); }
+}
+
+/* Volumetric Smoke */
+.smokeContainer {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 400px;
+  height: 100%;
+  transform: translateX(-50%);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.smoke {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(200, 220, 180, 0.4) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0;
+  transform: translate(-50%, 50%) scale(0);
+}
+
+/* Different smoke behaviors */
+.smoking .smoke, .opening .smoke {
+  animation: smokeRise 3s infinite ease-out;
+}
+
+.smoke:nth-child(2n) { background: radial-gradient(circle, rgba(71, 133, 39, 0.2) 0%, transparent 70%); }
+.smoke:nth-child(3n) { animation-delay: 0.5s; width: 250px; }
+.smoke:nth-child(4n) { animation-delay: 1.2s; filter: blur(60px); }
+.smoke:nth-child(5n) { animation-delay: 0.8s; width: 100px; }
+
+@keyframes smokeRise {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 50%) scale(0.5);
+  }
+  20% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--drift, -70%), -200%) scale(4);
+  }
+}
+
+/* Random drift for smoke */
+.smoke:nth-child(1) { --drift: -120%; }
+.smoke:nth-child(2) { --drift: 80%; }
+.smoke:nth-child(3) { --drift: -40%; }
+.smoke:nth-child(4) { --drift: 150%; }
+.smoke:nth-child(5) { --drift: -90%; }
+.smoke:nth-child(6) { --drift: 40%; }
+
+.centralGlow {
+  position: absolute;
+  width: 4px;
+  height: 0%;
+  background: rgba(71, 133, 39, 0.8);
+  box-shadow: 0 0 30px rgba(71, 133, 39, 1);
+  z-index: 2;
+  transition: height 1s ease;
+}
+
+.smoking .centralGlow {
+  height: 80%;
+}
+
+.opening .centralGlow {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.hidden {
+  display: none;
 }

@@ -5,25 +5,29 @@ import Image from 'next/image';
 import styles from './SplashScreen.module.css';
 
 export default function SplashScreen({ onComplete }) {
-  const [stage, setStage] = useState('entering'); // entering, smoking, opening, hidden
+  const [stage, setStage] = useState('entering'); // entering, pressurized, smoking, opening, hidden
 
   useEffect(() => {
-    // 1. Entering stage: Logo fades in
-    const t1 = setTimeout(() => setStage('smoking'), 1000);
+    // Stage 1: Logo enters and "locks"
+    const t1 = setTimeout(() => setStage('pressurized'), 1500);
     
-    // 2. Smoking stage: Smoke bursts out
-    const t2 = setTimeout(() => setStage('opening'), 2500);
+    // Stage 2: Pressure builds (subtle shake or glow)
+    const t2 = setTimeout(() => setStage('smoking'), 2500);
     
-    // 3. Opening stage: Screen splits/reveals
-    const t3 = setTimeout(() => {
+    // Stage 3: Hissing smoke and slow split start
+    const t3 = setTimeout(() => setStage('opening'), 4000);
+    
+    // Stage 4: Finish opening and remove overlay
+    const t4 = setTimeout(() => {
       setStage('hidden');
       if (onComplete) onComplete();
-    }, 4000);
+    }, 6500);
 
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);
+      clearTimeout(t4);
     };
   }, [onComplete]);
 
@@ -31,27 +35,43 @@ export default function SplashScreen({ onComplete }) {
 
   return (
     <div className={`${styles.splashOverlay} ${styles[stage]}`}>
+      {/* Background Doors */}
+      <div className={styles.doorLeft}></div>
+      <div className={styles.doorRight}></div>
+
+      {/* Volumetric Smoke Particles */}
       <div className={styles.smokeContainer}>
-        <div className={`${styles.smoke} ${styles.smoke1}`}></div>
-        <div className={`${styles.smoke} ${styles.smoke2}`}></div>
-        <div className={`${styles.smoke} ${styles.smoke3}`}></div>
+        {[...Array(12)].map((_, i) => (
+          <div key={i} className={`${styles.smoke} ${styles[`smoke${i + 1}`]}`}></div>
+        ))}
       </div>
       
-      <div className={styles.logoWrapper}>
-        <Image 
-          src="/logo.png" 
-          alt="Home Grown Money Logo" 
-          width={400} 
-          height={400} 
-          className={styles.mainLogo}
-          priority
-        />
+      {/* The Central Icon / Logo */}
+      <div className={styles.logoContainer}>
+        <div className={styles.logoHalfLeft}>
+          <Image 
+            src="/logo.png" 
+            alt="Home Grown Money Logo" 
+            width={400} 
+            height={400} 
+            className={styles.mainLogo}
+            priority
+          />
+        </div>
+        <div className={styles.logoHalfRight}>
+          <Image 
+            src="/logo.png" 
+            alt="Home Grown Money Logo" 
+            width={400} 
+            height={400} 
+            className={styles.mainLogo}
+            priority
+          />
+        </div>
       </div>
 
-      <div className={styles.revealDoors}>
-        <div className={styles.doorLeft}></div>
-        <div className={styles.doorRight}></div>
-      </div>
+      {/* Atmospheric Glow */}
+      <div className={styles.centralGlow}></div>
     </div>
   );
 }
