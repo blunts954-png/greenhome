@@ -3,10 +3,16 @@
 import Link from 'next/link';
 import { useCart } from '@/lib/cart-context';
 import { Instagram, Facebook, ShoppingCart } from 'lucide-react';
+import audioEngine from '@/lib/AudioEngine';
 import styles from './Navbar.module.css';
 
 export default function Navbar() {
   const { cartCount, toggleDrawer } = useCart();
+
+  const handleCartClick = () => {
+    audioEngine.playClick();
+    toggleDrawer();
+  };
 
   return (
     <nav className={styles.navbar}>
@@ -32,7 +38,7 @@ export default function Navbar() {
               <Facebook size={18} />
             </a>
           </div>
-          <button className={styles.cartButton} onClick={toggleDrawer}>
+          <button className={styles.cartButton} onClick={handleCartClick}>
             <ShoppingCart size={16} />
             <span>Cart ({cartCount})</span>
           </button>

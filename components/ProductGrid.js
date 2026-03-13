@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { useCart } from '@/lib/cart-context';
+import audioEngine from '@/lib/AudioEngine';
 import styles from './ProductGrid.module.css';
 
 const PRODUCTS = [
@@ -48,6 +49,7 @@ export default function ProductGrid() {
   const [selectedSizes, setSelectedSizes] = useState({});
 
   const handleSizeSelect = (productId, size) => {
+    audioEngine.playClick();
     setSelectedSizes(prev => ({ ...prev, [productId]: size }));
   };
 
@@ -57,6 +59,7 @@ export default function ProductGrid() {
       alert('Please select a size first');
       return;
     }
+    audioEngine.playClick();
     addToCart({ ...product, selectedSize: size });
   };
 
