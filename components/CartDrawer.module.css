@@ -179,3 +179,106 @@
 .checkoutBtn:hover {
   background: var(--gold);
 }
+
+/* form styles */
+.checkoutForm {
+  background: rgba(255, 255, 255, 0.02);
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.checkoutForm h3 {
+  font-family: var(--font-primary);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  color: var(--money-green);
+}
+
+.disclaimer {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 25px;
+  line-height: 1.4;
+}
+
+.inputGroup {
+  margin-bottom: 20px;
+}
+
+.inputGroup label {
+  display: block;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.inputGroup input {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 12px 15px;
+  color: white;
+  font-family: var(--font-secondary);
+  transition: border-color 0.3s ease;
+}
+
+.inputGroup input:focus {
+  outline: none;
+  border-color: var(--money-green);
+}
+
+/* success state */
+.successState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  height: 100%;
+}
+
+.successIcon {
+  color: var(--money-green);
+  margin-bottom: 20px;
+}
+
+.successState h3 {
+  font-family: var(--font-primary);
+  font-size: 2rem;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.successState p {
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 10px;
+}
+
+.cashNotice {
+  color: var(--gold) !important;
+  font-weight: 800;
+  margin-top: 15px !important;
+  margin-bottom: 30px !important;
+}
+
+.reserveBtn {
+  width: 100%;
+  background: white;
+  color: black;
+  border: none;
+  padding: 18px;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reserveBtn:hover {
+  background: #ccc;
+}
