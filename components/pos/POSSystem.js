@@ -6,9 +6,9 @@ import { Search, ShoppingCart, Tag, User, Package, CreditCard, RotateCcw } from 
 
 const MOCK_PRODUCTS = [
   { id: 1, name: 'Rooted Hoodie - Black', price: 85.00, stock: 24, category: 'Hoodies' },
-  { id: 2, name: 'HGM Classic Tee', price: 45.00, stock: 45, category: 'Tees' },
+  { id: 2, name: 'Home Grown Money Classic Tee', price: 45.00, stock: 45, category: 'Tees' },
   { id: 3, name: 'Plant it Cap', price: 35.00, stock: 12, category: 'Accessories' },
-  { id: 4, name: 'HGM Heavyweight Sweats', price: 75.00, stock: 20, category: 'Sweats' },
+  { id: 4, name: 'Home Grown Money Heavyweight Sweats', price: 75.00, stock: 20, category: 'Sweats' },
   { id: 5, name: 'Rooted Beanie', price: 30.00, stock: 50, category: 'Accessories' },
 ];
 
@@ -37,7 +37,7 @@ export default function POSSystem() {
     <div className={styles.posContainer}>
       {/* Sidebar Nav */}
       <aside className={styles.sidebar}>
-        <div className={styles.adminLogo}>HGM POS</div>
+        <div className={styles.adminLogo}>Home Grown Money POS</div>
         <nav>
           <button className={styles.navItem}><Package size={20}/> Inventory</button>
           <button className={styles.navItem}><User size={20}/> Customers</button>

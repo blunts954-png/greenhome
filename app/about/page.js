@@ -34,7 +34,7 @@ export default function AboutPage() {
               <h2 className="brand-font">The Movement</h2>
               <p>
                 Every stitch, every fabric choice, and every drop is a testament to persistent growth. 
-                We don&apos;t manufacture hype—we manufacture heritage. HGM is for those who came from 
+                We don&apos;t manufacture hype—we manufacture heritage. Home Grown Money is for those who came from 
                 nothing and are building everything.
               </p>
             </div>

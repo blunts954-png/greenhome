@@ -151,7 +151,7 @@ export default function CartDrawer() {
                       onSubmit={handleReserveSubmit}
                     >
                       <h3>Reserve for Pickup</h3>
-                      <p className={styles.disclaimer}>HGM operates primarily in physical space. Reserve your gear now and pay cash at the door.</p>
+                      <p className={styles.disclaimer}>Home Grown Money operates primarily in physical space. Reserve your gear now and pay cash at the door.</p>
                       
                       <div className={styles.inputGroup}>
                         <label>Name / Alias</label>

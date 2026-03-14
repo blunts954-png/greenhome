@@ -8,7 +8,7 @@ export default function Hero() {
       <div className={styles.overlay}></div>
       <div className={styles.content}>
         <div className={styles.logoContainer}>
-          <h1 className={`${styles.logoMain} brand-font`}>HGM</h1>
+          <h1 className={`${styles.logoMain} brand-font`}>Home Grown Money</h1>
           <div className={styles.glow}></div>
         </div>
         <h2 className={styles.headline}>Money Grows Where We Plant It</h2>

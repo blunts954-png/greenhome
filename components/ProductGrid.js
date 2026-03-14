@@ -16,7 +16,7 @@ const PRODUCTS = [
   },
   { 
     id: 2, 
-    name: 'HGM Classic Tee', 
+    name: 'Home Grown Money Classic Tee', 
     price: 45, 
     image: '/images/hgm-tee.png',
     sizes: ['S', 'M', 'L', 'XL']
@@ -30,7 +30,7 @@ const PRODUCTS = [
   },
   { 
     id: 4, 
-    name: 'HGM Heavyweight Sweats', 
+    name: 'Home Grown Money Heavyweight Sweats', 
     price: 75, 
     image: '/images/hgm-sweatpants.png',
     sizes: ['S', 'M', 'L', 'XL']

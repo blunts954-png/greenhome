@@ -7,7 +7,7 @@ import RootClientWrapper from "@/components/RootClientWrapper";
 export const metadata = {
   title: "Home | Home Grown Money - Premium Streetwear - Bakersfield Born",
   description: "Official Home Grown Money store. Money grows where we plant it. Explore our latest drops, rooted in culture and high-end hustle.",
-  keywords: "Home Grown Money, HGM, streetwear, lifestyle brand, fashion drop, money grows where we plant it",
+  keywords: "Home Grown Money, streetwear, lifestyle brand, fashion drop, money grows where we plant it",
   openGraph: {
     title: "Home Grown Money - Premium Streetwear & Lifestyle",
     description: "Money grows where we plant it. Explore our latest drops, rooted in culture and high-end hustle.",
