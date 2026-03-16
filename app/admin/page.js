@@ -7,7 +7,10 @@ import { Package, Truck, CheckCircle, Clock, DollarSign, ArrowLeft } from 'lucid
 import Link from 'next/link';
 
 export default function AdminDashboard() {
-  const { orders, updateOrderStatus } = useOrders();
+  const ordersContext = useOrders();
+  const orders = ordersContext?.orders || [];
+  const updateOrderStatus = ordersContext?.updateOrderStatus || (() => {});
+  
   const [activeTab, setActiveTab] = useState('Pending');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [password, setPassword] = useState('');

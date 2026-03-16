@@ -15,7 +15,9 @@ const STORE_CATEGORIES = {
 };
 
 export default function ProductGrid() {
-  const { addToCart } = useCart();
+  const cartContext = useCart();
+  const addToCart = cartContext?.addToCart || (() => {});
+  
   const [activeStore, setActiveStore] = useState('Apparel');
   const [activeFilter, setActiveFilter] = useState('All');
   const [selectedSizes, setSelectedSizes] = useState({});
@@ -115,7 +117,7 @@ export default function ProductGrid() {
               </div>
               <div className={styles.overlay}>
                 <div className={styles.sizeSelector}>
-                  {product.sizes.map(size => (
+                  {product.sizes?.map(size => (
                     <button 
                       key={size}
                       className={`${styles.sizeBtn} ${selectedSizes[product.id] === size ? styles.activeSize : ''}`}

@@ -29,7 +29,7 @@ export default function AboutPage() {
               </p>
               <div className={styles.quoteBox}>
                 <p className={styles.quote}>
-                  "In the Valley, we don't wait for the rain. We build the irrigation ourselves."
+                  &quot;In the Valley, we don&apos;t wait for the rain. We build the irrigation ourselves.&quot;
                 </p>
               </div>
               <p>
@@ -66,7 +66,7 @@ export default function AboutPage() {
               <div className={styles.year}>2023</div>
               <div className={styles.event}>
                 <h3>The Bloom</h3>
-                <p>Expanded to the full 'Money Grows' collection. High-end textiles met the hustle.</p>
+                <p>Expanded to the full &apos;Money Grows&apos; collection. High-end textiles met the hustle.</p>
               </div>
             </div>
             <div className={`${styles.timelineItem} reveal`}>
@@ -90,7 +90,7 @@ export default function AboutPage() {
       <section className={`${styles.ctaSection} reveal`}>
         <div className={styles.container}>
           <h2 className="brand-font">Join the Movement</h2>
-          <p>Don't just watch the growth. Be part of the cultivation.</p>
+          <p>Don&apos;t just watch the growth. Be part of the cultivation.</p>
           <Link href="/shop" className={styles.ctaBtn}>Shop the Collection</Link>
         </div>
       </section>

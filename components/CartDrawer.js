@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useCart } from '@/lib/cart-context';
 import { useOrders } from '@/lib/orders-context';
-import { X, Trash2, ShoppingBag, CheckCircle, Truck, Package, CreditCard, ChevronRight } from 'lucide-react';
+import { X, Trash2, ShoppingBag, CheckCircle, Truck, Package, CreditCard, ChevronRight, DollarSign } from 'lucide-react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import audioEngine from '@/lib/AudioEngine';
@@ -17,8 +17,11 @@ const springPhysics = {
 };
 
 export default function CartDrawer() {
-  const { cartItems, cartTotal, isDrawerOpen, toggleDrawer, removeFromCart, clearCart } = useCart();
-  const { addOrder } = useOrders();
+  const cartContext = useCart();
+  const { cartItems = [], cartTotal = 0, isDrawerOpen = false, toggleDrawer = () => {}, removeFromCart = () => {}, clearCart = () => {} } = cartContext || {};
+  
+  const ordersContext = useOrders();
+  const { addOrder = () => {} } = ordersContext || {};
   
   const [checkoutStep, setCheckoutStep] = useState('cart'); // 'cart', 'form', 'payment', 'success'
   const [orderType, setOrderType] = useState('Delivery'); // 'Delivery', 'Pickup'

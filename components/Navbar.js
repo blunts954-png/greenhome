@@ -7,7 +7,8 @@ import audioEngine from '@/lib/AudioEngine';
 import styles from './Navbar.module.css';
 
 export default function Navbar() {
-  const { cartCount, toggleDrawer } = useCart();
+  const cartContext = useCart();
+  const { cartCount = 0, toggleDrawer = () => {} } = cartContext || {};
 
   const handleCartClick = () => {
     audioEngine.playClick();
