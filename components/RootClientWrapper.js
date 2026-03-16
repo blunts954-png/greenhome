@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import SplashScreen from './SplashScreen';
 import CartDrawer from './CartDrawer';
 import audioEngine from '@/lib/AudioEngine';
+import BackToTop from './BackToTop';
 
 import AgeGate from './AgeGate';
 
@@ -50,6 +51,7 @@ export default function RootClientWrapper({ children }) {
       {!splashComplete && <SplashScreen onComplete={() => setSplashComplete(true)} />}
       {splashComplete && <AgeGate isActive={splashComplete} onVerify={() => setAgeVerified(true)} />}
       <CartDrawer />
+      <BackToTop />
       <div style={{ opacity: showContent ? 1 : 0, transition: 'opacity 1s ease', visibility: showContent ? 'visible' : 'hidden' }}>
         {children}
       </div>

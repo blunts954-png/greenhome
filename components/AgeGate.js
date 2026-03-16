@@ -9,8 +9,16 @@ export default function AgeGate({ onVerify, isActive }) {
   useEffect(() => {
     if (isActive) {
       const isVerified = localStorage.getItem('age-verified');
-      if (!isVerified) {
-        setIsVisible(true);
+      const forceTest = window.location.search.includes('test_age');
+      
+      console.log('AgeGate Check - Verified:', isVerified, 'Force:', forceTest);
+      
+      if (!isVerified || forceTest) {
+        // Small delay to let the splash unmount cleanly
+        const timer = setTimeout(() => {
+          setIsVisible(true);
+        }, 100);
+        return () => clearTimeout(timer);
       } else if (onVerify) {
         onVerify();
       }
@@ -18,8 +26,13 @@ export default function AgeGate({ onVerify, isActive }) {
   }, [isActive, onVerify]);
 
   const handleVerify = () => {
+    console.log('AgeGate - Verifying User');
     localStorage.setItem('age-verified', 'true');
     setIsVisible(false);
+    // Remove query param if present
+    if (window.location.search.includes('test_age')) {
+       window.history.replaceState({}, '', window.location.pathname);
+    }
     if (onVerify) onVerify();
   };
 

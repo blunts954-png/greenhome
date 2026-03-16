@@ -38,19 +38,21 @@
 }
 
 .category {
-  color: var(--gold);
+  color: #00ff00;
   text-transform: uppercase;
   font-weight: 800;
-  letter-spacing: 0.2em;
-  font-size: 0.8rem;
+  letter-spacing: 0.3em;
+  font-size: 0.75rem;
   margin-bottom: 20px;
   display: block;
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
 }
 
 .content h1 {
-  font-size: 4rem;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
   margin-bottom: 20px;
-  line-height: 1;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
 }
 
 .rating {
@@ -60,25 +62,27 @@
   margin-bottom: 30px;
 }
 
-.starFilled { color: var(--gold); }
-.starEmpty { color: rgba(255, 255, 255, 0.1); }
-.reviewCount { font-size: 0.8rem; opacity: 0.4; }
+.starFilled { color: #00ff00; }
+.starEmpty { color: rgba(255, 255, 255, 0.05); }
+.reviewCount { font-size: 0.8rem; opacity: 0.4; letter-spacing: 0.1em; }
 
 .price {
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 900;
   margin-bottom: 40px;
+  color: #fff;
 }
 
 .description {
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.8;
-  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+  font-size: 1.15rem;
   margin-bottom: 60px;
+  max-width: 500px;
 }
 
 .form {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
   padding-top: 40px;
   margin-bottom: 60px;
 }
@@ -87,8 +91,8 @@
   text-transform: uppercase;
   font-size: 0.7rem;
   font-weight: 800;
-  letter-spacing: 0.2em;
-  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.25em;
+  color: #444;
   margin-bottom: 20px;
   display: block;
 }
@@ -99,24 +103,27 @@
 
 .sizeGrid {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
 .sizeBtn {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: white;
-  width: 50px;
-  height: 50px;
-  font-weight: 700;
+  width: 55px;
+  height: 55px;
+  font-weight: 800;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  border-radius: 2px;
 }
 
 .sizeBtn:hover, .activeSize {
   background: white;
   color: black;
   border-color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5);
 }
 
 .quantitySection {
@@ -126,44 +133,45 @@
 .quantityControls {
   display: flex;
   align-items: center;
-  gap: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  gap: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   width: fit-content;
-  padding: 5px;
+  padding: 8px 15px;
 }
 
 .quantityControls button {
   background: transparent;
   border: none;
   color: white;
-  width: 40px;
-  height: 40px;
-  font-size: 1.2rem;
+  width: 30px;
+  height: 30px;
+  font-size: 1.4rem;
   cursor: pointer;
+  transition: color 0.2s ease;
 }
 
 .quantityControls button:hover {
-  background: rgba(255, 255, 255, 0.05);
+  color: #00ff00;
 }
 
 .addBtn {
   width: 100%;
-  padding: 25px;
-  background: var(--gold);
+  padding: 22px;
+  background: #00ff00;
   color: black;
   border: none;
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 1rem;
+  letter-spacing: 0.25em;
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .addBtn:hover {
   background: white;
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 255, 0, 0.3);
 }
 
 .productDetails {

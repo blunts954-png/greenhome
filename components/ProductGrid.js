@@ -20,12 +20,15 @@ export default function ProductGrid() {
   
   const [activeStore, setActiveStore] = useState('Apparel');
   const [activeFilter, setActiveFilter] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
   const [selectedSizes, setSelectedSizes] = useState({});
 
   const filteredProducts = PRODUCTS.filter(p => {
     const storeMatch = p.storeSection.toLowerCase() === activeStore.toLowerCase();
     const categoryMatch = activeFilter === 'All' || p.category === activeFilter;
-    return storeMatch && categoryMatch;
+    const searchMatch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                      p.category.toLowerCase().includes(searchQuery.toLowerCase());
+    return storeMatch && categoryMatch && searchMatch;
   });
 
   const handleSizeSelect = (e, productId, size) => {
@@ -75,6 +78,16 @@ export default function ProductGrid() {
         <div className={`${styles.socialProof} reveal`}>
           <span className={styles.stars}>★★★★★</span>
           <span>Pay In-Store. Pickup in Bakersfield.</span>
+        </div>
+
+        <div className={`${styles.searchBar} reveal`}>
+          <input 
+            type="text" 
+            placeholder="Search Products..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className={styles.searchInput}
+          />
         </div>
         
         <div className={`${styles.filterTabs} reveal`}>

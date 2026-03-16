@@ -80,20 +80,31 @@
 .primaryCta {
   background: white;
   color: black;
-  padding: 18px 40px;
+  padding: 18px 45px;
   font-size: 1rem;
-  font-weight: 800;
+  font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
   text-decoration: none;
   display: inline-block;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  overflow: hidden;
+  animation: pulse 3s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+  70% { box-shadow: 0 0 0 20px rgba(255, 255, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
 }
 
 .primaryCta:hover {
-  background: var(--gold);
-  transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(184, 134, 11, 0.4);
+  background: #00ff00;
+  color: black;
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 255, 0, 0.3);
+  animation: none;
 }
 
 .secondaryCta {
