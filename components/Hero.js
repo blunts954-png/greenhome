@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styles from './Hero.module.css';
 import Particles from './Particles';
 
@@ -8,16 +9,19 @@ export default function Hero() {
       <div className={styles.overlay}></div>
       <div className={styles.content}>
         <div className={styles.logoContainer}>
-          <h1 className={`${styles.logoMain} brand-font`}>Home Grown Money</h1>
+          <h1 className={`${styles.logoMain} brand-font reveal`}>Home Grown Money</h1>
           <div className={styles.glow}></div>
         </div>
-        <h2 className={styles.headline}>Money Grows Where We Plant It</h2>
-        <p className={styles.subcopy}>
-          Premium streetwear rooted in culture, community, and the hustle.
+        <h2 className={`${styles.headline} reveal`}>Money Grows Where We Plant It</h2>
+        <div className={`${styles.newDropBadge} reveal`}>
+          <span>NEW T-SHIRT DROP — $20</span>
+        </div>
+        <p className={`${styles.subcopy} reveal`}>
+          Premium Valley streetwear, crafted for the hustle. Grab the new HGM Tee for $20 or secure the Hat & Shirt Combo for $30. 
         </p>
-        <div className={styles.ctaContainer}>
-          <button className={styles.primaryCta}>Shop the Drop</button>
-          <button className={styles.secondaryCta}>Our Story</button>
+        <div className={`${styles.ctaContainer} reveal`}>
+          <Link href="/shop" className={styles.primaryCta}>COP THE DROP</Link>
+          <Link href="/shop" className={styles.secondaryCta}>COMBO DEALS</Link>
         </div>
       </div>
     </section>

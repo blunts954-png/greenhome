@@ -1,8 +1,10 @@
 import Hero from "@/components/Hero";
 import ProductGrid from "@/components/ProductGrid";
 import ValueProp from "@/components/ValueProp";
+import SocialFeed from '@/components/SocialFeed';
 import Link from 'next/link';
 import styles from './page.module.css';
+import Countdown from '@/components/Countdown';
 
 export default function Home() {
   return (
@@ -28,25 +30,19 @@ export default function Home() {
         <ProductGrid />
       </div>
 
+      <SocialFeed />
+
       <section className={`${styles.ctaBanner} reveal`}>
         <div className={styles.container}>
           <div className={styles.ctaContent}>
-            <h2 className="brand-font">Next Drop Coming Soon</h2>
-            <p>Don&apos;t be the last to know. Join the inner circle.</p>
-            <div className={styles.countdown}>
-              <div className={styles.countItem}>
-                <span>04</span>
-                <label>DAYS</label>
-              </div>
-              <div className={styles.countItem}>
-                <span>12</span>
-                <label>HOURS</label>
-              </div>
-              <div className={styles.countItem}>
-                <span>30</span>
-                <label>MINS</label>
-              </div>
+            <h2 className="brand-font">SECURE THE NEW DROP</h2>
+            <p>New HGM Tees are live. $20 for the culture. $30 for the Shirt & Hat combo. Limited quantities rooted in Bakersfield.</p>
+            <div className={styles.ctaValues}>
+              <div className={styles.vItem}><span>TEE</span> <strong>$20</strong></div>
+              <div className={styles.vItem}><span>HAT</span> <strong>$15</strong></div>
+              <div className={styles.vItem}><span>COMBO</span> <strong>$30</strong></div>
             </div>
+            <Link href="/shop" className={styles.ctaShopBtn}>SHOP THE DROP NOW</Link>
           </div>
         </div>
       </section>

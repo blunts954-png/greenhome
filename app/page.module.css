@@ -48,51 +48,94 @@
 
 .ctaBanner {
   padding: 120px 0;
-  background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('/images/hero-bg.png');
+  background: radial-gradient(circle at center, rgba(10, 14, 5, 0.9) 0%, black 100%), url('/images/hero-bg.png');
   background-size: cover;
   background-position: center;
+  background-blend-mode: overlay;
   text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .ctaContent h2 {
-  font-size: 3rem;
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
   margin-bottom: 20px;
 }
 
 .ctaContent p {
   font-family: var(--font-primary);
-  color: var(--gold);
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-weight: 700;
+  color: white;
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 400;
   margin-bottom: 40px;
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0.8;
 }
 
-.countdown {
+.signupForm {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.emailInput {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 18px 25px;
+  color: white;
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.ctaValues {
   display: flex;
   justify-content: center;
   gap: 40px;
+  margin: 40px 0;
 }
 
-.countItem {
+.vItem {
   display: flex;
   flex-direction: column;
+  gap: 5px;
 }
 
-.countItem span {
-  font-family: var(--font-brand);
-  font-size: 4rem;
-  line-height: 1;
+.vItem span {
+  font-size: 0.7rem;
+  color: #666;
+  letter-spacing: 0.2em;
+}
+
+.vItem strong {
+  font-size: 1.5rem;
   color: #fff;
 }
 
-.countItem label {
-  font-family: var(--font-primary);
-  font-size: 0.7rem;
-  font-weight: 800;
+.ctaShopBtn {
+  display: inline-block;
+  background: #fff;
+  color: #000;
+  padding: 20px 50px;
+  font-weight: 900;
+  text-decoration: none;
   letter-spacing: 0.2em;
-  color: var(--money-green);
-  margin-top: 5px;
+  transition: all 0.3s ease;
+}
+
+.ctaShopBtn:hover {
+  background: #00ff00;
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 255, 0, 0.2);
 }
 
 @media (max-width: 768px) {
@@ -102,10 +145,11 @@
   .ctaContent h2 {
     font-size: 2rem;
   }
-  .countdown {
-    gap: 20px;
+  .signupForm {
+    flex-direction: column;
+    padding: 0 20px;
   }
-  .countItem span {
-    font-size: 2.5rem;
+  .joinBtn {
+    padding: 18px 0;
   }
 }

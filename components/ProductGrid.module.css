@@ -1,5 +1,6 @@
 .section {
-  padding: 100px 20px;
+  padding: 80px 0;
+  background: black;
 }
 
 .header {
@@ -8,68 +9,135 @@
 }
 
 .header h2 {
-  font-size: 3rem;
-  margin-bottom: 10px;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  margin-bottom: 15px;
 }
 
 .socialProof {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  font-family: var(--font-primary);
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.5);
-  margin-bottom: 20px;
+  gap: 15px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  margin-bottom: 40px;
 }
 
 .stars {
   color: var(--gold);
+  letter-spacing: 2px;
 }
 
-.header p {
+.storeToggle {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 40px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 5px;
+  border-radius: 50px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.storeBtn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 12px 35px;
+  border-radius: 40px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.activeStore {
+  background: white;
+  color: black;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+
+.filterTabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filterBtn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.6);
-  font-size: 1.1rem;
+  padding: 10px 25px;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filterBtn:hover, .activeFilter {
+  border-color: var(--gold);
+  color: white;
+  background: rgba(184, 134, 11, 0.1);
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
 }
 
 .card {
-  background: #111;
+  background: #050505;
   border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  overflow: hidden;
+  transition: all 0.4s ease;
   position: relative;
 }
 
 .card:hover {
   transform: translateY(-10px);
-  border-color: var(--money-green);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  border-color: rgba(71, 133, 39, 0.3);
 }
 
 .imageContainer {
   position: relative;
-  width: 100%;
-  aspect-ratio: 3/4;
+  aspect-ratio: 4/5;
   overflow: hidden;
 }
 
 .imageWrapper {
-  position: relative;
   width: 100%;
   height: 100%;
-  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
 }
 
-.card:hover .imageWrapper {
+.productImg, .hoverImg {
+  transition: opacity 0.5s ease, transform 0.8s ease;
+}
+
+.hoverImg {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.card:hover .hoverImg {
+  opacity: 1;
+}
+
+.card:hover .productImg {
+  opacity: 0;
   transform: scale(1.05);
 }
 
@@ -80,82 +148,105 @@
   width: 100%;
   padding: 20px;
   background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.3s ease;
-  display: flex;
-  justify-content: center;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  z-index: 10;
 }
 
 .card:hover .overlay {
-  opacity: 1;
   transform: translateY(0);
 }
 
 .sizeSelector {
   display: flex;
-  gap: 10px;
+  gap: 8px;
+  justify-content: center;
 }
 
 .sizeBtn {
   background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: none;
   color: white;
   width: 35px;
   height: 35px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-size: 0.7rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.sizeBtn:hover {
-  border-color: var(--money-green);
-  color: var(--money-green);
-}
-
-.activeSize {
-  background: var(--money-green);
+.sizeBtn:hover, .activeSize {
+  background: white;
   color: black;
-  border-color: var(--money-green);
 }
 
 .details {
-  padding: 20px;
-  text-align: center;
+  padding: 25px;
 }
 
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.category {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.rating {
+  font-size: 0.8rem;
+}
+
+.starFilled { color: var(--gold); }
+.starEmpty { color: rgba(255, 255, 255, 0.1); }
+
 .details h3 {
-  font-family: var(--font-primary);
-  font-size: 1.1rem;
-  margin-bottom: 5px;
-  letter-spacing: 0.05em;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: white;
+  letter-spacing: 0.02em;
 }
 
 .price {
-  color: var(--gold);
-  font-weight: 800;
-  margin-bottom: 15px;
+  font-family: var(--font-primary);
+  font-weight: 700;
+  color: white;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  opacity: 0.9;
 }
 
 .addBtn {
   width: 100%;
+  padding: 15px;
   background: transparent;
-  border: 1px solid var(--money-green);
-  color: var(--money-green);
-  padding: 12px;
-  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
   text-transform: uppercase;
-  font-size: 0.75rem;
+  font-weight: 800;
   letter-spacing: 0.1em;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .addBtn:hover {
-  background: var(--money-green);
+  background: white;
   color: black;
+  border-color: white;
+}
+
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+        padding: 0 20px;
+    }
 }

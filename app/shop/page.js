@@ -2,8 +2,8 @@ import ProductGrid from '@/components/ProductGrid';
 import styles from './Shop.module.css';
 
 export const metadata = {
-  title: "Shop All | Home Grown Money",
-  description: "Browse the full Home Grown Money collection. Premium streetwear, hoodies, tees, and accessories.",
+  title: "Shop Cannabis Streetwear | HGM — Bakersfield Born",
+  description: "Browse the full Home Grown Money collection. Premium cannabis-culture streetwear, hoodies, tees, and accessories. Rooted in the 661.",
 };
 
 export default function ShopPage() {
@@ -11,8 +11,8 @@ export default function ShopPage() {
     <div className={styles.wrapper}>
       <section className={styles.hero}>
         <div className={styles.container}>
-          <h1 className="brand-font text-gradient">The Collection</h1>
-          <p className={styles.subtitle}>Curated Growth.</p>
+          <h1 className="brand-font text-gradient reveal">The Collection</h1>
+          <p className={`${styles.subtitle} reveal`}>Bakersfield Born. Cultivated Quality.</p>
         </div>
       </section>
 
@@ -22,16 +22,16 @@ export default function ShopPage() {
         <div className={styles.container}>
           <div className={styles.infoGrid}>
             <div className={styles.infoBox}>
-              <h3>Free Domestic Shipping</h3>
-              <p>On all orders over $150.</p>
+              <h3>In-Store Pickup Only</h3>
+              <p>Reserve online, pay and pick up in-store.</p>
             </div>
             <div className={styles.infoBox}>
-              <h3>Secure Checkout</h3>
-              <p>Encrypted payments via Stripe & PayPal.</p>
+              <h3>Cash on Pickup</h3>
+              <p>Secure in-person transactions only.</p>
             </div>
             <div className={styles.infoBox}>
-              <h3>Limited Release</h3>
-              <p>Once it&apos;s gone, it&apos;s rooted in history.</p>
+              <h3>Bakersfield Roots</h3>
+              <p>Supporting local culture and community.</p>
             </div>
           </div>
         </div>

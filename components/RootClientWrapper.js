@@ -5,6 +5,8 @@ import SplashScreen from './SplashScreen';
 import CartDrawer from './CartDrawer';
 import audioEngine from '@/lib/AudioEngine';
 
+import AgeGate from './AgeGate';
+
 export default function RootClientWrapper({ children }) {
   const [showContent, setShowContent] = useState(false);
 
@@ -37,6 +39,7 @@ export default function RootClientWrapper({ children }) {
 
   return (
     <>
+      <AgeGate />
       {!showContent && <SplashScreen onComplete={() => setShowContent(true)} />}
       <CartDrawer />
       <div style={{ opacity: showContent ? 1 : 0, transition: 'opacity 1s ease' }}>

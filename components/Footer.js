@@ -1,21 +1,48 @@
+'use client';
+
 import Link from 'next/link';
-import { Instagram, Twitter, MessageCircle } from 'lucide-react';
+import { useState } from 'react';
+import { Instagram, Twitter, MessageCircle, Check } from 'lucide-react';
 import styles from './Footer.module.css';
+import audioEngine from '@/lib/AudioEngine';
 
 export default function Footer() {
   const currentYear = 2026;
+  const [email, setEmail] = useState('');
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  const handleSubscribe = () => {
+    if (!email || !email.includes('@')) return;
+    try { audioEngine.playClick(); } catch(e){}
+    setIsSubscribed(true);
+    setEmail('');
+    setTimeout(() => setIsSubscribed(false), 5000);
+  };
 
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
         <div className={styles.brand}>
           <h2 className="brand-font text-gradient">Home Grown Money</h2>
-          <p>Money Grows Where We Plant It.</p>
+          <p className={styles.tagline}>Money Grows Where We Plant It.</p>
           <div className={styles.newsletter}>
             <h4>Be First for the Next Drop</h4>
             <div className={styles.emailWrapper}>
-              <input type="email" placeholder="ENTER YOUR EMAIL" className={styles.emailInput} />
-              <button className={styles.emailBtn}>JOIN</button>
+              <input 
+                type="email" 
+                placeholder={isSubscribed ? "YOU'RE IN." : "ENTER YOUR EMAIL"} 
+                className={`${styles.emailInput} ${isSubscribed ? styles.success : ''}`}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={isSubscribed}
+              />
+              <button 
+                className={styles.emailBtn} 
+                onClick={handleSubscribe}
+                disabled={isSubscribed}
+              >
+                {isSubscribed ? <Check size={18} /> : 'JOIN'}
+              </button>
             </div>
           </div>
         </div>
@@ -25,16 +52,16 @@ export default function Footer() {
             <h4>Shop</h4>
             <ul>
               <li><Link href="/shop">All Products</Link></li>
-              <li><Link href="/shop/new-drops">New Drops</Link></li>
-              <li><Link href="/shop/accessories">Accessories</Link></li>
+              <li><Link href="/shop">Limited Drops</Link></li>
+              <li><Link href="/shop">Accessories</Link></li>
             </ul>
           </div>
           <div className={styles.linkCol}>
             <h4>Support</h4>
             <ul>
-              <li><Link href="/support/shipping">Shipping & Returns</Link></li>
-              <li><Link href="/contact">Contact Us</Link></li>
-              <li><Link href="/legal/privacy">Privacy Policy</Link></li>
+              <li><Link href="/contact">Shipping & Returns</Link></li>
+              <li><Link href="/contact">Connect</Link></li>
+              <li><Link href="/contact">FAQ</Link></li>
             </ul>
           </div>
           <div className={styles.linkCol}>
@@ -54,7 +81,11 @@ export default function Footer() {
         </div>
       </div>
       <div className={styles.bottom}>
-        <p>&copy; {currentYear} HOME GROWN MONEY. ALL RIGHTS RESERVED.</p>
+        <div className={styles.bottomMeta}>
+          <p>&copy; {currentYear} HOME GROWN MONEY. ALL RIGHTS RESERVED.</p>
+          <Link href="/admin" className={styles.adminLink}>ADMIN TERMINAL</Link>
+        </div>
+        <p className={styles.valleyOrigin}>BAKERSFIELD BORN. CULTIVATED GLOBALLY.</p>
       </div>
     </footer>
   );

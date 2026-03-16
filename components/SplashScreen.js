@@ -3,41 +3,33 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import styles from './SplashScreen.module.css';
-import audioEngine from '@/lib/AudioEngine'; // Import the physics sound engine
+import audioEngine from '@/lib/AudioEngine';
 
 export default function SplashScreen({ onComplete }) {
-  const [stage, setStage] = useState('entering'); // entering, pressurized, smoking, opening, hidden
+  const [stage, setStage] = useState('entering'); // entering, opening, hidden
 
   useEffect(() => {
-    // Stage 1: Logo enters and "locks"
+    // Stage 1: Fast Entry (0.75s)
     const t1 = setTimeout(() => {
-      setStage('pressurized');
-      audioEngine.init(); // Initialize audio context on first interactive frame
-      audioEngine.playClick(); // Heavy thud lock
-    }, 1500);
-    
-    // Stage 2: Pressure builds (subtle shake or glow)
-    const t2 = setTimeout(() => {
-      setStage('smoking');
-    }, 2500);
-    
-    // Stage 3: Hissing smoke and slow split start
-    const t3 = setTimeout(() => {
       setStage('opening');
-      audioEngine.playHiss(); // Trigger white noise hiss
-    }, 4000);
+      try {
+        audioEngine.init();
+        audioEngine.playClick();
+        audioEngine.playHiss();
+      } catch (e) {
+        console.warn("Audio init failed, continuing splash...", e);
+      }
+    }, 750);
     
-    // Stage 4: Finish opening and start Sub Bass Hum
-    const t4 = setTimeout(() => {
+    // Stage 2: Fade out / Reveal (Total 1.75s)
+    const t2 = setTimeout(() => {
       setStage('hidden');
       if (onComplete) onComplete();
-    }, 6500);
+    }, 1750);
 
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
-      clearTimeout(t3);
-      clearTimeout(t4);
     };
   }, [onComplete]);
 
@@ -51,7 +43,7 @@ export default function SplashScreen({ onComplete }) {
 
       {/* Volumetric Smoke Particles */}
       <div className={styles.smokeContainer}>
-        {[...Array(12)].map((_, i) => (
+        {[...Array(8)].map((_, i) => (
           <div key={i} className={`${styles.smoke} ${styles[`smoke${i + 1}`]}`}></div>
         ))}
       </div>

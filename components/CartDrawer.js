@@ -2,41 +2,42 @@
 
 import { useState, useEffect } from 'react';
 import { useCart } from '@/lib/cart-context';
-import { X, Trash2, ShoppingBag, CheckCircle } from 'lucide-react';
+import { useOrders } from '@/lib/orders-context';
+import { X, Trash2, ShoppingBag, CheckCircle, Truck, Package, CreditCard, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import audioEngine from '@/lib/AudioEngine';
 import styles from './CartDrawer.module.css';
 
-// Heavy, brutally physical spring settings
 const springPhysics = {
   type: "spring",
-  mass: 1.2, // Heavy
-  stiffness: 250, // High tension
-  damping: 30 // Minimal bounce
+  mass: 1.2,
+  stiffness: 250,
+  damping: 30
 };
 
 export default function CartDrawer() {
   const { cartItems, cartTotal, isDrawerOpen, toggleDrawer, removeFromCart, clearCart } = useCart();
+  const { addOrder } = useOrders();
   
-  const [checkoutStep, setCheckoutStep] = useState('cart'); // 'cart', 'form', 'success'
-  const [formData, setFormData] = useState({ name: '', contact: '' });
+  const [checkoutStep, setCheckoutStep] = useState('cart'); // 'cart', 'form', 'payment', 'success'
+  const [orderType, setOrderType] = useState('Delivery'); // 'Delivery', 'Pickup'
+  const [paymentMethod, setPaymentMethod] = useState('Square'); // 'Square', 'Cash'
+  const [formData, setFormData] = useState({ name: '', phone: '', address: '' });
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  // Reset state when drawer closes
   useEffect(() => {
     if (!isDrawerOpen) {
       setTimeout(() => setCheckoutStep('cart'), 300);
     }
   }, [isDrawerOpen]);
 
-  // Trigger auditory feedback when drawer opens/closes
   useEffect(() => {
     if (isDrawerOpen) {
       audioEngine.playClick();
     }
   }, [isDrawerOpen]);
 
-  // Intercept the close action to play the click sound
   const handleClose = () => {
     audioEngine.playClick();
     toggleDrawer();
@@ -52,12 +53,39 @@ export default function CartDrawer() {
     setCheckoutStep('form');
   };
 
-  const handleReserveSubmit = (e) => {
+  const handleFormSubmit = (e) => {
     e.preventDefault();
     audioEngine.playClick();
-    // In a real app, send `cartItems` and `formData` to a backend or webhook here.
-    
+    setCheckoutStep('payment');
+  };
+
+  const handleFinalSubmit = async () => {
+    audioEngine.playClick();
+    setIsProcessing(true);
+
+    // Simulate Payment Processing for Square Demo
+    if (paymentMethod === 'Square') {
+      await new Promise(r => setTimeout(r, 2000));
+    } else {
+      await new Promise(r => setTimeout(r, 800));
+    }
+
+    const orderData = {
+      customer: {
+        name: formData.name,
+        phone: formData.phone,
+        address: orderType === 'Delivery' ? formData.address : 'PICKUP AT STORE'
+      },
+      items: cartItems.map(item => ({ name: item.name, price: item.price, quantity: item.quantity })),
+      total: cartTotal,
+      type: orderType,
+      payment: paymentMethod
+    };
+
+    addOrder(orderData);
+    setIsProcessing(false);
     setCheckoutStep('success');
+    
     setTimeout(() => {
       clearCart();
     }, 500);
@@ -72,7 +100,6 @@ export default function CartDrawer() {
           initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
           animate={{ opacity: 1, backdropFilter: 'blur(5px)' }}
           exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
-          transition={{ duration: 0.3 }}
         >
           <motion.div 
             className={styles.drawer} 
@@ -85,7 +112,7 @@ export default function CartDrawer() {
             <div className={styles.header}>
               <div className={styles.titleGroup}>
                 <ShoppingBag size={20} className={styles.titleIcon} />
-                <h2 className="brand-font">The Vault</h2>
+                <h2 className="brand-font">SECURE VAULT</h2>
               </div>
               <button className={styles.closeBtn} onClick={handleClose}>
                 <X size={24} />
@@ -98,123 +125,159 @@ export default function CartDrawer() {
                   className={styles.successState}
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={springPhysics}
                 >
                   <CheckCircle size={60} className={styles.successIcon} />
-                  <h3>Locked In.</h3>
-                  <p>Your order is reserved for in-store pickup.</p>
-                  <p className={styles.cashNotice}><strong>Payment required:</strong> Cash on Arrival.</p>
-                  <button className={styles.continueShop} onClick={handleClose}>Close Vault</button>
+                  <h3>ORDER SECURED</h3>
+                  <p>Your {orderType.toLowerCase()} is being prepared.</p>
+                  <div className={styles.orderSummaryBox}>
+                    <p>TOTAL: <strong>${cartTotal}</strong></p>
+                    <p>STATUS: <strong>PENDING</strong></p>
+                  </div>
+                  <button className={styles.continueShop} onClick={handleClose}>RETURN TO STORE</button>
                 </motion.div>
               ) : cartItems.length === 0 ? (
                 <div className={styles.emptyState}>
-                  <p>Your vault is currently empty.</p>
+                  <p>VAULT IS CURRENTLY EMPTY.</p>
                   <button className={styles.continueShop} onClick={handleClose}>
-                    Enter the Store
+                    VIEW CATALOG
                   </button>
                 </div>
               ) : (
-                <AnimatePresence>
-                  {checkoutStep === 'cart' && cartItems.map((item) => (
-                    <motion.div 
-                      key={`${item.id}-${item.selectedSize}`} 
-                      className={styles.cartItem}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, x: 50, transition: { duration: 0.2 } }}
-                      layout
-                    >
-                      <div className={styles.itemImg}>
-                        <Image src={item.image} alt={item.name} fill style={{ objectFit: 'cover' }} />
-                      </div>
-                      <div className={styles.itemMeta}>
-                        <h3>{item.name}</h3>
-                        <p className={styles.sizeInfo}>Size: {item.selectedSize}</p>
-                        <p className={styles.quantity}>Qty: {item.quantity}</p>
-                        <p className={styles.price}>${item.price * item.quantity}</p>
-                      </div>
-                      <button 
-                        className={styles.removeBtn} 
-                        onClick={() => handleRemove(item.id, item.selectedSize)}
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </motion.div>
-                  ))}
+                <>
+                  {checkoutStep === 'cart' && (
+                    <div className={styles.cartList}>
+                      {cartItems.map((item) => (
+                        <div key={`${item.id}-${item.selectedSize}`} className={styles.cartItem}>
+                          <div className={styles.itemImg}>
+                            <Image src={item.image} alt={item.name} fill style={{ objectFit: 'cover' }} />
+                          </div>
+                          <div className={styles.itemMeta}>
+                            <h3>{item.name}</h3>
+                            {item.selectedSize && <p className={styles.sizeInfo}>SIZE: {item.selectedSize}</p>}
+                            <p className={styles.price}>${item.price} x {item.quantity}</p>
+                          </div>
+                          <button className={styles.removeBtn} onClick={() => handleRemove(item.id, item.selectedSize)}>
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
 
                   {checkoutStep === 'form' && (
-                    <motion.form 
+                    <motion.div 
                       className={styles.checkoutForm}
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      onSubmit={handleReserveSubmit}
                     >
-                      <h3>Reserve for Pickup</h3>
-                      <p className={styles.disclaimer}>Home Grown Money operates primarily in physical space. Reserve your gear now and pay cash at the door.</p>
+                      <h3>LOGISTICS</h3>
                       
-                      <div className={styles.inputGroup}>
-                        <label>Name / Alias</label>
+                      <div className={styles.typeToggle}>
+                        <button 
+                          className={`${styles.typeBtn} ${orderType === 'Delivery' ? styles.activeType : ''}`}
+                          onClick={() => setOrderType('Delivery')}
+                        >
+                          <Truck size={18} /> DELIVERY
+                        </button>
+                        <button 
+                          className={`${styles.typeBtn} ${orderType === 'Pickup' ? styles.activeType : ''}`}
+                          onClick={() => setOrderType('Pickup')}
+                        >
+                          <Package size={18} /> PICKUP
+                        </button>
+                      </div>
+
+                      <form onSubmit={handleFormSubmit} className={styles.formFields}>
                         <input 
                           type="text" 
                           required 
+                          placeholder="FULL NAME"
                           value={formData.name}
                           onChange={e => setFormData({...formData, name: e.target.value})}
-                          placeholder="Who is picking this up?"
                         />
-                      </div>
-                      
-                      <div className={styles.inputGroup}>
-                        <label>Contact (Email or Phone)</label>
                         <input 
-                          type="text" 
+                          type="tel" 
                           required 
-                          value={formData.contact}
-                          onChange={e => setFormData({...formData, contact: e.target.value})}
-                          placeholder="How do we reach you?"
+                          placeholder="MOBILE NUMBER"
+                          value={formData.phone}
+                          onChange={e => setFormData({...formData, phone: e.target.value})}
                         />
-                      </div>
-                    </motion.form>
+                        {orderType === 'Delivery' && (
+                          <textarea 
+                            required 
+                            placeholder="BAKERSFIELD DELIVERY ADDRESS"
+                            value={formData.address}
+                            onChange={e => setFormData({...formData, address: e.target.value})}
+                          />
+                        )}
+                        <button type="submit" className={styles.nextBtn}>
+                          PROCEED TO PAYMENT <ChevronRight size={18} />
+                        </button>
+                      </form>
+                    </motion.div>
                   )}
-                </AnimatePresence>
+
+                  {checkoutStep === 'payment' && (
+                    <motion.div 
+                      className={styles.paymentContainer}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                    >
+                      <h3>SECURE PAYMENT</h3>
+                      <div className={styles.paymentOptions}>
+                        <button 
+                          className={`${styles.payOption} ${paymentMethod === 'Square' ? styles.activePay : ''}`}
+                          onClick={() => setPaymentMethod('Square')}
+                        >
+                          <CreditCard size={20} /> SQUARE (CREDIT/DEBIT)
+                          {paymentMethod === 'Square' && <span className={styles.demoTag}>DEMO MODE</span>}
+                        </button>
+                        <button 
+                          className={`${styles.payOption} ${paymentMethod === 'Cash' ? styles.activePay : ''}`}
+                          onClick={() => setPaymentMethod('Cash')}
+                        >
+                          <DollarSign size={20} /> CASH ON {orderType === 'Delivery' ? 'DELIVERY' : 'ARRIVAL'}
+                        </button>
+                      </div>
+
+                      {paymentMethod === 'Square' && (
+                        <div className={styles.squareDemo}>
+                          <div className={styles.squareCard}>
+                            <div className={styles.cardHeader}>SQUARE CHECKOUT</div>
+                            <div className={styles.mockFields}>
+                              <div className={styles.mockInput}>•••• •••• •••• 4242</div>
+                              <div className={styles.mockRow}>
+                                <div className={styles.mockInput}>MM/YY</div>
+                                <div className={styles.mockInput}>CVC</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      <button 
+                        className={styles.finalSubmitBtn} 
+                        disabled={isProcessing}
+                        onClick={handleFinalSubmit}
+                      >
+                        {isProcessing ? 'PROCESSING...' : `PAY $${cartTotal}`}
+                      </button>
+                    </motion.div>
+                  )}
+                </>
               )}
             </div>
 
-            {cartItems.length > 0 && checkoutStep !== 'success' && (
-              <motion.div 
-                className={styles.footer}
-                initial={{ y: 50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.1, ...springPhysics }}
-              >
+            {cartItems.length > 0 && checkoutStep === 'cart' && (
+              <div className={styles.footer}>
                 <div className={styles.totalRow}>
-                  <span>Total (Cash)</span>
+                  <span>SUBTOTAL</span>
                   <span className={styles.totalAmount}>${cartTotal}</span>
                 </div>
-                
-                {checkoutStep === 'cart' ? (
-                  <>
-                    <p className={styles.shippingNotice}>In-store Pickup Only. Cash on Arrival.</p>
-                    <motion.button 
-                      className={styles.checkoutBtn}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={handleCheckoutInit}
-                    >
-                      Lock In Order
-                    </motion.button>
-                  </>
-                ) : (
-                  <motion.button 
-                    className={styles.reserveBtn}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={handleReserveSubmit}
-                  >
-                    Confirm Reservation
-                  </motion.button>
-                )}
-              </motion.div>
+                <button className={styles.checkoutBtn} onClick={handleCheckoutInit}>
+                  PROCEED TO LOGISTICS
+                </button>
+              </div>
             )}
           </motion.div>
         </motion.div>

@@ -2,81 +2,98 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useCart } from '@/lib/cart-context';
 import audioEngine from '@/lib/AudioEngine';
+import { PRODUCTS } from '@/lib/products';
 import styles from './ProductGrid.module.css';
 
-const PRODUCTS = [
-  { 
-    id: 1, 
-    name: 'Rooted Hoodie', 
-    price: 85, 
-    image: '/images/lifestyle-1.png',
-    sizes: ['S', 'M', 'L', 'XL']
-  },
-  { 
-    id: 2, 
-    name: 'Home Grown Money Classic Tee', 
-    price: 45, 
-    image: '/images/hgm-tee.png',
-    sizes: ['S', 'M', 'L', 'XL']
-  },
-  { 
-    id: 3, 
-    name: 'Plant it Cap', 
-    price: 35, 
-    image: '/images/lifestyle-2.png',
-    sizes: ['One Size']
-  },
-  { 
-    id: 4, 
-    name: 'Home Grown Money Heavyweight Sweats', 
-    price: 75, 
-    image: '/images/hgm-sweatpants.png',
-    sizes: ['S', 'M', 'L', 'XL']
-  },
-  { 
-    id: 5, 
-    name: 'Rooted Beanie', 
-    price: 30, 
-    image: '/images/hgm-beanie.png',
-    sizes: ['One Size']
-  },
-];
+const STORES = ['Apparel', 'Cannabis'];
+const STORE_CATEGORIES = {
+  'Apparel': ['All', 'Tees', 'Hats', 'Combos'],
+  'Cannabis': ['All', 'Flower', 'Concentrates', 'Disposables', 'Edibles', 'Others']
+};
 
 export default function ProductGrid() {
   const { addToCart } = useCart();
+  const [activeStore, setActiveStore] = useState('Apparel');
+  const [activeFilter, setActiveFilter] = useState('All');
   const [selectedSizes, setSelectedSizes] = useState({});
 
-  const handleSizeSelect = (productId, size) => {
-    audioEngine.playClick();
+  const filteredProducts = PRODUCTS.filter(p => {
+    const storeMatch = p.storeSection.toLowerCase() === activeStore.toLowerCase();
+    const categoryMatch = activeFilter === 'All' || p.category === activeFilter;
+    return storeMatch && categoryMatch;
+  });
+
+  const handleSizeSelect = (e, productId, size) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try { audioEngine.playClick(); } catch(e){}
     setSelectedSizes(prev => ({ ...prev, [productId]: size }));
   };
 
-  const handleAdd = (product) => {
-    const size = selectedSizes[product.id] || (product.sizes.length === 1 ? product.sizes[0] : null);
-    if (!size && product.sizes.length > 1) {
+  const handleAdd = (e, product) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const size = selectedSizes[product.id] || (product.sizes?.length === 1 ? product.sizes[0] : null);
+    if (!size && product.sizes?.length > 1) {
       alert('Please select a size first');
       return;
     }
-    audioEngine.playClick();
+    try { audioEngine.playClick(); } catch(e){}
     addToCart({ ...product, selectedSize: size });
+  };
+
+  const handleStoreChange = (store) => {
+    setActiveStore(store);
+    setActiveFilter('All');
+    try { audioEngine.playClick(); } catch(e){}
   };
 
   return (
     <section className={styles.section} id="shop">
       <div className={styles.header}>
-        <h2 className="brand-font">The Latest Drop</h2>
-        <div className={styles.socialProof}>
-          <span className={styles.stars}>★★★★★</span>
-          <span>Join 500+ satisfied hustlers</span>
+        <div className={`${styles.storeToggle} reveal`}>
+          {STORES.map(store => (
+            <button 
+              key={store}
+              className={`${styles.storeBtn} ${activeStore === store ? styles.activeStore : ''}`}
+              onClick={() => handleStoreChange(store)}
+            >
+              {store}
+            </button>
+          ))}
         </div>
-        <p>Premium streetwear for those who know the value of growth.</p>
+
+        <h2 className="brand-font reveal">
+          {activeStore === 'Apparel' ? 'Streetwear & Apparel' : 'Premium Cannabis'}
+        </h2>
+        
+        <div className={`${styles.socialProof} reveal`}>
+          <span className={styles.stars}>★★★★★</span>
+          <span>Pay In-Store. Pickup in Bakersfield.</span>
+        </div>
+        
+        <div className={`${styles.filterTabs} reveal`}>
+          {STORE_CATEGORIES[activeStore].map(cat => (
+            <button 
+              key={cat} 
+              className={`${styles.filterBtn} ${activeFilter === cat ? styles.activeFilter : ''}`}
+              onClick={() => {
+                setActiveFilter(cat);
+                try { audioEngine.playClick(); } catch(e){}
+              }}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className={styles.grid}>
-        {PRODUCTS.map(product => (
-          <div key={product.id} className={styles.card}>
+        {filteredProducts.map(product => (
+          <Link key={product.id} href={`/shop/${product.slug}`} className={`${styles.card} reveal`}>
             <div className={styles.imageContainer}>
               <div className={styles.imageWrapper}>
                 <Image 
@@ -86,6 +103,15 @@ export default function ProductGrid() {
                   style={{ objectFit: 'cover' }}
                   className={styles.productImg}
                 />
+                {product.hoverImage && (
+                   <Image 
+                     src={product.hoverImage} 
+                     alt={`${product.name} Alternate`} 
+                     fill 
+                     style={{ objectFit: 'cover' }}
+                     className={styles.hoverImg}
+                   />
+                )}
               </div>
               <div className={styles.overlay}>
                 <div className={styles.sizeSelector}>
@@ -93,7 +119,7 @@ export default function ProductGrid() {
                     <button 
                       key={size}
                       className={`${styles.sizeBtn} ${selectedSizes[product.id] === size ? styles.activeSize : ''}`}
-                      onClick={() => handleSizeSelect(product.id, size)}
+                      onClick={(e) => handleSizeSelect(e, product.id, size)}
                     >
                       {size}
                     </button>
@@ -102,16 +128,24 @@ export default function ProductGrid() {
               </div>
             </div>
             <div className={styles.details}>
+              <div className={styles.meta}>
+                <span className={styles.category}>{product.category}</span>
+                <span className={styles.rating}>
+                  {[...Array(5)].map((_, i) => (
+                    <span key={i} className={i < product.rating ? styles.starFilled : styles.starEmpty}>★</span>
+                  ))}
+                </span>
+              </div>
               <h3>{product.name}</h3>
               <p className={styles.price}>${product.price}</p>
               <button 
                 className={styles.addBtn}
-                onClick={() => handleAdd(product)}
+                onClick={(e) => handleAdd(e, product)}
               >
                 Add to Cart
               </button>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </section>
