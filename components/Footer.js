@@ -14,6 +14,7 @@ export default function Footer() {
   const handleSubscribe = () => {
     if (!email || !email.includes('@')) return;
     try { audioEngine.playClick(); } catch(e){}
+    console.log('Newsletter lead for moneygrowontrees80@gmail.com:', email);
     setIsSubscribed(true);
     setEmail('');
     setTimeout(() => setIsSubscribed(false), 5000);

@@ -3,22 +3,27 @@
 import { useState, useEffect } from 'react';
 import styles from './AgeGate.module.css';
 
-export default function AgeGate() {
+export default function AgeGate({ onVerify, isActive }) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const isVerified = localStorage.getItem('age-verified');
-    if (!isVerified) {
-      setIsVisible(true);
+    if (isActive) {
+      const isVerified = localStorage.getItem('age-verified');
+      if (!isVerified) {
+        setIsVisible(true);
+      } else if (onVerify) {
+        onVerify();
+      }
     }
-  }, []);
+  }, [isActive, onVerify]);
 
   const handleVerify = () => {
     localStorage.setItem('age-verified', 'true');
     setIsVisible(false);
+    if (onVerify) onVerify();
   };
 
-  if (!isVisible) return null;
+  if (!isVisible || !isActive) return null;
 
   return (
     <div className={styles.overlay}>

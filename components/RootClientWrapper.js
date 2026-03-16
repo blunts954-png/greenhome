@@ -8,7 +8,15 @@ import audioEngine from '@/lib/AudioEngine';
 import AgeGate from './AgeGate';
 
 export default function RootClientWrapper({ children }) {
+  const [splashComplete, setSplashComplete] = useState(false);
+  const [ageVerified, setAgeVerified] = useState(false);
   const [showContent, setShowContent] = useState(false);
+
+  useEffect(() => {
+    if (ageVerified && splashComplete) {
+      setShowContent(true);
+    }
+  }, [ageVerified, splashComplete]);
 
   useEffect(() => {
     if (!showContent) return;
@@ -39,10 +47,10 @@ export default function RootClientWrapper({ children }) {
 
   return (
     <>
-      <AgeGate />
-      {!showContent && <SplashScreen onComplete={() => setShowContent(true)} />}
+      {!splashComplete && <SplashScreen onComplete={() => setSplashComplete(true)} />}
+      {splashComplete && <AgeGate isActive={splashComplete} onVerify={() => setAgeVerified(true)} />}
       <CartDrawer />
-      <div style={{ opacity: showContent ? 1 : 0, transition: 'opacity 1s ease' }}>
+      <div style={{ opacity: showContent ? 1 : 0, transition: 'opacity 1s ease', visibility: showContent ? 'visible' : 'hidden' }}>
         {children}
       </div>
     </>
