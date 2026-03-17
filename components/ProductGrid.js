@@ -11,7 +11,7 @@ import styles from './ProductGrid.module.css';
 
 const STORES = ['Apparel', 'Cannabis'];
 const STORE_CATEGORIES = {
-  'Apparel': ['All', 'Tees', 'Hats', 'Combos'],
+  'Apparel': ['All', 'Tees', 'Hats'],
   'Cannabis': ['All', 'Flower', 'Concentrates', 'Disposables', 'Edibles', 'Others']
 };
 
