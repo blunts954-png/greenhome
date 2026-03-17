@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/lib/cart-context';
 import audioEngine from '@/lib/AudioEngine';
 import { PRODUCTS } from '@/lib/products';
+import AgeGate from './AgeGate';
 import styles from './ProductGrid.module.css';
 
 const STORES = ['Apparel', 'Cannabis'];
@@ -22,6 +23,12 @@ export default function ProductGrid() {
   const [activeFilter, setActiveFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSizes, setSelectedSizes] = useState({});
+  const [ageVerified, setAgeVerified] = useState(false);
+
+  useEffect(() => {
+    const isVerified = localStorage.getItem('age-verified') === 'true';
+    setAgeVerified(isVerified);
+  }, []);
 
   const filteredProducts = PRODUCTS.filter(p => {
     const storeMatch = p.storeSection.toLowerCase() === activeStore.toLowerCase();
@@ -58,6 +65,7 @@ export default function ProductGrid() {
 
   return (
     <section className={styles.section} id="shop">
+      <AgeGate isActive={activeStore === 'Cannabis' && !ageVerified} onVerify={() => setAgeVerified(true)} />
       <div className={styles.header}>
         <div className={`${styles.storeToggle} reveal`}>
           {STORES.map(store => (

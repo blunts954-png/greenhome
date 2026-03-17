@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { PRODUCTS, getProductSchema } from '@/lib/products';
 import { useCart } from '@/lib/cart-context';
 import audioEngine from '@/lib/AudioEngine';
+import AgeGate from '@/components/AgeGate';
 import styles from './ProductDetail.module.css';
 
 export default function ProductDetailClient({ slug }) {
@@ -12,6 +13,12 @@ export default function ProductDetailClient({ slug }) {
   const [product, setProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [ageVerified, setAgeVerified] = useState(false);
+
+  useEffect(() => {
+    const isVerified = localStorage.getItem('age-verified') === 'true';
+    setAgeVerified(isVerified);
+  }, []);
 
   useEffect(() => {
     const found = PRODUCTS.find(p => p.slug === slug);
@@ -35,6 +42,10 @@ export default function ProductDetailClient({ slug }) {
 
   return (
     <div className={styles.wrapper}>
+      <AgeGate 
+        isActive={product?.storeSection === 'Cannabis' && !ageVerified} 
+        onVerify={() => setAgeVerified(true)} 
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
