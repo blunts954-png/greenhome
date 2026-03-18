@@ -26,11 +26,11 @@
   margin-bottom: 30px;
 }
 
-.brand {
-  font-family: var(--font-brand);
-  font-size: 3rem;
-  color: var(--gold);
-  letter-spacing: 0.1em;
+.ageLogo {
+  height: 100px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
 }
 
 .modal h2 {

@@ -13,6 +13,19 @@
   margin-bottom: 80px;
 }
 
+.brand {
+  flex: 1;
+  min-width: 300px;
+}
+
+.footerLogo {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.1));
+}
+
 .brand h2 {
   font-size: 2.5rem;
   margin-bottom: 15px;
@@ -152,22 +165,35 @@
 
 .bottomMeta {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 20px;
-  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 20px;
+  margin-bottom: 20px;
 }
 
-.adminLink {
-  color: #333;
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
-  text-decoration: none;
-  transition: color 0.3s ease;
+.metaActionLinks {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
-.adminLink:hover {
-  color: #fff;
+.divider {
+  opacity: 0.2;
+}
+
+.adminLink, .agencyLink {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.adminLink:hover, .agencyLink:hover {
+  opacity: 1;
+  color: var(--money-green);
 }
 
 .valleyOrigin {

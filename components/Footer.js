@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 import { Instagram, Twitter, MessageCircle, Check } from 'lucide-react';
 import styles from './Footer.module.css';
@@ -24,7 +25,7 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={styles.container}>
         <div className={styles.brand}>
-          <h2 className="brand-font text-gradient">Home Grown Money</h2>
+          <Image src="/logo.png" alt="HGM Logo" width={120} height={120} className={styles.footerLogo} />
           <p className={styles.tagline}>Money Grows Where We Plant It.</p>
           <div className={styles.newsletter}>
             <h4>Be First for the Next Drop</h4>
@@ -60,9 +61,9 @@ export default function Footer() {
           <div className={styles.linkCol}>
             <h4>Support</h4>
             <ul>
-              <li><Link href="/contact">Shipping & Returns</Link></li>
+              <li><Link href="/about/shipping">Shipping & Returns</Link></li>
               <li><Link href="/contact">Connect</Link></li>
-              <li><Link href="/contact">FAQ</Link></li>
+              <li><Link href="/about/faq">FAQ</Link></li>
             </ul>
           </div>
           <div className={styles.linkCol}>
@@ -84,7 +85,13 @@ export default function Footer() {
       <div className={styles.bottom}>
         <div className={styles.bottomMeta}>
           <p>&copy; {currentYear} HOME GROWN MONEY. ALL RIGHTS RESERVED.</p>
-          <Link href="/admin" className={styles.adminLink}>ADMIN TERMINAL</Link>
+          <div className={styles.metaActionLinks}>
+            <Link href="/admin" className={styles.adminLink}>ADMIN TERMINAL</Link>
+            <span className={styles.divider}>|</span>
+             <a href="https://chaoticallyorganized.ai" target="_blank" rel="noopener noreferrer" className={styles.agencyLink}>
+               POWERED BY CHAOTICALLY ORGANIZED AI
+             </a>
+          </div>
         </div>
         <p className={styles.valleyOrigin}>BAKERSFIELD BORN. CULTIVATED GLOBALLY.</p>
       </div>

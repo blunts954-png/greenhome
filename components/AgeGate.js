@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import styles from './AgeGate.module.css';
 
 export default function AgeGate({ onVerify, isActive }) {
@@ -42,7 +43,7 @@ export default function AgeGate({ onVerify, isActive }) {
     <div className={styles.overlay}>
       <div className={styles.modal}>
         <div className={styles.logoContainer}>
-            <span className={styles.brand}>HGM</span>
+          <Image src="/logo.png" alt="HGM Logo" width={80} height={80} className={styles.ageLogo} />
         </div>
         <h2>ARE YOU OF LEGAL AGE?</h2>
         <p>You must be 21+ to enter the Home Grown Money experience.</p>

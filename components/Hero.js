@@ -9,7 +9,14 @@ export default function Hero() {
       <div className={styles.overlay}></div>
       <div className={styles.content}>
         <div className={styles.logoContainer}>
-          <h1 className={`${styles.logoMain} brand-font reveal`}>Home Grown Money</h1>
+          <Image 
+            src="/logo.png" 
+            alt="Home Grown Money" 
+            width={600} 
+            height={600} 
+            className={`${styles.heroLogo} reveal`}
+            priority 
+          />
           <div className={styles.glow}></div>
         </div>
         <h2 className={`${styles.headline} reveal`}>Money Grows Where We Plant It</h2>
@@ -21,7 +28,7 @@ export default function Hero() {
         </p>
         <div className={`${styles.ctaContainer} reveal`}>
           <Link href="/shop" className={styles.primaryCta}>COP THE DROP</Link>
-          <Link href="/shop" className={styles.secondaryCta}>COMBO DEALS</Link>
+          <Link href="/shop/hgm-combo-deal" className={styles.secondaryCta}>COMBO DEALS</Link>
         </div>
       </div>
     </section>

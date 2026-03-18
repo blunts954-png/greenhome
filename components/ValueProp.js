@@ -3,18 +3,18 @@ import styles from './ValueProp.module.css';
 
 const VALUES = [
   {
-    title: 'Authenticity First',
-    description: 'We don\'t follow trends, we plant seeds. Every piece is rooted in real street culture and authentic hustle.',
+    title: 'Bakersfield Hub',
+    description: 'Local pickup and fast delivery. All orders handled by our central operations for the highest efficiency.',
     icon: <TrendingUp className={styles.iconElement} />
   },
   {
-    title: 'Quality Guaranteed',
-    description: 'Superior fabrics, precision stitching, and premium finishes. We build for the long game.',
+    title: 'Certified Quality',
+    description: '100% premium materials. Every SKU is tested for color-fastness, fit, and heritage-grade feel.',
     icon: <Award className={styles.iconElement} />
   },
   {
-    title: 'Community Driven',
-    description: 'Home Grown Money is more than a brand—it\'s a movement for those who cultivate their own future.',
+    title: 'Strict Compliance',
+    description: 'Fully licensed and 21+ compliant. Secure, professional, and rooted in community trust.',
     icon: <Users className={styles.iconElement} />
   }
 ];

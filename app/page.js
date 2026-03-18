@@ -40,7 +40,7 @@ export default function Home() {
             <div className={styles.ctaValues}>
               <div className={styles.vItem}><span>TEE</span> <strong>$20</strong></div>
               <div className={styles.vItem}><span>HAT</span> <strong>$15</strong></div>
-              <div className={styles.vItem}><span>COMBO</span> <strong>$30</strong></div>
+              <Link href="/shop/hgm-combo-deal" className={styles.vItem}><span>COMBO</span> <strong>$30</strong></Link>
             </div>
             <Link href="/shop" className={styles.ctaShopBtn}>SHOP THE DROP NOW</Link>
           </div>

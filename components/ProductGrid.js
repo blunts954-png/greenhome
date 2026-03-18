@@ -11,7 +11,7 @@ import styles from './ProductGrid.module.css';
 
 const STORES = ['Apparel', 'Cannabis'];
 const STORE_CATEGORIES = {
-  'Apparel': ['All', 'Tees', 'Hats'],
+  'Apparel': ['All', 'Tees', 'Hats', 'Combos'],
   'Cannabis': ['All', 'Flower', 'Concentrates', 'Disposables', 'Edibles', 'Others']
 };
 
@@ -79,9 +79,12 @@ export default function ProductGrid() {
           ))}
         </div>
 
-        <h2 className="brand-font reveal">
-          {activeStore === 'Apparel' ? 'Streetwear & Apparel' : 'Premium Cannabis'}
-        </h2>
+        <div className={styles.categoryHead}>
+          <Image src="/logo.png" alt="HGM Logo" width={80} height={80} className={styles.catLogo} />
+          <h2 className="brand-font reveal">
+            {activeStore === 'Apparel' ? 'Streetwear & Apparel' : 'Premium Cannabis'}
+          </h2>
+        </div>
         
         <div className={`${styles.socialProof} reveal`}>
           <span className={styles.stars}>★★★★★</span>

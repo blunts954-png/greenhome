@@ -1,12 +1,8 @@
 .section {
-  padding: 100px 0;
-  background: black;
-}
-
-.container {
+  padding: 100px 20px;
+  background: #000;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 40px;
 }
 
 .header {
@@ -14,46 +10,53 @@
   margin-bottom: 60px;
 }
 
+.brandTitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.instaIcon {
+  color: var(--money-green);
+}
+
 .header h2 {
   font-size: 3rem;
-  margin-bottom: 15px;
+  letter-spacing: 0.2em;
+  font-weight: 900;
 }
 
 .header p {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 1.1rem;
+  color: #555;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  font-size: 0.9rem;
 }
 
 .feed {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1px;
+  background: #111;
+  border: 1px solid #111;
 }
 
 .post {
+  aspect-ratio: 1 / 1;
   position: relative;
-  aspect-ratio: 1;
-  background: #050505;
-  border: 1px solid rgba(255, 255, 255, 0.05);
   overflow: hidden;
   cursor: pointer;
 }
 
-.mediaPlaceholder {
+.mediaWrapper {
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
 }
 
-.icon {
-  font-family: var(--font-primary);
-  font-weight: 900;
-  opacity: 0.1;
-  font-size: 3rem;
-  color: white;
+.postImg {
+  transition: transform 0.8s cubic-bezier(0.2, 0, 0, 1);
 }
 
 .overlay {
@@ -62,38 +65,59 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(10, 14, 5, 0.8);
+  background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%);
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-end;
   padding: 30px;
-  text-align: center;
   opacity: 0;
-  transition: all 0.3s ease;
-  z-index: 10;
+  transition: opacity 0.4s ease;
+  z-index: 5;
 }
 
 .post:hover .overlay {
   opacity: 1;
 }
 
-.overlay span {
-  color: var(--gold);
-  font-weight: 800;
-  font-size: 0.8rem;
-  letter-spacing: 0.1em;
-  margin-bottom: 10px;
+.post:hover .postImg {
+  transform: scale(1.1);
 }
 
-.overlay p {
+.overlayMeta {
+  transform: translateY(20px);
+  transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.post:hover .overlayMeta {
+  transform: translateY(0);
+}
+
+.likes {
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  color: var(--money-green);
+  margin-bottom: 10px;
+  display: block;
+}
+
+.overlayMeta p {
   font-size: 0.9rem;
-  color: white;
+  font-weight: 700;
   line-height: 1.4;
+  color: #fff;
+}
+
+.playIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  text-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
 }
 
 @media (max-width: 768px) {
-  .container {
-    padding: 0 20px;
+  .feed {
+    grid-template-columns: repeat(2, 1fr);
   }
 }

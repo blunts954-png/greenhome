@@ -1,0 +1,130 @@
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: calc(var(--nav-height) + 100px) 20px 100px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.icon {
+  color: var(--money-green);
+  margin-bottom: 25px;
+}
+
+.header h1 {
+  font-size: 3.5rem;
+  letter-spacing: 0.25em;
+  font-weight: 950;
+  margin-bottom: 12px;
+}
+
+.header p {
+  font-size: 1.2rem;
+  color: #666;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+}
+
+.shippingGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 40px;
+}
+
+.shippingSection {
+  background: #0a0a0a;
+  border: 1px solid #1a1a1a;
+  padding: 40px;
+  transition: all 0.3s ease;
+}
+
+.shippingSection:hover {
+  border-color: #333;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+  color: var(--money-green);
+}
+
+.sectionHead h3 {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 0.15em;
+}
+
+.sectionBody p {
+  color: #ccc;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.sectionBody ul {
+  list-style: none;
+  padding: 15px;
+  background: #000;
+  border-radius: 4px;
+}
+
+.sectionBody li {
+  color: #888;
+  font-size: 0.85rem;
+  margin-bottom: 15px;
+  line-height: 1.5;
+  padding-left: 20px;
+  position: relative;
+}
+
+.sectionBody li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--money-green);
+  font-weight: 900;
+}
+
+.sectionBody strong {
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  margin-right: 5px;
+}
+
+.shippingFooter {
+  text-align: center;
+  margin-top: 100px;
+}
+
+.contactBtn {
+  background: white;
+  color: black;
+  padding: 20px 50px;
+  font-weight: 950;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  transition: all 0.3s ease;
+}
+
+.contactBtn:hover {
+  background: var(--money-green);
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .shippingGrid {
+    grid-template-columns: 1fr;
+  }
+}

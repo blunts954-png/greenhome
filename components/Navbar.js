@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useCart } from '@/lib/cart-context';
 import { Instagram, Facebook, ShoppingCart } from 'lucide-react';
 import audioEngine from '@/lib/AudioEngine';
@@ -20,7 +21,7 @@ export default function Navbar() {
       <div className={styles.container}>
         <div className={styles.logo}>
           <Link href="/">
-            <span className="brand-font text-gradient">Home Grown Money</span>
+            <Image src="/logo.png" alt="HGM Logo" width={50} height={50} className={styles.navLogo} />
           </Link>
         </div>
         

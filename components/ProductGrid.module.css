@@ -8,9 +8,24 @@
   margin-bottom: 60px;
 }
 
+.categoryHead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.catLogo {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1));
+}
+
 .header h2 {
   font-size: clamp(2.5rem, 5vw, 4rem);
-  margin-bottom: 15px;
+  margin-bottom: 0px;
 }
 
 .socialProof {

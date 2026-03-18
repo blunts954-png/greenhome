@@ -21,11 +21,11 @@ export default function SplashScreen({ onComplete }) {
       }
     }, 750);
     
-    // Stage 2: Fade out / Reveal (Total 1.75s)
+    // Stage 2: Fade out / Reveal (Total 3.5s)
     const t2 = setTimeout(() => {
       setStage('hidden');
       if (onComplete) onComplete();
-    }, 1750);
+    }, 3500);
 
     return () => {
       clearTimeout(t1);
@@ -70,6 +70,15 @@ export default function SplashScreen({ onComplete }) {
             priority
           />
         </div>
+      </div>
+
+      {/* Smoke Spells Welcome */}
+      <div className={`${styles.smokeWelcome} ${stage === 'opening' ? styles.showWelcome : ''}`}>
+        {"WELCOME".split("").map((letter, i) => (
+          <span key={i} className={styles.smokeLetter} style={{'--delay': `${i * 0.1}s`}}>
+            {letter}
+          </span>
+        ))}
       </div>
 
       {/* Atmospheric Glow */}
