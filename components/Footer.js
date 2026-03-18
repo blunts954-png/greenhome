@@ -32,7 +32,7 @@ export default function Footer() {
             <div className={styles.emailWrapper}>
               <input 
                 type="email" 
-                placeholder={isSubscribed ? "YOU'RE IN." : "ENTER YOUR EMAIL"} 
+                placeholder={isSubscribed ? "YOU&apos;RE IN." : "ENTER YOUR EMAIL"} 
                 className={`${styles.emailInput} ${isSubscribed ? styles.success : ''}`}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}

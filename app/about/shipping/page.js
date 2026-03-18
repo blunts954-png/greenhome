@@ -22,7 +22,7 @@ export default function ShippingPage() {
           <div className={styles.sectionBody}>
              <p>Our Bakersfield hub serves as the primary distribution point for all HGM gear and cannabis products.</p>
              <ul>
-               <li><strong>Pickup:</strong> Select 'Local Pickup' at checkout. We'll alert you via SMS when your order is packed. Payment is collected at the hub (130 E. 21st / 210 Goodman).</li>
+               <li><strong>Pickup:</strong> Select &apos;Local Pickup&apos; at checkout. We&apos;ll alert you via SMS when your order is packed. Payment is collected at the hub (130 E. 21st / 210 Goodman).</li>
                <li><strong>Delivery:</strong> Available for 21+ customers within the Bakersfield metropolitan area. Standard delivery fee is $5 (Free for orders over $60).</li>
              </ul>
           </div>
@@ -49,7 +49,7 @@ export default function ShippingPage() {
             <h3>RETURNS & EXCHANGES</h3>
           </div>
           <div className={styles.sectionBody}>
-             <p>Quality is the root of our heritage. If it's not perfect, we'll fix it.</p>
+             <p>Quality is the root of our heritage. If it&apos;s not perfect, we&apos;ll fix it.</p>
              <ul>
                <li><strong>Apparel:</strong> 14-day return window for unworn items in original packaging.</li>
                <li><strong>Process:</strong> Contact us at 661-555-0123 or via the Connect form to start a return.</li>
