@@ -156,8 +156,10 @@
 }
 
 .checkoutBtn:hover, .nextBtn:hover, .finalSubmitBtn:hover {
-  background: #00ff00;
-  box-shadow: 0 0 30px rgba(0, 255, 0, 0.2);
+  background: #0f0;
+  color: black;
+  box-shadow: 0 0 30px rgba(0, 255, 0, 0.4);
+  transform: translateY(-2px);
 }
 
 .checkoutBtn:disabled, .finalSubmitBtn:disabled {
@@ -177,8 +179,9 @@
 }
 
 .successIcon {
-  color: #00ff00;
+  color: #0f0;
   margin-bottom: 30px;
+  filter: drop-shadow(0 0 15px rgba(0, 255, 0, 0.5));
 }
 
 .successState h3 {
@@ -234,9 +237,10 @@
 }
 
 .activeType {
-  color: #fff;
-  border-color: #fff;
-  background: rgba(255, 255, 255, 0.05);
+  color: #0f0;
+  border-color: #0f0;
+  background: rgba(0, 255, 0, 0.05);
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.1);
 }
 
 .formFields {
@@ -282,8 +286,10 @@
 }
 
 .activePay {
-  color: #fff;
-  border-color: #fff;
+  color: #0f0;
+  border-color: #0f0;
+  background: rgba(0, 255, 0, 0.05);
+  box-shadow: inset 0 0 15px rgba(0, 255, 0, 0.1);
 }
 
 .demoTag {

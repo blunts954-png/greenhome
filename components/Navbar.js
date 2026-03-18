@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '@/lib/cart-context';
@@ -10,7 +8,7 @@ import styles from './Navbar.module.css';
 export default function Navbar() {
   const cartContext = useCart();
   const { cartCount = 0, toggleDrawer = () => {} } = cartContext || {};
-
+  
   const handleCartClick = () => {
     audioEngine.playClick();
     toggleDrawer();
@@ -33,16 +31,13 @@ export default function Navbar() {
 
         <div className={styles.actions}>
           <div className={styles.socials}>
-            <a href="https://instagram.com/homegrownmoney" target="_blank" rel="noopener noreferrer">
-              <Instagram size={18} />
-            </a>
-            <a href="https://facebook.com/homegrownmoney" target="_blank" rel="noopener noreferrer">
-              <Facebook size={18} />
-            </a>
+            <a href="https://instagram.com/homegrownmoney" target="_blank" rel="noopener noreferrer"><Instagram size={20} /></a>
+            <a href="https://facebook.com/homegrownmoney" target="_blank" rel="noopener noreferrer"><Facebook size={20} /></a>
           </div>
-          <button className={styles.cartButton} onClick={handleCartClick}>
-            <ShoppingCart size={16} />
-            <span>Cart ({cartCount})</span>
+          
+          <button className={styles.cartBtn} onClick={handleCartClick}>
+            <ShoppingCart size={22} />
+            {cartCount > 0 && <span className={styles.cartCount}>{cartCount}</span>}
           </button>
         </div>
       </div>

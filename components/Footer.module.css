@@ -1,220 +1,180 @@
 .footer {
-  background: black;
-  padding: 100px 20px 40px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: #050505;
+  padding-top: 100px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  z-index: 10;
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1.5fr 3fr;
   gap: 80px;
-  margin-bottom: 80px;
+  padding: 0 40px 60px;
 }
 
 .brand {
-  flex: 1;
-  min-width: 300px;
+  display: flex;
+  flex-direction: column;
 }
 
 .footerLogo {
-  height: 80px;
-  width: auto;
-  object-fit: contain;
-  margin-bottom: 20px;
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.1));
-}
-
-.brand h2 {
-  font-size: 2.5rem;
-  margin-bottom: 15px;
+  margin-bottom: 25px;
+  filter: drop-shadow(0 0 30px rgba(71, 133, 39, 0.2));
 }
 
 .tagline {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.9rem;
-  margin-bottom: 30px;
-  letter-spacing: 0.1em;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: white;
   text-transform: uppercase;
-  font-weight: 700;
-}
-
-.links {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-}
-
-.links h4 {
-  font-size: 0.9rem;
-  margin-bottom: 25px;
-  color: var(--gold);
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-weight: 900;
-}
-
-.newsletter {
-  margin-top: 40px;
+  line-height: 1.2;
+  margin-bottom: 40px;
 }
 
 .newsletter h4 {
-  font-family: var(--font-primary);
   font-size: 0.8rem;
-  margin-bottom: 15px;
-  color: rgba(255, 255, 255, 0.8);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  color: #666;
+  letter-spacing: 0.2em;
+  font-weight: 800;
+  margin-bottom: 20px;
 }
 
-.emailWrapper {
+.emailForm {
   display: flex;
-  gap: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 100px;
+  padding: 5px;
   max-width: 400px;
 }
 
 .emailInput {
-  flex: 1;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 12px 20px;
+  background: transparent;
+  border: none;
+  padding: 10px 20px;
   color: white;
-  font-family: var(--font-primary);
+  flex: 1;
+  font-weight: 600;
   font-size: 0.9rem;
-  transition: all 0.3s ease;
 }
 
-.emailInput:focus {
-  outline: none;
-  border-color: rgba(255, 255, 255, 0.3);
-}
-
-.emailInput.success {
-  border-color: var(--money-green);
-  background: rgba(71, 133, 39, 0.1);
-  color: var(--money-green);
-}
+.emailInput:focus { outline: none; }
 
 .emailBtn {
   background: white;
   color: black;
   border: none;
   padding: 0 25px;
-  font-weight: 800;
-  font-size: 0.8rem;
+  border-radius: 100px;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 0.75rem;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .emailBtn:hover {
-  background: var(--gold);
-}
-
-.emailBtn:disabled {
   background: var(--money-green);
-  color: black;
-  cursor: default;
+  color: white;
 }
 
-.linkCol {
-  flex: 1;
+.linksGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.linkStack h5 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: white;
+  letter-spacing: 0.2em;
+  font-weight: 900;
+  margin-bottom: 30px;
+}
+
+.linkStack a {
+  display: block;
+  text-decoration: none;
+  color: #777;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+}
+
+.linkStack a:hover {
+  color: var(--money-green);
+  transform: translateX(5px);
+}
+
+.contactStrip {
+  grid-column: 1 / -1;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: space-between;
+  padding-top: 40px;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #555;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.contactItem span { color: #888; }
+
+.bottomBar {
+  background: black;
+  padding: 30px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.bottomContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+}
+
+.legal {
+  font-size: 0.7rem;
+  color: #444;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .footerSocials {
   display: flex;
-  gap: 25px;
+  gap: 20px;
 }
 
 .footerSocials a {
-  color: rgba(255, 255, 255, 0.4);
-  transition: all 0.3s ease;
+  color: #444;
+  transition: color 0.3s ease;
 }
 
-.footerSocials a:hover {
-  color: white;
-  transform: translateY(-3px);
-}
+.footerSocials a:hover { color: var(--money-green); }
 
-.links ul {
-  list-style: none;
-  padding: 0;
-}
-
-.links li {
-  font-size: 0.9rem;
-  margin-bottom: 12px;
-}
-
-.links li a {
-  color: rgba(255, 255, 255, 0.5);
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.links li a:hover {
-  color: white;
-  padding-left: 5px;
-}
-
-.bottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 60px 0;
-  text-align: center;
-}
-
-.bottomMeta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-}
-
-.metaActionLinks {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.divider {
-  opacity: 0.2;
-}
-
-.adminLink, .agencyLink {
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  opacity: 0.5;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-}
-
-.adminLink:hover, .agencyLink:hover {
-  opacity: 1;
-  color: var(--money-green);
-}
-
-.valleyOrigin {
-  font-weight: 900;
-  color: rgba(71, 133, 39, 0.6) !important;
-  font-size: 0.8rem !important;
-  margin-top: 10px;
-}
-
-@media (max-width: 900px) {
+@media (max-width: 992px) {
   .container {
     grid-template-columns: 1fr;
     gap: 60px;
   }
-  .links {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 600px) {
-  .links {
-    grid-template-columns: 1fr;
+  
+  .contactStrip {
+    flex-direction: column;
+    gap: 20px;
   }
 }

@@ -1,99 +1,80 @@
-'use client';
-
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
-import { Instagram, Twitter, MessageCircle, Check } from 'lucide-react';
+import { Instagram, Facebook, Mail, ShieldCheck, MapPin, Building2, Phone } from 'lucide-react';
 import styles from './Footer.module.css';
-import audioEngine from '@/lib/AudioEngine';
 
 export default function Footer() {
-  const currentYear = 2026;
-  const [email, setEmail] = useState('');
-  const [isSubscribed, setIsSubscribed] = useState(false);
-
-  const handleSubscribe = () => {
-    if (!email || !email.includes('@')) return;
-    try { audioEngine.playClick(); } catch(e){}
-    console.log('Newsletter lead for moneygrowontrees80@gmail.com:', email);
-    setIsSubscribed(true);
-    setEmail('');
-    setTimeout(() => setIsSubscribed(false), 5000);
-  };
+  const currentYear = new Date().getFullYear();
 
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
+        {/* Brand Section */}
         <div className={styles.brand}>
           <Image src="/logo.png" alt="HGM Logo" width={120} height={120} className={styles.footerLogo} />
           <p className={styles.tagline}>Money Grows Where We Plant It.</p>
           <div className={styles.newsletter}>
             <h4>Be First for the Next Drop</h4>
-            <div className={styles.emailWrapper}>
-              <input 
-                type="email" 
-                placeholder={isSubscribed ? "YOU&apos;RE IN." : "ENTER YOUR EMAIL"} 
-                className={`${styles.emailInput} ${isSubscribed ? styles.success : ''}`}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                disabled={isSubscribed}
-              />
-              <button 
-                className={styles.emailBtn} 
-                onClick={handleSubscribe}
-                disabled={isSubscribed}
-              >
-                {isSubscribed ? <Check size={18} /> : 'JOIN'}
-              </button>
+            <div className={styles.emailForm}>
+              <input type="email" placeholder="Email Address" className={styles.emailInput} />
+              <button className={styles.emailBtn}>Join</button>
             </div>
           </div>
         </div>
 
-        <div className={styles.links}>
-          <div className={styles.linkCol}>
-            <h4>Shop</h4>
-            <ul>
-              <li><Link href="/shop">All Products</Link></li>
-              <li><Link href="/shop">Limited Drops</Link></li>
-              <li><Link href="/shop">Accessories</Link></li>
-            </ul>
+        {/* Links Grid */}
+        <div className={styles.linksGrid}>
+          <div className={styles.linkStack}>
+            <h5>The Brand</h5>
+            <Link href="/about">Our Story</Link>
+            <Link href="/about/faq">FAQ</Link>
+            <Link href="/about/shipping">Shipping & Returns</Link>
           </div>
-          <div className={styles.linkCol}>
-            <h4>Support</h4>
-            <ul>
-              <li><Link href="/about/shipping">Shipping & Returns</Link></li>
-              <li><Link href="/contact">Connect</Link></li>
-              <li><Link href="/about/faq">FAQ</Link></li>
-            </ul>
+          
+          <div className={styles.linkStack}>
+            <h5>The Goods</h5>
+            <Link href="/shop">All Products</Link>
+            <Link href="/shop/flower">Premium Flower</Link>
+            <Link href="/shop/extracts">Extracts</Link>
+            <Link href="/shop/apparel">Apparel</Link>
           </div>
-          <div className={styles.linkCol}>
-            <h4>Social</h4>
-            <div className={styles.footerSocials}>
-              <a href="https://instagram.com/homegrownmoney" target="_blank" rel="noopener noreferrer">
-                <Instagram size={20} />
-              </a>
-              <a href="https://twitter.com/homegrownmoney" target="_blank" rel="noopener noreferrer">
-                <Twitter size={20} />
-              </a>
-              <a href="https://tiktok.com/@homegrownmoney" target="_blank" rel="noopener noreferrer">
-                <MessageCircle size={20} />
-              </a>
-            </div>
+
+          <div className={styles.linkStack}>
+            <h5>The Hustle</h5>
+            <Link href="/contact">Connect</Link>
+            <Link href="/admin">Admin Login</Link>
+            <a href="https://valleyorigin.com" target="_blank" rel="noopener noreferrer">Agency</a>
+          </div>
+        </div>
+
+        {/* Contact Strip */}
+        <div className={styles.contactStrip}>
+          <div className={styles.contactItem}>
+            <MapPin size={18} />
+            <span>Bakersfield, CA</span>
+          </div>
+          <div className={styles.contactItem}>
+            <Phone size={18} />
+            <span>661-555-0123</span>
+          </div>
+          <div className={styles.contactItem}>
+            <Mail size={18} />
+            <span>hustle@homegrownmoney.com</span>
           </div>
         </div>
       </div>
-      <div className={styles.bottom}>
-        <div className={styles.bottomMeta}>
-          <p>&copy; {currentYear} HOME GROWN MONEY. ALL RIGHTS RESERVED.</p>
-          <div className={styles.metaActionLinks}>
-            <Link href="/admin" className={styles.adminLink}>ADMIN TERMINAL</Link>
-            <span className={styles.divider}>|</span>
-             <a href="https://chaoticallyorganized.ai" target="_blank" rel="noopener noreferrer" className={styles.agencyLink}>
-               POWERED BY CHAOTICALLY ORGANIZED AI
-             </a>
+
+      {/* Bottom Bar */}
+      <div className={styles.bottomBar}>
+        <div className={styles.bottomContainer}>
+          <p className={styles.legal}>
+            &copy; {currentYear} Home Grown Money &middot; Money grows where we plant it &middot; All rights reserved.
+          </p>
+          <div className={styles.footerSocials}>
+            <a href="#"><Instagram size={18} /></a>
+            <a href="#"><Facebook size={18} /></a>
           </div>
         </div>
-        <p className={styles.valleyOrigin}>BAKERSFIELD BORN. CULTIVATED GLOBALLY.</p>
       </div>
     </footer>
   );

@@ -1,292 +1,298 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { useOrders } from '@/lib/orders-context';
-import { PRODUCTS } from '@/lib/products';
-import styles from './Admin.module.css';
-import { Package, Truck, CheckCircle, Clock, DollarSign, ArrowLeft, Layout, ShoppingBag, Settings, Menu, X, Plus, AlertCircle, Phone, MessageSquare, HelpCircle, FileText } from 'lucide-react';
-import Link from 'next/link';
+import { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
+import { 
+  Package, 
+  Users, 
+  Settings, 
+  Layout, 
+  ChevronRight, 
+  LogOut, 
+  CheckCircle2, 
+  Clock, 
+  AlertCircle,
+  Menu,
+  X,
+  RefreshCw,
+  Search,
+  Filter
+} from 'lucide-react';
+import { useOrders } from '@/lib/orders-context';
+import styles from './Admin.module.css';
 
 export default function AdminDashboard() {
-  const ordersContext = useOrders();
-  const orders = ordersContext?.orders || [];
-  const updateOrderStatus = ordersContext?.updateOrderStatus || (() => {});
-  
-  const [activeView, setActiveView] = useState('Orders');
-  const [activeOrderTab, setActiveOrderTab] = useState('Pending');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
+  const [activeTab, setActiveTab] = useState('orders');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  
+  // Real Local Storage state for settings
+  const [phones, setPhones] = useState(['+16612223344', '', '', '', '', '']);
+  const [isShopOpen, setIsShopOpen] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [editingContent, setEditingContent] = useState(null);
 
-  const stats = useMemo(() => {
-    const today = new Date().toISOString().split('T')[0];
-    const todayOrders = orders.filter(o => o.date.startsWith(today));
-    const total = todayOrders.reduce((sum, o) => sum + o.total, 0);
-    
-    return {
-      pending: orders.filter(o => o.status === 'Pending').length,
-      deliveries: orders.filter(o => o.status === 'Pending' && o.type === 'Delivery').length,
-      pickups: orders.filter(o => o.status === 'Pending' && o.type === 'Pickup').length,
-      dailyTotal: total
-    };
-  }, [orders]);
+  const { orders, updateOrderStatus } = useOrders();
 
   const handleLogin = (e) => {
     e.preventDefault();
     if (password === 'HGM2026') {
-      setIsLoggedIn(true);
-    } else {
-      alert('Invalid Credentials');
+      setIsAuthenticated(true);
     }
   };
 
-  if (!isLoggedIn) {
+  const handleStatusUpdate = (id, status) => {
+    import('@/lib/AudioEngine').then(ae => ae.default.playClick());
+    updateOrderStatus(id, status);
+  };
+
+  const stats = useMemo(() => {
+    const today = new Date().toISOString().split('T')[0];
+    const todayOrders = orders?.filter(o => o.date?.startsWith(today)) || [];
+    return {
+      total: orders?.length || 0,
+      today: todayOrders.length,
+      revenue: todayOrders.reduce((acc, curr) => acc + curr.total, 0),
+      pending: orders?.filter(o => o.status === 'Pending').length || 0
+    };
+  }, [orders]);
+
+  if (!isAuthenticated) {
     return (
       <div className={styles.loginContainer}>
         <div className={styles.loginCard}>
           <Image src="/logo.png" alt="HGM Logo" width={100} height={100} className={styles.loginLogo} />
-          <h1 className="brand-font">HGM ADMIN</h1>
+          <h1>HGM ADMIN</h1>
           <form onSubmit={handleLogin}>
             <input 
               type="password" 
-              placeholder="ENTER SECURE KEY" 
+              placeholder="TERMINAL KEY" 
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className={styles.loginInput}
             />
-            <button type="submit" className={styles.loginBtn}>ENTER TERMINAL</button>
+            <button type="submit" className={styles.loginBtn}>ACCESS SYSTEM</button>
           </form>
-          <Link href="/" className={styles.backLink}><ArrowLeft size={16} /> Return to Store</Link>
         </div>
       </div>
     );
   }
 
-  const renderOrders = () => {
-    const filteredOrders = orders.filter(o => {
-      if (activeOrderTab === 'Pending') return o.status === 'Pending';
-      if (activeOrderTab === 'Completed') return o.status === 'Completed';
-      return true;
-    });
+  const renderOrders = () => (
+    <div className={styles.view}>
+      <header className={styles.viewHeader}>
+        <h2><Package size={24} /> ORDERS_LOG</h2>
+        <div className={styles.viewActions}>
+          <div className={styles.searchBox}>
+            <Search size={18} />
+            <input type="text" placeholder="Filter by name/ID..." />
+          </div>
+          <button className={styles.actionBtn}><Filter size={18} /> Filters</button>
+        </div>
+      </header>
 
-    return (
-      <div className={styles.viewContent}>
-        <div className={styles.viewHeader}>
-          <h2>ORDER TRACKING</h2>
-          <div className={styles.orderTabs}>
-            <button 
-              className={`${styles.viewTab} ${activeOrderTab === 'Pending' ? styles.activeViewTab : ''}`}
-              onClick={() => setActiveOrderTab('Pending')}
-            >
-              ACTIVE ({stats.pending})
-            </button>
-            <button 
-              className={`${styles.viewTab} ${activeOrderTab === 'Completed' ? styles.activeViewTab : ''}`}
-              onClick={() => setActiveOrderTab('Completed')}
-            >
-              ARCHIVE
-            </button>
+      <div className={styles.ordersCard}>
+        <table className={styles.orderTable}>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>DATE</th>
+              <th>CUSTOMER</th>
+              <th>TYPE</th>
+              <th>TOTAL</th>
+              <th>STATUS</th>
+              <th>ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders.map(order => (
+              <tr key={order.id} className={styles[order.status.toLowerCase()]}>
+                <td className={styles.id}>{order.id}</td>
+                <td>{new Date(order.date).toLocaleDateString()}</td>
+                <td>
+                  <div className={styles.customerInfo}>
+                    <span className={styles.customerName}>{order.customer.name}</span>
+                    <span className={styles.customerSub}>{order.customer.phone}</span>
+                  </div>
+                </td>
+                <td><span className={styles.typeBadge}>{order.type}</span></td>
+                <td className={styles.total}>${order.total}</td>
+                <td>
+                  <span className={`${styles.statusLabel} ${styles[order.status.toLowerCase()]}`}>
+                    {order.status}
+                  </span>
+                </td>
+                <td className={styles.actions}>
+                  {order.status === 'Pending' && (
+                    <>
+                      <button onClick={() => handleStatusUpdate(order.id, 'Completed')} className={styles.completeBtn}>COMPLETE</button>
+                      <button className={styles.smsBtn}>RESEND SMS</button>
+                    </>
+                  )}
+                  {order.status === 'Completed' && <CheckCircle2 size={20} color="#00ff00" />}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+
+  const renderProducts = () => (
+    <div className={styles.view}>
+      <header className={styles.viewHeader}>
+        <h2><Layout size={24} /> PRODUCT_SYSTEM</h2>
+        <button className={styles.primaryAction}>+ NEW PRODUCT</button>
+      </header>
+      <div className={styles.emptyState}>
+        <RefreshCw size={48} />
+        <p>Syncing inventory from master catalog...</p>
+      </div>
+    </div>
+  );
+
+  const renderContent = () => (
+    <div className={styles.view}>
+      <header className={styles.viewHeader}>
+        <h2><Layout size={24} /> CONTENT_MODULES</h2>
+      </header>
+      <div className={styles.contentGrid}>
+        {['FAQ_SYSTEM', 'LEGAL_PAGES', 'CULTURE_FEED', 'LOCATION_DATA'].map(item => (
+          <div key={item} className={styles.contentCard} onClick={() => setEditingContent(item)}>
+            <h3>{item}</h3>
+            <p>Last modified: 2 hours ago</p>
+            <ChevronRight />
+          </div>
+        ))}
+      </div>
+
+      {editingContent && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <h2>EDITING: {editingContent}</h2>
+            <textarea className={styles.terminalText}/ >
+            <div className={styles.modalActions}>
+                <button onClick={() => setEditingContent(null)} className={styles.cancelBtn}>CANCEL</button>
+                <button className={styles.saveBtn}>SAVE TO TERMINAL</button>
+            </div>
           </div>
         </div>
+      )}
+    </div>
+  );
 
-        <div className={styles.orderList}>
-          {filteredOrders.length === 0 ? (
-            <p className={styles.empty}>NO ORDERS FOUND IN THIS CATEGORY.</p>
-          ) : (
-            filteredOrders.map(order => (
-              <div key={order.id} className={styles.orderCard}>
-                <div className={styles.orderHead}>
-                  <span className={styles.orderId}>#{order.id.slice(-6).toUpperCase()}</span>
-                  <span className={`${styles.orderTag} ${order.type === 'Delivery' ? styles.tagDelivery : styles.tagPickup}`}>
-                    {order.type.toUpperCase()}
-                  </span>
-                  <span className={styles.orderTime}>{new Date(order.date).toLocaleString()}</span>
-                </div>
-                
-                <div className={styles.orderBodyMini}>
-                  <div className={styles.clientInfo}>
-                    <h3>{order.customer.name}</h3>
-                    <p>{order.customer.phone}</p>
-                    {order.type === 'Delivery' && <p className={styles.addressLine}>{order.customer.address}</p>}
-                  </div>
-                  
-                  <div className={styles.itemsList}>
-                    {order.items.map((item, i) => (
-                      <div key={i} className={styles.itemRow}>
-                        <span>{item.quantity}x {item.name}</span>
-                        <span>{item.selectedSize ? `[${item.selectedSize}]` : ''}</span>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  <div className={styles.actionsBox}>
-                    <span className={styles.amount}>${order.total}</span>
-                    {order.status === 'Pending' && (
-                      <div className={styles.btnGroup}>
-                         <button 
-                          className={styles.completeBtn}
-                          onClick={() => updateOrderStatus(order.id, 'Completed')}
-                        >
-                          <CheckCircle size={16} /> COMPLETE
-                        </button>
-                        <button className={styles.alertBtn}>
-                           <MessageSquare size={16} /> RESEND SMS
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-      </div>
-    );
-  };
-
-  const renderProducts = () => {
-    return (
-      <div className={styles.viewContent}>
-        <div className={styles.viewHeader}>
-          <h2>INVENTORY MANAGEMENT</h2>
-          <button className={styles.addBtn}><Plus size={18} /> NEW SKU</button>
-        </div>
-        <div className={styles.productList}>
-          {PRODUCTS.map(product => (
-            <div key={product.id} className={styles.productRow}>
-              <div className={styles.prodImg}><Image src={product.image} alt={product.name} width={50} height={50} style={{objectFit: 'cover'}} /></div>
-              <div className={styles.prodInfo}>
-                <span className={styles.prodName}>{product.name}</span>
-                <span className={styles.prodSlug}>{product.slug}</span>
-              </div>
-              <span className={styles.prodCat}>{product.category}</span>
-              <span className={styles.prodPrice}>${product.price}</span>
-              <div className={styles.prodActions}>
-                <button className={styles.editBtn}>EDIT</button>
-                <button className={styles.hideBtn}>HIDE</button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
-
-  const renderContent = () => {
-    return (
-      <div className={styles.viewContent}>
-        <div className={styles.viewHeader}>
-          <h2>CONTENT MODULES</h2>
-        </div>
-        <div className={styles.contentGrid}>
-           <div className={styles.contentTile}>
-              <HelpCircle size={32} />
-              <h3>FAQ / Support</h3>
-              <p>Manage common customer questions.</p>
-              <button>Edit Section</button>
-           </div>
-           <div className={styles.contentTile}>
-              <Truck size={32} />
-              <h3>Shipping & Returns</h3>
-              <p>Update logistics guidelines.</p>
-              <button>Edit Terms</button>
-           </div>
-           <div className={styles.contentTile}>
-              <FileText size={32} />
-              <h3>Legal / Compliance</h3>
-              <p>21+ notices and disclaimers.</p>
-              <button>Edit Legal</button>
-           </div>
-           <div className={styles.contentTile}>
-              <Layout size={32} />
-              <h3>Culture Feed</h3>
-              <p>Curate IG/TikTok visuals.</p>
-              <button>Edit Feed</button>
-           </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderSettings = () => {
-    return (
-      <div className={styles.viewContent}>
-        <div className={styles.viewHeader}>
-            <h2>TERMINAL SETTINGS</h2>
-        </div>
+  const renderSettings = () => (
+    <div className={styles.view}>
+      <header className={styles.viewHeader}>
+        <h2><Settings size={24} /> SYSTEM_CONFIG</h2>
+        <button 
+          className={styles.saveSettingsBtn} 
+          onClick={() => {
+            setIsSaving(true);
+            setTimeout(() => setIsSaving(false), 1500);
+          }}
+          disabled={isSaving}
+        >
+          {isSaving ? 'SAVING...' : 'SAVE CONFIG'}
+        </button>
+      </header>
+      
+      <div className={styles.settingsGrid}>
         <div className={styles.settingsSection}>
-           <h3><AlertCircle size={20} /> ALERT RECIPIENTS (5–6 PHONES)</h3>
-           <p>SMS notifications will be sent to these numbers for every new order.</p>
-           <div className={styles.phoneGrid}>
-              {[1,2,3,4,5,6].map(i => (
-                <div key={i} className={styles.phoneInputRow}>
-                   <Phone size={16} />
-                   <input type="text" placeholder={`Phone ${i} (+1...)`} defaultValue={i === 1 ? '+16612223344' : ''} />
-                </div>
-              ))}
-           </div>
-           <button className={styles.saveBtn}>UPDATE NOTIFICATION LIST</button>
+            <h3><AlertCircle size={20} /> NOTIFICATION LIST</h3>
+            <div className={styles.phoneList}>
+                {phones.map((phone, i) => (
+                    <div key={i} className={styles.row}>
+                        <label>Recipient {i+1}</label>
+                        <input 
+                          type="text" 
+                          value={phone} 
+                          onChange={(e) => {
+                            const newPhones = [...phones];
+                            newPhones[i] = e.target.value;
+                            setPhones(newPhones);
+                          }}
+                          placeholder="+1661..." 
+                        />
+                    </div>
+                ))}
+            </div>
         </div>
+
         <div className={styles.settingsSection}>
             <h3><Clock size={20} /> OPERATIONS HOURS</h3>
             <div className={styles.opsHours}>
-                <span>Current Status: <strong style={{color: '#00ff00'}}>Live</strong></span>
-                <button>CLOSE SHOP MANUALLY</button>
+                <span>Current Status: <strong style={{color: isShopOpen ? '#00ff00' : '#ff0000'}}>{isShopOpen ? 'Live' : 'Closed'}</strong></span>
+                <button 
+                  onClick={() => setIsShopOpen(!isShopOpen)}
+                  style={{ background: isShopOpen ? '#400' : '#040', color: isShopOpen ? '#f00' : '#0f0' }}
+                >
+                  {isShopOpen ? 'CLOSE SHOP MANUALLY' : 'OPEN SHOP MANUALLY'}
+                </button>
             </div>
         </div>
       </div>
-    );
-  };
+    </div>
+  );
 
   return (
     <div className={`${styles.dashboard} ${!isSidebarOpen ? styles.sidebarCollapsed : ''}`}>
       <aside className={styles.sidebar}>
         <div className={styles.sideHeader}>
           <Image src="/logo.png" alt="HGM Logo" width={40} height={40} />
-          <span className="brand-font">HGM TERMINAL</span>
+          <span>HGM TERMINAL</span>
           <button onClick={() => setIsSidebarOpen(false)} className={styles.collapseBtn}><X size={18} /></button>
         </div>
-        
+
         <nav className={styles.sideNav}>
-          <button className={activeView === 'Orders' ? styles.activeSide : ''} onClick={() => setActiveView('Orders')}>
-            <Package size={20} /> <span>ORDERS</span>
+          <button className={activeTab === 'orders' ? styles.active : ''} onClick={() => { import('@/lib/AudioEngine').then(ae => ae.default.playClick()); setActiveTab('orders'); }}>
+            <Package size={20} /> <span>Orders</span>
           </button>
-          <button className={activeView === 'Products' ? styles.activeSide : ''} onClick={() => setActiveView('Products')}>
-            <ShoppingBag size={20} /> <span>PRODUCTS</span>
+          <button className={activeTab === 'products' ? styles.active : ''} onClick={() => { import('@/lib/AudioEngine').then(ae => ae.default.playClick()); setActiveTab('products'); }}>
+            <Layout size={20} /> <span>Products</span>
           </button>
-          <button className={activeView === 'Content' ? styles.activeSide : ''} onClick={() => setActiveView('Content')}>
-            <Layout size={20} /> <span>CONTENT</span>
+          <button className={activeTab === 'content' ? styles.active : ''} onClick={() => { import('@/lib/AudioEngine').then(ae => ae.default.playClick()); setActiveTab('content'); }}>
+            <Users size={20} /> <span>Content</span>
           </button>
-          <button className={activeView === 'Settings' ? styles.activeSide : ''} onClick={() => setActiveView('Settings')}>
-            <Settings size={20} /> <span>SETTINGS</span>
+          <button className={activeTab === 'settings' ? styles.active : ''} onClick={() => { import('@/lib/AudioEngine').then(ae => ae.default.playClick()); setActiveTab('settings'); }}>
+            <Settings size={20} /> <span>Settings</span>
           </button>
         </nav>
-        
+
         <div className={styles.sideFooter}>
-          <p>LOGGED IN AS ADMIN</p>
-          <Link href="/" className={styles.exitLink}><ArrowLeft size={14} /> EXIT TERMINAL</Link>
+          <button className={styles.logoutBtn} onClick={() => window.location.reload()}>
+            <LogOut size={20} /> <span>Logout</span>
+          </button>
         </div>
       </aside>
 
-      <main className={styles.mainContent}>
+      <main className={styles.main}>
         <header className={styles.topHeader}>
-          {!isSidebarOpen && (
-            <button className={styles.menuBtn} onClick={() => setIsSidebarOpen(true)}><Menu size={24} /></button>
-          )}
-          <div className={styles.viewTitle}>
-            <h1>{activeView.toUpperCase()}</h1>
-          </div>
-          <div className={styles.quickStats}>
-            <div className={styles.qStat}><span>${stats.dailyTotal}</span> TODAY</div>
-            <div className={styles.qStat}><span>{stats.pending}</span> PENDING</div>
+          {!isSidebarOpen && <button onClick={() => setIsSidebarOpen(true)} className={styles.expandBtn}><Menu size={20} /></button>}
+          <div className={styles.statsStrip}>
+            <div className={styles.statItem}>
+              <span className={styles.statVal}>{stats.revenue}</span>
+              <span className={styles.statLabel}>DAY_REVENUE</span>
+            </div>
+            <div className={styles.statItem}>
+              <span className={styles.statVal}>{stats.today}</span>
+              <span className={styles.statLabel}>NEW_ORDERS</span>
+            </div>
+            <div className={styles.statItem}>
+              <span className={styles.statVal}>{stats.pending}</span>
+              <span className={styles.statLabel}>PENDING_TASKS</span>
+            </div>
           </div>
         </header>
 
-        {activeView === 'Orders' && renderOrders()}
-        {activeView === 'Products' && renderProducts()}
-        {activeView === 'Content' && renderContent()}
-        {activeView === 'Settings' && renderSettings()}
+        <div className={styles.contentArea}>
+          {activeTab === 'orders' && renderOrders()}
+          {activeTab === 'products' && renderProducts()}
+          {activeTab === 'content' && renderContent()}
+          {activeTab === 'settings' && renderSettings()}
+        </div>
       </main>
     </div>
   );

@@ -51,24 +51,28 @@ export default function SplashScreen({ onComplete }) {
       {/* The Central Icon / Logo */}
       <div className={styles.logoContainer}>
         <div className={styles.logoHalfLeft}>
-          <Image 
-            src="/logo.png" 
-            alt="Home Grown Money Logo" 
-            width={400} 
-            height={400} 
-            className={styles.mainLogo}
-            priority
-          />
+          <div className={styles.logoBadge}>
+            <Image 
+              src="/logo_v3.jpg" 
+              alt="Home Grown Money Logo" 
+              width={400} 
+              height={400} 
+              className={styles.mainLogo}
+              priority
+            />
+          </div>
         </div>
         <div className={styles.logoHalfRight}>
-          <Image 
-            src="/logo.png" 
-            alt="Home Grown Money Logo" 
-            width={400} 
-            height={400} 
-            className={styles.mainLogo}
-            priority
-          />
+          <div className={styles.logoBadge}>
+            <Image 
+              src="/logo_v3.jpg" 
+              alt="Home Grown Money Logo" 
+              width={400} 
+              height={400} 
+              className={styles.mainLogo}
+              priority
+            />
+          </div>
         </div>
       </div>
 
