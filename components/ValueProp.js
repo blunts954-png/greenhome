@@ -3,8 +3,8 @@ import styles from './ValueProp.module.css';
 
 const VALUES = [
   {
-    title: 'Bakersfield Hub',
-    description: 'Local pickup and fast delivery. All orders handled by our central operations for the highest efficiency.',
+    title: 'Independent Label',
+    description: 'Built from the ground up with real drops, original visuals, and merch that carries the brand forward.',
     icon: <TrendingUp className={styles.iconElement} />
   },
   {
@@ -13,8 +13,8 @@ const VALUES = [
     icon: <Award className={styles.iconElement} />
   },
   {
-    title: 'Strict Compliance',
-    description: 'Fully licensed and 21+ compliant. Secure, professional, and rooted in community trust.',
+    title: 'Nationwide Shipping',
+    description: 'Merch ships across the US, and shipping card payments run through secure Stripe checkout.',
     icon: <Users className={styles.iconElement} />
   }
 ];

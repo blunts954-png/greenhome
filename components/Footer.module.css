@@ -147,12 +147,33 @@
   padding: 0 40px;
 }
 
+.bottomCopy {
+  display: grid;
+  gap: 8px;
+}
+
 .legal {
   font-size: 0.7rem;
   color: #444;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+.credit {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #6b6b6b;
+  font-weight: 600;
+}
+
+.creditLink {
+  color: #9de27b;
+  text-decoration: none;
+}
+
+.creditLink:hover {
+  color: #fff;
 }
 
 .footerSocials {
