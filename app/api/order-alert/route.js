@@ -1,7 +1,7 @@
 import { Twilio } from 'twilio';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 const recipients = [
   process.env.ALERT_PHONE_1,
@@ -35,7 +35,7 @@ export async function POST(req) {
     }
 
     // 2. Send EMail via Resend
-    if (process.env.RESEND_API_KEY) {
+    if (resend) {
       await resend.emails.send({
         from: 'Home Grown Money <onboarding@resend.dev>',
         to: ['chaoticallyorganizedai@gmail.com'],
