@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Instagram, Facebook, Mail, ShieldCheck, MapPin, Building2, Phone } from 'lucide-react';
+import { Instagram, Facebook, MapPin } from 'lucide-react';
 import styles from './Footer.module.css';
 
 export default function Footer() {
@@ -13,13 +13,13 @@ export default function Footer() {
       <div className={styles.container}>
         {/* Brand Section */}
         <div className={styles.brand}>
-          <Image src="/logo.jpg" alt="HGM Logo" width={120} height={120} className={styles.footerLogo} />
+          <Image src="/logo_v3.jpg" alt="HGM Logo" width={88} height={88} className={styles.footerLogo} />
           <p className={styles.tagline}>Money Grows Where We Plant It.</p>
           <div className={styles.newsletter}>
             <h4>Be First for the Next Drop</h4>
             <div className={styles.emailForm}>
-              <input type="email" placeholder="Email Address" className={styles.emailInput} />
-              <button className={styles.emailBtn}>Join</button>
+              <input type="email" placeholder="Email Address" className={styles.emailInput} aria-label="Email address" />
+              <Link href="/contact" className={styles.emailBtn}>Join</Link>
             </div>
           </div>
         </div>
@@ -36,16 +36,16 @@ export default function Footer() {
           <div className={styles.linkStack}>
             <h5>The Goods</h5>
             <Link href="/shop">All Products</Link>
-            <Link href="/shop/flower">Premium Flower</Link>
-            <Link href="/shop/extracts">Extracts</Link>
-            <Link href="/shop/apparel">Apparel</Link>
+            <Link href="/shop/hgm-pink-tee">Featured Tee</Link>
+            <Link href="/shop/hgm-trucker-hat">Headwear</Link>
+            <Link href="/shop/hgm-reserve-flower">Local Menu</Link>
           </div>
 
           <div className={styles.linkStack}>
             <h5>The Hustle</h5>
             <Link href="/contact">Connect</Link>
-            <Link href="/admin">Admin Login</Link>
-            <a href="https://valleyorigin.com" target="_blank" rel="noopener noreferrer">Agency</a>
+            <Link href="/about/faq">FAQ</Link>
+            <Link href="/about/shipping">Shipping & Pickup</Link>
           </div>
         </div>
 
@@ -56,12 +56,10 @@ export default function Footer() {
             <span>Bakersfield, CA</span>
           </div>
           <div className={styles.contactItem}>
-            <Phone size={18} />
-            <span>661-555-0123</span>
+            <span>Apparel ships nationwide</span>
           </div>
           <div className={styles.contactItem}>
-            <Mail size={18} />
-            <span>hustle@homegrownmoney.com</span>
+            <span>Local menu reserved for pickup or local delivery</span>
           </div>
         </div>
       </div>
@@ -73,8 +71,8 @@ export default function Footer() {
             &copy; {currentYear} Home Grown Money &middot; Money grows where we plant it &middot; All rights reserved.
           </p>
           <div className={styles.footerSocials}>
-            <a href="#"><Instagram size={18} /></a>
-            <a href="#"><Facebook size={18} /></a>
+            <a href="https://instagram.com/homegrownmoney" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><Instagram size={18} /></a>
+            <a href="https://facebook.com/homegrownmoney" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><Facebook size={18} /></a>
           </div>
         </div>
       </div>

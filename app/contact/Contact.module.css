@@ -283,7 +283,12 @@
 
 @media (max-width: 768px) {
   .hero h1 { font-size: 3rem; }
+  .subtitle { letter-spacing: 0.16em; line-height: 1.5; }
   .options { grid-template-columns: 1fr; }
   .optionBtn { padding: 30px 20px; }
   .progressTracker { max-width: 300px; }
+  .finalForm { padding: 24px 18px; }
+  .formActions { flex-direction: column-reverse; align-items: stretch; gap: 18px; }
+  .formActions .submitBtn { width: 100%; min-width: 0; }
+  .successState { padding: 48px 20px; }
 }

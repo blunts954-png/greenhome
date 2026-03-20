@@ -11,11 +11,8 @@ export default function AgeGate({ onVerify, isActive }) {
     if (isActive) {
       const isVerified = localStorage.getItem('age-verified');
       const forceTest = window.location.search.includes('test_age');
-      
-      console.log('AgeGate Check - Verified:', isVerified, 'Force:', forceTest);
-      
+
       if (!isVerified || forceTest) {
-        // Small delay to let the splash unmount cleanly
         const timer = setTimeout(() => {
           setIsVisible(true);
         }, 100);
@@ -27,10 +24,8 @@ export default function AgeGate({ onVerify, isActive }) {
   }, [isActive, onVerify]);
 
   const handleVerify = () => {
-    console.log('AgeGate - Verifying User');
     localStorage.setItem('age-verified', 'true');
     setIsVisible(false);
-    // Remove query param if present
     if (window.location.search.includes('test_age')) {
        window.history.replaceState({}, '', window.location.pathname);
     }
@@ -43,7 +38,7 @@ export default function AgeGate({ onVerify, isActive }) {
     <div className={styles.overlay}>
       <div className={styles.modal}>
         <div className={styles.logoContainer}>
-          <Image src="/logo.jpg" alt="HGM Logo" width={80} height={80} className={styles.ageLogo} />
+          <Image src="/logo_v3.jpg" alt="HGM Logo" width={80} height={80} className={styles.ageLogo} />
         </div>
         <h2>ARE YOU OF LEGAL AGE?</h2>
         <p>You must be 21+ to enter the Home Grown Money experience.</p>

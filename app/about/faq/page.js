@@ -8,23 +8,23 @@ import Link from 'next/link';
 const FAQS = [
   {
     q: "How do I pay for my order?",
-    a: "Orders are settled in-person at our Bakersfield location. We accept cash, Venmo, and major credit cards via our secure POS system. Order online to secure your inventory, then pay when you arrive."
+    a: "Orders are reserved online. Payment is collected at pickup or local delivery, where we currently accept cash, Venmo, and card."
   },
   {
     q: "Where is the pickup location?",
-    a: "Our central hub is located in the heart of Bakersfield (130 E. 21st / 210 Goodman). Once your order is 'Ready for Pickup', you'll receive a notification with the exact details."
+    a: "Pickup arrangements are coordinated in Bakersfield after order confirmation. You’ll receive the final details directly when your order is ready."
   },
   {
     q: "Do you offer delivery?",
-    a: "Yes, we offer local delivery within legal radius limits for both apparel and cannabis (21+ only). Delivery windows are typically 10:00 AM - 10:00 PM."
+    a: "We offer local delivery for eligible Bakersfield orders. Apparel can also ship nationwide, but local menu items remain limited to pickup or local delivery."
   },
   {
     q: "What's the Material quality of the tees?",
-    a: "We use 100% premium 6.5oz ring-spun cotton for our Logo Tees. They are slightly oversized, pre-shrunk, and built to last. Our hoodies are high-GSM fleece for maximum comfort."
+    a: "Our live tee drop uses premium cotton blanks with the Money Tree front graphic and a clean standard fit built for everyday wear."
   },
   {
     q: "Can I return an item?",
-    a: "Apparel can be exchanged or returned for store credit within 14 days if unworn and in original packaging. Cannabis products are final sale due to compliance regulations."
+    a: "Unworn apparel can be reviewed for exchange or store credit after contact. Cannabis items remain final sale due to local compliance limits."
   }
 ];
 

@@ -245,3 +245,18 @@
 .hidden {
   display: none;
 }
+
+@media (max-width: 768px) {
+  .logoContainer {
+    width: 260px;
+    height: 260px;
+  }
+
+  .smokeWelcome {
+    gap: 8px;
+  }
+
+  .smokeLetter {
+    font-size: 2.4rem;
+  }
+}

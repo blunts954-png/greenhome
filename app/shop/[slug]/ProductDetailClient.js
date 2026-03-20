@@ -2,16 +2,15 @@
 
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { PRODUCTS, getProductSchema } from '@/lib/products';
+import { getProductSchema } from '@/lib/products';
 import { useCart } from '@/lib/cart-context';
 import audioEngine from '@/lib/AudioEngine';
 import AgeGate from '@/components/AgeGate';
 import styles from './ProductDetail.module.css';
 
-export default function ProductDetailClient({ slug }) {
+export default function ProductDetailClient({ product }) {
   const { addToCart } = useCart();
-  const [product, setProduct] = useState(null);
-  const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(product.sizes?.length === 1 ? product.sizes[0] : null);
   const [quantity, setQuantity] = useState(1);
   const [ageVerified, setAgeVerified] = useState(false);
 
@@ -19,15 +18,6 @@ export default function ProductDetailClient({ slug }) {
     const isVerified = localStorage.getItem('age-verified') === 'true';
     setAgeVerified(isVerified);
   }, []);
-
-  useEffect(() => {
-    const found = PRODUCTS.find(p => p.slug === slug);
-    if (found) {
-      setProduct(found);
-    }
-  }, [slug]);
-
-  if (!product) return <div className={styles.loading}>Loading Product...</div>;
 
   const productSchema = getProductSchema(product);
 
@@ -89,6 +79,12 @@ export default function ProductDetailClient({ slug }) {
             <p>{product.description}</p>
           </div>
 
+          <div className={styles.fulfillmentNote}>
+            {product.pickupOnly
+              ? '21+ local pickup or local delivery only. No domestic shipping on cannabis items.'
+              : 'Apparel and accessories can be reserved online for shipping or local pickup.'}
+          </div>
+
           <div className={styles.form}>
             {product.sizes?.length > 0 && (
               <div className={styles.sizeSelection}>
@@ -120,7 +116,7 @@ export default function ProductDetailClient({ slug }) {
             </div>
 
             <button className={styles.addBtn} onClick={handleAdd}>
-              Add to Cart
+              {product.pickupOnly ? 'Reserve Item' : 'Add to Cart'}
             </button>
           </div>
 
@@ -136,8 +132,8 @@ export default function ProductDetailClient({ slug }) {
           )}
 
           <div className={styles.shippingIndicator}>
-             <span>✓ Free Valley Shipping over $150</span>
-             <span>✓ Discrete Packaging</span>
+             <span>{product.pickupOnly ? '✓ 21+ ID required at fulfillment' : '✓ Domestic apparel shipping available'}</span>
+             <span>{product.pickupOnly ? '✓ Bakersfield pickup or local delivery only' : '✓ Local pickup available in Bakersfield'}</span>
           </div>
         </div>
       </div>

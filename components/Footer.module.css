@@ -1,6 +1,6 @@
 .footer {
   background: #050505;
-  padding-top: 100px;
+  padding-top: 84px;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
   position: relative;
   z-index: 10;
@@ -21,7 +21,8 @@
 }
 
 .footerLogo {
-  margin-bottom: 25px;
+  margin-bottom: 20px;
+  border-radius: 50%;
   filter: drop-shadow(0 0 30px rgba(71, 133, 39, 0.2));
 }
 
@@ -75,6 +76,9 @@
   font-size: 0.75rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .emailBtn:hover {
@@ -115,8 +119,9 @@
 .contactStrip {
   grid-column: 1 / -1;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
   padding-top: 40px;
 }
 
@@ -174,7 +179,39 @@
   }
   
   .contactStrip {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding-top: 64px;
+  }
+
+  .container,
+  .bottomContainer {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .linksGrid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .tagline {
+    font-size: 1.2rem;
+    margin-bottom: 28px;
+  }
+
+  .emailForm {
+    max-width: none;
+  }
+
+  .bottomContainer {
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
+    align-items: flex-start;
   }
 }

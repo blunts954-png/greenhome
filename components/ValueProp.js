@@ -4,7 +4,7 @@ import styles from './ValueProp.module.css';
 const VALUES = [
   {
     title: 'Bakersfield Hub',
-    description: 'Local pickup and fast delivery. All orders handled by our central operations for the highest efficiency.',
+    description: 'Local pickup and local delivery are centered in Bakersfield, with apparel also available for nationwide shipping.',
     icon: <TrendingUp className={styles.iconElement} />
   },
   {
@@ -13,8 +13,8 @@ const VALUES = [
     icon: <Award className={styles.iconElement} />
   },
   {
-    title: 'Strict Compliance',
-    description: 'Fully licensed and 21+ compliant. Secure, professional, and rooted in community trust.',
+    title: 'Clear Fulfillment',
+    description: 'Apparel can ship nationwide. Local menu items stay local and remain age-gated for verified pickup or delivery.',
     icon: <Users className={styles.iconElement} />
   }
 ];

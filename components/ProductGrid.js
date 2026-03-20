@@ -12,7 +12,7 @@ import styles from './ProductGrid.module.css';
 const STORES = ['Apparel', 'Cannabis'];
 const STORE_CATEGORIES = {
   'Apparel': ['All', 'Tees', 'Hats', 'Combos'],
-  'Cannabis': ['All', 'Flower', 'Concentrates', 'Disposables', 'Edibles', 'Others']
+  'Cannabis': ['All', 'Flower', 'Concentrates', 'Disposables', 'Edibles', 'Accessories']
 };
 
 export default function ProductGrid() {
@@ -71,6 +71,7 @@ export default function ProductGrid() {
           {STORES.map(store => (
             <button 
               key={store}
+              type="button"
               className={`${styles.storeBtn} ${activeStore === store ? styles.activeStore : ''}`}
               onClick={() => handleStoreChange(store)}
             >
@@ -80,15 +81,25 @@ export default function ProductGrid() {
         </div>
 
         <div className={styles.categoryHead}>
-          <Image src="/logo.jpg" alt="HGM Logo" width={80} height={80} className={styles.catLogo} />
+          <Image src="/logo_v3.jpg" alt="HGM Logo" width={60} height={60} className={styles.catLogo} />
           <h2 className="brand-font reveal">
-            {activeStore === 'Apparel' ? 'Streetwear & Apparel' : 'Premium Cannabis'}
+            {activeStore === 'Apparel' ? 'Streetwear & Apparel' : 'Local Cannabis Menu'}
           </h2>
         </div>
         
         <div className={`${styles.socialProof} reveal`}>
           <span className={styles.stars}>★★★★★</span>
-          <span>Pay In-Store. Pickup in Bakersfield.</span>
+          <span>
+            {activeStore === 'Apparel'
+              ? 'Reserve online. Apparel ships nationwide or can be picked up in Bakersfield.'
+              : '21+ only. Cannabis is for Bakersfield pickup or local delivery only.'}
+          </span>
+        </div>
+
+        <div className={`${styles.storeNotice} reveal`}>
+          {activeStore === 'Apparel'
+            ? 'All currently photographed apparel and accessories in this drop are listed below.'
+            : 'Local cannabis items can be reserved online, but they are not available for domestic shipping.'}
         </div>
 
         <div className={`${styles.searchBar} reveal`}>
@@ -105,6 +116,7 @@ export default function ProductGrid() {
           {STORE_CATEGORIES[activeStore].map(cat => (
             <button 
               key={cat} 
+              type="button"
               className={`${styles.filterBtn} ${activeFilter === cat ? styles.activeFilter : ''}`}
               onClick={() => {
                 setActiveFilter(cat);
@@ -126,32 +138,37 @@ export default function ProductGrid() {
                   src={product.image} 
                   alt={product.name} 
                   fill 
-                  style={{ objectFit: 'cover' }}
+                  style={{ objectFit: product.storeSection === 'apparel' ? 'contain' : 'cover' }}
                   className={styles.productImg}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
                 {product.hoverImage && (
                    <Image 
                      src={product.hoverImage} 
                      alt={`${product.name} Alternate`} 
                      fill 
-                     style={{ objectFit: 'cover' }}
+                     style={{ objectFit: product.storeSection === 'apparel' ? 'contain' : 'cover' }}
                      className={styles.hoverImg}
+                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                    />
                 )}
               </div>
-              <div className={styles.overlay}>
-                <div className={styles.sizeSelector}>
-                  {product.sizes?.map(size => (
-                    <button 
-                      key={size}
-                      className={`${styles.sizeBtn} ${selectedSizes[product.id] === size ? styles.activeSize : ''}`}
-                      onClick={(e) => handleSizeSelect(e, product.id, size)}
-                    >
-                      {size}
-                    </button>
-                  ))}
+              {product.sizes?.length > 0 && (
+                <div className={styles.overlay}>
+                  <div className={styles.sizeSelector}>
+                    {product.sizes?.map(size => (
+                      <button 
+                        key={size}
+                        type="button"
+                        className={`${styles.sizeBtn} ${selectedSizes[product.id] === size ? styles.activeSize : ''}`}
+                        onClick={(e) => handleSizeSelect(e, product.id, size)}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             <div className={styles.details}>
               <div className={styles.meta}>
@@ -163,17 +180,27 @@ export default function ProductGrid() {
                 </span>
               </div>
               <h3>{product.name}</h3>
+              <p className={styles.description}>{product.description}</p>
               <p className={styles.price}>${product.price}</p>
+              <p className={styles.fulfillment}>{product.pickupOnly ? 'Local only' : 'Ships or pickup'}</p>
               <button 
+                type="button"
                 className={styles.addBtn}
                 onClick={(e) => handleAdd(e, product)}
               >
-                {product.category === 'Combos' ? 'SECURE THE COMBO' : 'Add to Cart'}
+                {product.category === 'Combos' ? 'Secure the Combo' : product.pickupOnly ? 'Reserve Item' : 'Add to Cart'}
               </button>
             </div>
           </Link>
         ))}
       </div>
+
+      {filteredProducts.length === 0 && (
+        <div className={styles.emptyState}>
+          <h3>No products match that search.</h3>
+          <p>Try a different keyword or switch store sections.</p>
+        </div>
+      )}
     </section>
   );
 }

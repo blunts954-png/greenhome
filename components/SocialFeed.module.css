@@ -120,4 +120,24 @@
   .feed {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .overlay {
+    opacity: 1;
+    padding: 16px;
+    background: linear-gradient(0deg, rgba(0,0,0,0.84) 0%, rgba(0,0,0,0.1) 68%);
+  }
+
+  .overlayMeta {
+    transform: translateY(0);
+  }
+
+  .overlayMeta p {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .feed {
+    grid-template-columns: 1fr;
+  }
 }

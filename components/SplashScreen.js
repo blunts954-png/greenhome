@@ -9,7 +9,6 @@ export default function SplashScreen({ onComplete }) {
   const [stage, setStage] = useState('entering'); // entering, opening, hidden
 
   useEffect(() => {
-    // Stage 1: Fast Entry (0.75s)
     const t1 = setTimeout(() => {
       setStage('opening');
       try {
@@ -21,11 +20,10 @@ export default function SplashScreen({ onComplete }) {
       }
     }, 750);
     
-    // Stage 2: Fade out / Reveal (Total 3.5s)
     const t2 = setTimeout(() => {
       setStage('hidden');
       if (onComplete) onComplete();
-    }, 3500);
+    }, 2200);
 
     return () => {
       clearTimeout(t1);
@@ -53,7 +51,7 @@ export default function SplashScreen({ onComplete }) {
         <div className={styles.logoHalfLeft}>
           <div className={styles.logoBadge}>
             <Image 
-              src="/logo.jpg" 
+              src="/logo_v3.jpg" 
               alt="Home Grown Money Logo" 
               width={400} 
               height={400} 
@@ -65,7 +63,7 @@ export default function SplashScreen({ onComplete }) {
         <div className={styles.logoHalfRight}>
           <div className={styles.logoBadge}>
             <Image 
-              src="/logo.jpg" 
+              src="/logo_v3.jpg" 
               alt="Home Grown Money Logo" 
               width={400} 
               height={400} 
