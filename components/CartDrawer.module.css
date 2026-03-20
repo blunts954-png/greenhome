@@ -46,7 +46,7 @@
 
 .statusBar {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 8px;
   padding: 14px 24px 18px;
   border-bottom: 1px solid #111;
@@ -350,6 +350,66 @@
 .submitNote {
   color: #8f8f8f;
   font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.squareWrapper {
+  display: grid;
+  gap: 16px;
+}
+
+.squareHeader {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #d7d7d7;
+}
+
+.squareMount {
+  min-height: 170px;
+  padding: 16px;
+  background: #060606;
+  border: 1px solid #232323;
+}
+
+.squareError,
+.squareState {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 14px 15px;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.squareState {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.squareError {
+  background: rgba(255, 142, 142, 0.08);
+  border: 1px solid rgba(255, 142, 142, 0.24);
+  color: #ffb7b7;
+}
+
+.squareError svg,
+.squareState svg {
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.demoNotice {
+  padding: 14px 15px;
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.24);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.85rem;
   line-height: 1.6;
 }
 

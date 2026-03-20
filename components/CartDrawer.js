@@ -7,7 +7,10 @@ import { X, Trash2, ShoppingBag, CheckCircle, Truck, Package, CreditCard, Chevro
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import audioEngine from '@/lib/AudioEngine';
+import SquareCardStep from './SquareCardStep';
 import styles from './CartDrawer.module.css';
+
+const CHECKOUT_DEMO_MODE = process.env.NEXT_PUBLIC_CHECKOUT_DEMO_MODE === 'true';
 
 const INITIAL_FORM = {
   firstName: '',
@@ -18,6 +21,13 @@ const INITIAL_FORM = {
   address: '',
   notes: '',
   payment: 'Card'
+};
+
+const INITIAL_CARD_FORM = {
+  cardName: '',
+  cardNumber: '',
+  expiry: '',
+  cvc: ''
 };
 
 const springPhysics = {
@@ -33,7 +43,7 @@ function getPaymentLabel(payment, orderType) {
   }
 
   if (orderType === 'Shipping') {
-    return 'Card invoice before shipment';
+    return 'Square card before shipment';
   }
 
   if (orderType === 'Local Delivery') {
@@ -41,6 +51,13 @@ function getPaymentLabel(payment, orderType) {
   }
 
   return 'Card at pickup';
+}
+
+function formatPaymentText(value = '') {
+  return value
+    .toLowerCase()
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, (match) => match.toUpperCase());
 }
 
 export default function CartDrawer() {
@@ -53,8 +70,10 @@ export default function CartDrawer() {
   const [checkoutStep, setCheckoutStep] = useState('cart');
   const [orderType, setOrderType] = useState('Shipping');
   const [formData, setFormData] = useState(INITIAL_FORM);
+  const [cardForm, setCardForm] = useState(INITIAL_CARD_FORM);
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderError, setOrderError] = useState('');
+  const [submittedOrder, setSubmittedOrder] = useState(null);
 
   const hasLocalOnlyItems = useMemo(
     () => cartItems.some((item) => item.pickupOnly),
@@ -73,6 +92,7 @@ export default function CartDrawer() {
 
     return ['Card', 'Cash', 'Venmo'];
   }, [orderType]);
+  const needsHostedCardStep = formData.payment === 'Card' && orderType === 'Shipping';
 
   useEffect(() => {
     if (!fulfillmentOptions.includes(orderType)) {
@@ -91,7 +111,11 @@ export default function CartDrawer() {
 
   useEffect(() => {
     if (!isDrawerOpen) {
-      setTimeout(() => setCheckoutStep('cart'), 300);
+      setTimeout(() => {
+        setCheckoutStep('cart');
+        setSubmittedOrder(null);
+        setCardForm(INITIAL_CARD_FORM);
+      }, 300);
     }
   }, [isDrawerOpen]);
 
@@ -114,6 +138,7 @@ export default function CartDrawer() {
   const handleCheckoutInit = () => {
     audioEngine.playClick();
     setOrderError('');
+    setSubmittedOrder(null);
     setCheckoutStep('contact');
   };
 
@@ -142,7 +167,7 @@ export default function CartDrawer() {
     setCheckoutStep('review');
   };
 
-  const handleFinalSubmit = async () => {
+  const handleFinalSubmit = async (paymentRequest = null) => {
     audioEngine.playClick();
     setIsProcessing(true);
     setOrderError('');
@@ -172,6 +197,10 @@ export default function CartDrawer() {
       payment: formData.payment
     };
 
+    if (paymentRequest) {
+      orderData.paymentRequest = paymentRequest;
+    }
+
     const newOrder = await addOrder(orderData);
 
     if (newOrder?.error) {
@@ -183,7 +212,7 @@ export default function CartDrawer() {
       return;
     }
 
-    if (newOrder) {
+    if (newOrder && !newOrder.demo) {
       try {
         await fetch('/api/order-alert', {
           method: 'POST',
@@ -205,14 +234,31 @@ export default function CartDrawer() {
       }
     }
 
+    setSubmittedOrder(newOrder);
     setIsProcessing(false);
     setCheckoutStep('success');
 
     setTimeout(() => {
       clearCart();
       setFormData(INITIAL_FORM);
+      setCardForm(INITIAL_CARD_FORM);
       setOrderType(hasLocalOnlyItems ? 'Pickup' : 'Shipping');
     }, 500);
+  };
+
+  const handleReviewContinue = () => {
+    if (needsHostedCardStep) {
+      audioEngine.playClick();
+      setCheckoutStep('payment');
+      return;
+    }
+
+    handleFinalSubmit();
+  };
+
+  const handleDemoPaymentSubmit = async (event) => {
+    event.preventDefault();
+    await handleFinalSubmit();
   };
 
   return (
@@ -248,6 +294,7 @@ export default function CartDrawer() {
               <span className={checkoutStep === 'contact' ? styles.activeStep : ''}>Contact</span>
               <span className={checkoutStep === 'fulfillment' ? styles.activeStep : ''}>Fulfillment</span>
               <span className={checkoutStep === 'review' ? styles.activeStep : ''}>Review</span>
+              <span className={checkoutStep === 'payment' ? styles.activeStep : ''}>Payment</span>
             </div>
 
             <div className={styles.itemsContainer}>
@@ -261,13 +308,28 @@ export default function CartDrawer() {
                     <Image src="/logo_v3.jpg" alt="HGM" width={52} height={52} />
                   </div>
                   <CheckCircle size={60} className={styles.successIcon} />
-                  <h3>Order Reserved</h3>
-                  <p>Your order details were captured successfully. We&apos;ll follow up using the contact information you provided.</p>
+                  <h3>
+                    {submittedOrder?.demo
+                      ? 'Demo Checkout Complete'
+                      : submittedOrder?.paymentProvider === 'square'
+                        ? 'Payment Approved'
+                        : 'Order Reserved'}
+                  </h3>
+                  <p>
+                    {submittedOrder?.demo
+                      ? 'This demo reached the payment finish point successfully. No real order was stored and no card was charged.'
+                      : submittedOrder?.paymentProvider === 'square'
+                        ? 'Square approved the card payment and the order record was saved successfully.'
+                      : 'Your order details were captured successfully. We&apos;ll follow up using the contact information you provided.'}
+                  </p>
                   <div className={styles.orderSummaryBox}>
-                    <p>Total: <strong>${cartTotal}</strong></p>
-                    <p>Fulfillment: <strong>{orderType}</strong></p>
-                    <p>Payment: <strong>{getPaymentLabel(formData.payment, orderType)}</strong></p>
-                    {orderType === 'Pickup' && <p>Pickup deadline: <strong>9:30 PM local time</strong></p>}
+                    <p>Order ID: <strong>{submittedOrder?.id || 'Demo'}</strong></p>
+                    <p>Total: <strong>${submittedOrder?.total ?? cartTotal}</strong></p>
+                    <p>Fulfillment: <strong>{submittedOrder?.type || orderType}</strong></p>
+                    <p>Payment: <strong>{getPaymentLabel(submittedOrder?.payment || formData.payment, submittedOrder?.type || orderType)}</strong></p>
+                    {submittedOrder?.paymentProvider && <p>Processor: <strong>{formatPaymentText(submittedOrder.paymentProvider)}</strong></p>}
+                    {submittedOrder?.paymentStatus && <p>Payment Status: <strong>{formatPaymentText(submittedOrder.paymentStatus)}</strong></p>}
+                    {(submittedOrder?.type || orderType) === 'Pickup' && <p>Pickup deadline: <strong>9:30 PM local time</strong></p>}
                   </div>
                   <button className={styles.continueShop} onClick={handleClose}>Continue Shopping</button>
                 </motion.div>
@@ -479,17 +541,117 @@ export default function CartDrawer() {
                       <button
                         className={styles.finalSubmitBtn}
                         disabled={isProcessing}
-                        onClick={handleFinalSubmit}
+                        onClick={handleReviewContinue}
                       >
-                        {isProcessing ? 'Submitting...' : `Submit Order • $${cartTotal}`}
+                        {isProcessing
+                          ? 'Submitting...'
+                          : CHECKOUT_DEMO_MODE && needsHostedCardStep
+                            ? `Continue to Card Demo • $${cartTotal}`
+                            : needsHostedCardStep
+                              ? `Continue to Secure Card • $${cartTotal}`
+                            : `${CHECKOUT_DEMO_MODE ? 'Submit Demo Order' : 'Submit Order'} • $${cartTotal}`}
                       </button>
                       {orderError && <p className={styles.errorText}>{orderError}</p>}
                       <p className={styles.submitNote}>
-                        {orderType === 'Shipping'
-                          ? 'Shipping orders are submitted first. Card payments are collected separately before shipment is released.'
-                          : 'Card payments are collected at pickup or delivery, not entered on the website.'}
+                        {CHECKOUT_DEMO_MODE && needsHostedCardStep
+                          ? 'Demo checkout is active. The next step is a non-live card screen and no charge will be created.'
+                          : needsHostedCardStep
+                            ? 'The next step opens Square secure card fields. Card details stay inside Square Web Payments SDK and are not typed into your server.'
+                          : orderType === 'Shipping'
+                            ? 'Shipping orders can be reserved here with Venmo while Square is being prepared.'
+                            : 'Card payments are collected at pickup or delivery, not entered on the website.'}
                       </p>
                     </motion.div>
+                  )}
+
+                  {checkoutStep === 'payment' && needsHostedCardStep && (
+                    CHECKOUT_DEMO_MODE ? (
+                      <motion.div
+                        className={styles.checkoutForm}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                      >
+                        <h3>Card Demo</h3>
+                        <p className={styles.stepDesc}>
+                          This is a demo payment screen only. Card details are not sent anywhere and no charge will be created.
+                        </p>
+
+                        <form onSubmit={handleDemoPaymentSubmit} className={styles.formFields}>
+                          <label className={styles.fieldLabel}>
+                            <span><UserRound size={14} /> Cardholder Name</span>
+                            <input
+                              type="text"
+                              required
+                              placeholder="Name on Card"
+                              value={cardForm.cardName}
+                              onChange={(event) => setCardForm({ ...cardForm, cardName: event.target.value })}
+                            />
+                          </label>
+
+                          <label className={styles.fieldLabel}>
+                            <span><CreditCard size={14} /> Card Number</span>
+                            <input
+                              type="text"
+                              inputMode="numeric"
+                              required
+                              placeholder="4242 4242 4242 4242"
+                              value={cardForm.cardNumber}
+                              onChange={(event) => setCardForm({ ...cardForm, cardNumber: event.target.value })}
+                            />
+                          </label>
+
+                          <div className={styles.fieldRow}>
+                            <label className={styles.fieldLabel}>
+                              <span>Expiry</span>
+                              <input
+                                type="text"
+                                required
+                                placeholder="12/28"
+                                value={cardForm.expiry}
+                                onChange={(event) => setCardForm({ ...cardForm, expiry: event.target.value })}
+                              />
+                            </label>
+                            <label className={styles.fieldLabel}>
+                              <span>CVC</span>
+                              <input
+                                type="text"
+                                inputMode="numeric"
+                                required
+                                placeholder="123"
+                                value={cardForm.cvc}
+                                onChange={(event) => setCardForm({ ...cardForm, cvc: event.target.value })}
+                              />
+                            </label>
+                          </div>
+
+                          <div className={styles.demoNotice}>
+                            Card demo only. Use test-style placeholder data and continue to the final success screen.
+                          </div>
+
+                          <button type="submit" className={styles.finalSubmitBtn} disabled={isProcessing}>
+                            {isProcessing ? 'Finishing Demo...' : `Finish Demo Checkout • $${cartTotal}`}
+                          </button>
+                        </form>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        className={styles.checkoutForm}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                      >
+                        <h3>Secure Card Entry</h3>
+                        <p className={styles.stepDesc}>
+                          This step is ready for Square Web Payments SDK. Once your Square sandbox or production credentials are added, shipping card orders will tokenize here and then complete on the backend.
+                        </p>
+
+                        <SquareCardStep
+                          amount={cartTotal}
+                          isProcessing={isProcessing}
+                          onTokenized={handleFinalSubmit}
+                        />
+                        {orderError && <p className={styles.errorText}>{orderError}</p>}
+                      </motion.div>
+                    )
                   )}
                 </>
               )}
