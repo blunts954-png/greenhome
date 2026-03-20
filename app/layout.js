@@ -23,23 +23,23 @@ const geistMono = localFont({
 const SITE_URL = "https://homegrownmoney.com";
 
 export const metadata = {
-  title: "Home Grown Money | Bakersfield Apparel and Local Pickup",
-  description: "Shop Home Grown Money apparel online with nationwide shipping, or reserve local Bakersfield menu items for verified pickup and local delivery.",
+  title: "Home Grown Money | Official Merch Store",
+  description: "Shop official Home Grown Money merch with nationwide shipping and secure Stripe checkout for shipping orders.",
   keywords: [
     "Home Grown Money",
-    "Bakersfield streetwear",
-    "Bakersfield apparel",
+    "Home Grown Money merch",
+    "record label merch",
     "HGM tees",
-    "local pickup Bakersfield",
-    "Bakersfield cannabis pickup"
+    "HGM hats",
+    "streetwear merch"
   ],
   metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Home Grown Money | Bakersfield Streetwear and Local Menu",
-    description: "Bakersfield-born apparel, local pickup, and a clear storefront experience that separates shippable gear from local-only menu items.",
+    title: "Home Grown Money | Official Merch Store",
+    description: "Official Home Grown Money merch with nationwide shipping and secure Stripe checkout for shipping orders.",
     url: SITE_URL,
     siteName: "Home Grown Money",
     images: [
@@ -56,7 +56,7 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Home Grown Money",
-    description: "Bakersfield-born apparel and local pickup.",
+    description: "Official Home Grown Money merch with nationwide shipping.",
     images: ["/images/hero-bg.png"],
   },
 };
@@ -79,7 +79,7 @@ export default function RootLayout({ children }) {
               "name": "Home Grown Money",
               "image": `${SITE_URL}/images/hero-bg.png`,
               "url": SITE_URL,
-              "description": "Bakersfield-based apparel storefront with local pickup and a local-only cannabis reservation menu.",
+              "description": "Official Home Grown Money merch storefront with nationwide shipping and secure Stripe checkout for shipping orders.",
               "priceRange": "$$",
               "address": {
                 "@type": "PostalAddress",

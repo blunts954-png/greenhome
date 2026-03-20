@@ -264,6 +264,13 @@
   margin-bottom: 16px;
 }
 
+.comboNote {
+  color: rgba(71, 133, 39, 0.94);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  margin: -4px 0 16px;
+}
+
 .price {
   font-size: 1.55rem;
   font-weight: 900;

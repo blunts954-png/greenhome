@@ -3,11 +3,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useCart } from '@/lib/cart-context';
 import { useOrders } from '@/lib/orders-context';
-import { X, Trash2, ShoppingBag, CheckCircle, Truck, Package, CreditCard, ChevronRight, Mail, Phone, MapPin, MessageSquare, UserRound, CalendarClock } from 'lucide-react';
+import { X, Trash2, ShoppingBag, CheckCircle, Truck, CreditCard, ChevronRight, Mail, Phone, MapPin, MessageSquare, UserRound } from 'lucide-react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import audioEngine from '@/lib/AudioEngine';
-import SquareCardStep from './SquareCardStep';
+import StripeCardStep from './StripeCardStep';
 import styles from './CartDrawer.module.css';
 
 const CHECKOUT_DEMO_MODE = process.env.NEXT_PUBLIC_CHECKOUT_DEMO_MODE === 'true';
@@ -17,7 +17,6 @@ const INITIAL_FORM = {
   lastName: '',
   phone: '',
   email: '',
-  birthDate: '',
   address: '',
   notes: '',
   payment: 'Card'
@@ -42,15 +41,7 @@ function getPaymentLabel(payment, orderType) {
     return payment;
   }
 
-  if (orderType === 'Shipping') {
-    return 'Square card before shipment';
-  }
-
-  if (orderType === 'Local Delivery') {
-    return 'Card at delivery';
-  }
-
-  return 'Card at pickup';
+  return orderType === 'Shipping' ? 'Stripe card before shipment' : payment;
 }
 
 function formatPaymentText(value = '') {
@@ -75,30 +66,34 @@ export default function CartDrawer() {
   const [orderError, setOrderError] = useState('');
   const [submittedOrder, setSubmittedOrder] = useState(null);
 
-  const hasLocalOnlyItems = useMemo(
-    () => cartItems.some((item) => item.pickupOnly),
-    [cartItems]
-  );
-
-  const fulfillmentOptions = useMemo(
-    () => (hasLocalOnlyItems ? ['Pickup', 'Local Delivery'] : ['Shipping', 'Pickup']),
-    [hasLocalOnlyItems]
-  );
-
-  const paymentOptions = useMemo(() => {
-    if (orderType === 'Shipping') {
-      return ['Card', 'Venmo'];
-    }
-
-    return ['Card', 'Cash', 'Venmo'];
-  }, [orderType]);
+  const paymentOptions = useMemo(() => ['Card', 'Venmo'], []);
   const needsHostedCardStep = formData.payment === 'Card' && orderType === 'Shipping';
-
-  useEffect(() => {
-    if (!fulfillmentOptions.includes(orderType)) {
-      setOrderType(fulfillmentOptions[0] || 'Pickup');
-    }
-  }, [fulfillmentOptions, orderType]);
+  const checkoutPayload = useMemo(
+    () => ({
+      customer: {
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        name: `${formData.firstName.trim()} ${formData.lastName.trim()}`.trim(),
+        phone: formData.phone.trim(),
+        email: formData.email.trim(),
+        birthDate: '',
+        address: formData.address.trim(),
+        notes: formData.notes.trim()
+      },
+      items: cartItems.map((item) => ({
+        id: item.id,
+        slug: item.slug,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        size: item.selectedSize || null
+      })),
+      total: cartTotal,
+      type: orderType,
+      payment: formData.payment
+    }),
+    [cartItems, cartTotal, formData, orderType]
+  );
 
   useEffect(() => {
     if (!paymentOptions.includes(formData.payment)) {
@@ -159,7 +154,7 @@ export default function CartDrawer() {
   const handleFulfillmentSubmit = (event) => {
     event.preventDefault();
 
-    if (orderType !== 'Pickup' && !formData.address.trim()) {
+    if (!formData.address.trim()) {
       return;
     }
 
@@ -171,30 +166,8 @@ export default function CartDrawer() {
     audioEngine.playClick();
     setIsProcessing(true);
     setOrderError('');
-
     const orderData = {
-      customer: {
-        firstName: formData.firstName.trim(),
-        lastName: formData.lastName.trim(),
-        name: `${formData.firstName.trim()} ${formData.lastName.trim()}`.trim(),
-        phone: formData.phone.trim(),
-        email: formData.email.trim(),
-        birthDate: formData.birthDate,
-        address: orderType === 'Pickup' ? 'Pickup arranged in Bakersfield' : formData.address.trim(),
-        notes: formData.notes.trim()
-      },
-      items: cartItems.map((item) => ({
-        id: item.id,
-        slug: item.slug,
-        name: item.name,
-        price: item.price,
-        quantity: item.quantity,
-        size: item.selectedSize || null,
-        pickupOnly: item.pickupOnly
-      })),
-      total: cartTotal,
-      type: orderType,
-      payment: formData.payment
+      ...checkoutPayload
     };
 
     if (paymentRequest) {
@@ -242,7 +215,7 @@ export default function CartDrawer() {
       clearCart();
       setFormData(INITIAL_FORM);
       setCardForm(INITIAL_CARD_FORM);
-      setOrderType(hasLocalOnlyItems ? 'Pickup' : 'Shipping');
+      setOrderType('Shipping');
     }, 500);
   };
 
@@ -311,15 +284,15 @@ export default function CartDrawer() {
                   <h3>
                     {submittedOrder?.demo
                       ? 'Demo Checkout Complete'
-                      : submittedOrder?.paymentProvider === 'square'
+                      : submittedOrder?.paymentProvider === 'stripe'
                         ? 'Payment Approved'
                         : 'Order Reserved'}
                   </h3>
                   <p>
                     {submittedOrder?.demo
                       ? 'This demo reached the payment finish point successfully. No real order was stored and no card was charged.'
-                      : submittedOrder?.paymentProvider === 'square'
-                        ? 'Square approved the card payment and the order record was saved successfully.'
+                      : submittedOrder?.paymentProvider === 'stripe'
+                        ? 'Stripe approved the card payment and the order record was saved successfully.'
                       : 'Your order details were captured successfully. We&apos;ll follow up using the contact information you provided.'}
                   </p>
                   <div className={styles.orderSummaryBox}>
@@ -329,7 +302,6 @@ export default function CartDrawer() {
                     <p>Payment: <strong>{getPaymentLabel(submittedOrder?.payment || formData.payment, submittedOrder?.type || orderType)}</strong></p>
                     {submittedOrder?.paymentProvider && <p>Processor: <strong>{formatPaymentText(submittedOrder.paymentProvider)}</strong></p>}
                     {submittedOrder?.paymentStatus && <p>Payment Status: <strong>{formatPaymentText(submittedOrder.paymentStatus)}</strong></p>}
-                    {(submittedOrder?.type || orderType) === 'Pickup' && <p>Pickup deadline: <strong>9:30 PM local time</strong></p>}
                   </div>
                   <button className={styles.continueShop} onClick={handleClose}>Continue Shopping</button>
                 </motion.div>
@@ -347,13 +319,13 @@ export default function CartDrawer() {
                       {cartItems.map((item) => (
                         <div key={`${item.id}-${item.selectedSize || 'na'}`} className={styles.cartItem}>
                           <div className={styles.itemImg}>
-                            <Image src={item.image} alt={item.name} fill style={{ objectFit: item.storeSection === 'apparel' ? 'contain' : 'cover' }} />
+                            <Image src={item.image} alt={item.name} fill style={{ objectFit: 'contain' }} />
                           </div>
                           <div className={styles.itemMeta}>
                             <h3>{item.name}</h3>
                             {item.selectedSize && <p className={styles.sizeInfo}>Size: {item.selectedSize}</p>}
                             <p className={styles.price}>${item.price} x {item.quantity}</p>
-                            <p className={styles.fulfillmentTag}>{item.pickupOnly ? 'Local only' : 'Ships or pickup'}</p>
+                            <p className={styles.fulfillmentTag}>Ships nationwide</p>
                           </div>
                           <button className={styles.removeBtn} onClick={() => handleRemove(item.id, item.selectedSize)} aria-label={`Remove ${item.name}`}>
                             <Trash2 size={16} />
@@ -415,17 +387,6 @@ export default function CartDrawer() {
                             onChange={(event) => setFormData({ ...formData, email: event.target.value })}
                           />
                         </label>
-                        {hasLocalOnlyItems && (
-                          <label className={styles.fieldLabel}>
-                            <span><CalendarClock size={14} /> Date of Birth</span>
-                            <input
-                              type="date"
-                              required
-                              value={formData.birthDate}
-                              onChange={(event) => setFormData({ ...formData, birthDate: event.target.value })}
-                            />
-                          </label>
-                        )}
                         {orderError && <p className={styles.errorText}>{orderError}</p>}
                         <button type="submit" className={styles.nextBtn}>
                           Choose Fulfillment <ChevronRight size={18} />
@@ -442,41 +403,19 @@ export default function CartDrawer() {
                     >
                       <h3>Fulfillment & Payment</h3>
                       <p className={styles.stepDesc}>
-                        {hasLocalOnlyItems
-                          ? 'Your cart includes local-only items, so shipping is disabled.'
-                          : 'Choose shipping or Bakersfield pickup, then select how you plan to pay.'}
+                        Enter your shipping details, then choose how you want to pay.
                       </p>
 
-                      <div className={styles.typeToggle}>
-                        {fulfillmentOptions.map((option) => (
-                          <button
-                            key={option}
-                            type="button"
-                            className={`${styles.typeBtn} ${orderType === option ? styles.activeType : ''}`}
-                            onClick={() => setOrderType(option)}
-                          >
-                            {option === 'Pickup' ? <Package size={18} /> : <Truck size={18} />}
-                            {option}
-                          </button>
-                        ))}
-                      </div>
-
                       <form onSubmit={handleFulfillmentSubmit} className={styles.formFields}>
-                        {orderType !== 'Pickup' ? (
-                          <label className={styles.fieldLabel}>
-                            <span><MapPin size={14} /> {orderType === 'Shipping' ? 'Shipping Address' : 'Delivery Address'}</span>
-                            <textarea
-                              required
-                              placeholder={orderType === 'Shipping' ? 'Enter shipping address' : 'Enter Bakersfield delivery address'}
-                              value={formData.address}
-                              onChange={(event) => setFormData({ ...formData, address: event.target.value })}
-                            />
-                          </label>
-                        ) : (
-                          <div className={styles.pickupAlert}>
-                            <p>Pickup orders must be collected by 9:30 PM local time. Missed pickups are automatically marked as a no-show and can block the stored account.</p>
-                          </div>
-                        )}
+                        <label className={styles.fieldLabel}>
+                          <span><MapPin size={14} /> Shipping Address</span>
+                          <textarea
+                            required
+                            placeholder="Enter shipping address"
+                            value={formData.address}
+                            onChange={(event) => setFormData({ ...formData, address: event.target.value })}
+                          />
+                        </label>
 
                         <label className={styles.fieldLabel}>
                           <span><CreditCard size={14} /> Payment Method</span>
@@ -497,7 +436,7 @@ export default function CartDrawer() {
                         <label className={styles.fieldLabel}>
                           <span><MessageSquare size={14} /> Notes</span>
                           <textarea
-                            placeholder="Add preferred pickup timing, tee color request, or other order notes"
+                            placeholder="Add sizing notes, shipping requests, or any other order details"
                             value={formData.notes}
                             onChange={(event) => setFormData({ ...formData, notes: event.target.value })}
                           />
@@ -521,11 +460,9 @@ export default function CartDrawer() {
                         <p><span>Name</span><strong>{`${formData.firstName} ${formData.lastName}`.trim()}</strong></p>
                         <p><span>Phone</span><strong>{formData.phone}</strong></p>
                         <p><span>Email</span><strong>{formData.email}</strong></p>
-                        {formData.birthDate && <p><span>Date of Birth</span><strong>{formData.birthDate}</strong></p>}
-                        <p><span>Fulfillment</span><strong>{orderType}</strong></p>
+                        <p><span>Fulfillment</span><strong>Shipping</strong></p>
                         <p><span>Payment</span><strong>{getPaymentLabel(formData.payment, orderType)}</strong></p>
-                        {(orderType !== 'Pickup') && <p><span>Address</span><strong>{formData.address}</strong></p>}
-                        {orderType === 'Pickup' && <p><span>Pickup Deadline</span><strong>9:30 PM local time</strong></p>}
+                        <p><span>Address</span><strong>{formData.address}</strong></p>
                         {formData.notes && <p><span>Notes</span><strong>{formData.notes}</strong></p>}
                       </div>
 
@@ -556,10 +493,8 @@ export default function CartDrawer() {
                         {CHECKOUT_DEMO_MODE && needsHostedCardStep
                           ? 'Demo checkout is active. The next step is a non-live card screen and no charge will be created.'
                           : needsHostedCardStep
-                            ? 'The next step opens Square secure card fields. Card details stay inside Square Web Payments SDK and are not typed into your server.'
-                          : orderType === 'Shipping'
-                            ? 'Shipping orders can be reserved here with Venmo while Square is being prepared.'
-                            : 'Card payments are collected at pickup or delivery, not entered on the website.'}
+                            ? 'The next step opens Stripe secure card fields. Card details stay inside Stripe Elements and are not typed into your server.'
+                            : 'Shipping orders can be reserved with Venmo, or paid online by card when Stripe is enabled.'}
                       </p>
                     </motion.div>
                   )}
@@ -641,13 +576,15 @@ export default function CartDrawer() {
                       >
                         <h3>Secure Card Entry</h3>
                         <p className={styles.stepDesc}>
-                          This step is ready for Square Web Payments SDK. Once your Square sandbox or production credentials are added, shipping card orders will tokenize here and then complete on the backend.
+                          This step is ready for Stripe Elements. Once your Stripe publishable key, secret key, and webhook secret are added, shipping card orders will confirm here and complete on the backend.
                         </p>
 
-                        <SquareCardStep
+                        <StripeCardStep
                           amount={cartTotal}
+                          order={checkoutPayload}
+                          customer={checkoutPayload.customer}
                           isProcessing={isProcessing}
-                          onTokenized={handleFinalSubmit}
+                          onConfirmed={handleFinalSubmit}
                         />
                         {orderError && <p className={styles.errorText}>{orderError}</p>}
                       </motion.div>

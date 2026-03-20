@@ -8,15 +8,15 @@ import Link from 'next/link';
 const FAQS = [
   {
     q: "How do I pay for my order?",
-    a: "Orders are reserved online. Payment is collected at pickup or local delivery, where we currently accept cash, Venmo, and card."
+    a: "Shipping card payments are processed securely through Stripe. You can also place a shipping order with Venmo if needed."
   },
   {
-    q: "Where is the pickup location?",
-    a: "Pickup arrangements are coordinated in Bakersfield after order confirmation. You’ll receive the final details directly when your order is ready."
+    q: "How long does shipping take?",
+    a: "Orders are typically processed in 24-48 hours. Tracking is sent by email once your package is on the way."
   },
   {
     q: "Do you offer delivery?",
-    a: "We offer local delivery for eligible Bakersfield orders. Apparel can also ship nationwide, but local menu items remain limited to pickup or local delivery."
+    a: "This store is shipping-only. Orders are delivered nationwide."
   },
   {
     q: "What's the Material quality of the tees?",
@@ -24,7 +24,7 @@ const FAQS = [
   },
   {
     q: "Can I return an item?",
-    a: "Unworn apparel can be reviewed for exchange or store credit after contact. Cannabis items remain final sale due to local compliance limits."
+    a: "Unworn merch can be reviewed for exchange or store credit after contact. Reach out through the contact page and include your order details."
   }
 ];
 

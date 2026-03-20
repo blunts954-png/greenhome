@@ -27,10 +27,30 @@ const EMPTY_DASHBOARD = {
     pendingOrders: 0,
     todayOrders: 0,
     revenueToday: 0,
+    totalRevenue: 0,
+    averageOrderValue: 0,
+    stripeRevenue: 0,
+    venmoRevenue: 0,
     bannedAccounts: 0,
     bannedIps: 0
   }
 };
+
+function formatCurrency(value = 0) {
+  return `$${Number(value || 0).toFixed(2)}`;
+}
+
+function formatPaymentText(value = '') {
+  if (!value) {
+    return 'N/A';
+  }
+
+  return value
+    .toString()
+    .toLowerCase()
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, (match) => match.toUpperCase());
+}
 
 export default function AdminDashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -373,8 +393,28 @@ export default function AdminDashboard() {
 
         <section className={styles.statsStrip}>
           <div className={styles.statItem}>
-            <span className={styles.statVal}>${dashboard.stats.revenueToday.toFixed(2)}</span>
+            <span className={styles.statVal}>{formatCurrency(dashboard.stats.totalRevenue)}</span>
+            <span className={styles.statLabel}>TOTAL SALES</span>
+          </div>
+          <div className={styles.statItem}>
+            <span className={styles.statVal}>{formatCurrency(dashboard.stats.revenueToday)}</span>
             <span className={styles.statLabel}>TODAY REVENUE</span>
+          </div>
+          <div className={styles.statItem}>
+            <span className={styles.statVal}>{formatCurrency(dashboard.stats.averageOrderValue)}</span>
+            <span className={styles.statLabel}>AVG ORDER</span>
+          </div>
+          <div className={styles.statItem}>
+            <span className={styles.statVal}>{formatCurrency(dashboard.stats.stripeRevenue)}</span>
+            <span className={styles.statLabel}>STRIPE SALES</span>
+          </div>
+          <div className={styles.statItem}>
+            <span className={styles.statVal}>{formatCurrency(dashboard.stats.venmoRevenue)}</span>
+            <span className={styles.statLabel}>VENMO SALES</span>
+          </div>
+          <div className={styles.statItem}>
+            <span className={styles.statVal}>{dashboard.stats.totalOrders}</span>
+            <span className={styles.statLabel}>TOTAL ORDERS</span>
           </div>
           <div className={styles.statItem}>
             <span className={styles.statVal}>{dashboard.stats.todayOrders}</span>
@@ -387,10 +427,6 @@ export default function AdminDashboard() {
           <div className={styles.statItem}>
             <span className={styles.statVal}>{dashboard.stats.bannedAccounts}</span>
             <span className={styles.statLabel}>BANNED ACCOUNTS</span>
-          </div>
-          <div className={styles.statItem}>
-            <span className={styles.statVal}>{dashboard.stats.bannedIps}</span>
-            <span className={styles.statLabel}>BANNED IPS</span>
           </div>
         </section>
 
@@ -420,7 +456,7 @@ export default function AdminDashboard() {
             <div className={styles.view}>
               <div className={styles.viewHeader}>
                 <h2><Package size={24} /> Orders</h2>
-                <p>Server-backed orders with missed pickup enforcement.</p>
+                <p>Server-backed shipping orders with status management.</p>
               </div>
 
               {filteredOrders.length === 0 ? (
@@ -437,9 +473,9 @@ export default function AdminDashboard() {
                           <th>Order</th>
                           <th>Customer</th>
                           <th>Type</th>
+                          <th>Payment</th>
                           <th>Total</th>
                           <th>Status</th>
-                          <th>Pickup</th>
                           <th>Actions</th>
                         </tr>
                       </thead>
@@ -456,14 +492,16 @@ export default function AdminDashboard() {
                               <div className={styles.secondaryCell}>{order.customer?.email}</div>
                             </td>
                             <td>{order.type}</td>
+                            <td>
+                              <div className={styles.primaryCell}>{formatPaymentText(order.payment)}</div>
+                              <div className={styles.secondaryCell}>{formatPaymentText(order.paymentProvider)}</div>
+                              <div className={styles.secondaryCell}>{formatPaymentText(order.paymentStatus)}</div>
+                            </td>
                             <td>${Number(order.total).toFixed(2)}</td>
                             <td>
                               <span className={`${styles.pill} ${styles[`status${order.status.replace(/\s+/g, '')}`] || styles.statusDefault}`}>
                                 {order.status}
                               </span>
-                            </td>
-                            <td>
-                              {order.pickupDeadline ? new Date(order.pickupDeadline).toLocaleString() : 'N/A'}
                             </td>
                             <td>
                               <div className={styles.rowActions}>
@@ -519,7 +557,6 @@ export default function AdminDashboard() {
 
                       <div className={styles.accountMeta}>
                         <p><strong>Last IP:</strong> {account.lastIp || 'Unknown'}</p>
-                        <p><strong>Missed pickups:</strong> {account.missedPickups || 0}</p>
                         <p><strong>Last order:</strong> {account.lastOrderAt ? new Date(account.lastOrderAt).toLocaleString() : 'No orders yet'}</p>
                         {account.banReason && <p><strong>Reason:</strong> {account.banReason}</p>}
                       </div>
@@ -556,23 +593,34 @@ export default function AdminDashboard() {
                     <li>`NEXT_PUBLIC_SUPABASE_URL`</li>
                     <li>`NEXT_PUBLIC_SUPABASE_ANON_KEY`</li>
                     <li>`SUPABASE_SERVICE_ROLE_KEY`</li>
-                    <li>`ADMIN_DASHBOARD_KEY`</li>
-                    <li>`CRON_SECRET`</li>
+                    <li>`ADMIN_DASHBOARD_KEY` optional override</li>
+                    <li>`NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`</li>
+                    <li>`STRIPE_SECRET_KEY`</li>
+                    <li>`STRIPE_WEBHOOK_SECRET`</li>
                   </ul>
                 </div>
 
                 <div className={styles.infoPanel}>
-                  <h3>Automatic Ban Sweep</h3>
+                  <h3>Admin Access</h3>
                   <p>
-                    Vercel cron calls <code>/api/cron/enforce-bans</code> every 15 minutes. Pickup orders past
-                    the 9:30 PM deadline are marked as missed, and the linked account plus stored IP are blocked.
+                    The admin login accepts the passcode <code>HSM2026</code>. You can also set
+                    <code> ADMIN_DASHBOARD_KEY</code> if you want an additional custom override.
+                  </p>
+                </div>
+
+                <div className={styles.infoPanel}>
+                  <h3>Stripe Webhook</h3>
+                  <p>
+                    Point your Stripe webhook at <code>/api/stripe/webhook</code> so successful and failed card
+                    payments update the saved order records automatically.
                   </p>
                 </div>
 
                 <div className={styles.infoPanel}>
                   <h3>Database Setup</h3>
                   <p>
-                    Apply <code>supabase/migrations/20260319_store_backend.sql</code> in the Supabase SQL editor
+                    Apply <code>supabase/migrations/20260319_store_backend.sql</code> and
+                    <code> supabase/migrations/20260319_stripe_payment_fields.sql</code> in the Supabase SQL editor
                     before turning the live site back on.
                   </p>
                 </div>

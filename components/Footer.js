@@ -38,14 +38,14 @@ export default function Footer() {
             <Link href="/shop">All Products</Link>
             <Link href="/shop/hgm-pink-tee">Featured Tee</Link>
             <Link href="/shop/hgm-trucker-hat">Headwear</Link>
-            <Link href="/shop?store=cannabis">Local Menu</Link>
+            <Link href="/shop/hgm-combo-deal">Combo Deals</Link>
           </div>
 
           <div className={styles.linkStack}>
             <h5>The Hustle</h5>
             <Link href="/contact">Connect</Link>
             <Link href="/about/faq">FAQ</Link>
-            <Link href="/about/shipping">Shipping & Pickup</Link>
+            <Link href="/about/shipping">Shipping & Returns</Link>
           </div>
         </div>
 
@@ -56,10 +56,10 @@ export default function Footer() {
             <span>Bakersfield, CA</span>
           </div>
           <div className={styles.contactItem}>
-            <span>Apparel ships nationwide</span>
+            <span>Official merch ships nationwide</span>
           </div>
           <div className={styles.contactItem}>
-            <span>Local menu reserved for pickup or local delivery</span>
+            <span>Stripe checkout is live for shipping orders</span>
           </div>
         </div>
       </div>
@@ -67,9 +67,22 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className={styles.bottomBar}>
         <div className={styles.bottomContainer}>
-          <p className={styles.legal}>
-            &copy; {currentYear} Home Grown Money &middot; Money grows where we plant it &middot; All rights reserved.
-          </p>
+          <div className={styles.bottomCopy}>
+            <p className={styles.legal}>
+              &copy; {currentYear} Home Grown Money &middot; Money grows where we plant it &middot; All rights reserved.
+            </p>
+            <p className={styles.credit}>
+              Built empowered by{' '}
+              <a
+                href="https://chaoticallyorganizedai.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.creditLink}
+              >
+                ChaoticallyorganizedAI.com
+              </a>
+            </p>
+          </div>
           <div className={styles.footerSocials}>
             <a href="https://instagram.com/homegrownmoney" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><Instagram size={18} /></a>
             <a href="https://facebook.com/homegrownmoney" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><Facebook size={18} /></a>

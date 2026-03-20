@@ -1,23 +1,16 @@
 'use client';
 
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { getProductSchema } from '@/lib/products';
 import { useCart } from '@/lib/cart-context';
 import audioEngine from '@/lib/AudioEngine';
-import AgeGate from '@/components/AgeGate';
 import styles from './ProductDetail.module.css';
 
 export default function ProductDetailClient({ product }) {
   const { addToCart } = useCart();
   const [selectedSize, setSelectedSize] = useState(product.sizes?.length === 1 ? product.sizes[0] : null);
   const [quantity, setQuantity] = useState(1);
-  const [ageVerified, setAgeVerified] = useState(false);
-
-  useEffect(() => {
-    const isVerified = localStorage.getItem('age-verified') === 'true';
-    setAgeVerified(isVerified);
-  }, []);
 
   const productSchema = getProductSchema(product);
 
@@ -26,16 +19,16 @@ export default function ProductDetailClient({ product }) {
       alert('Please select a size');
       return;
     }
-    try { audioEngine.playClick(); } catch(e){}
+
+    try {
+      audioEngine.playClick();
+    } catch (error) {}
+
     addToCart({ ...product, selectedSize, quantity });
   };
 
   return (
     <div className={styles.wrapper}>
-      <AgeGate 
-        isActive={product?.storeSection === 'Cannabis' && !ageVerified} 
-        onVerify={() => setAgeVerified(true)} 
-      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
@@ -43,22 +36,11 @@ export default function ProductDetailClient({ product }) {
       <div className={styles.container}>
         <div className={styles.media}>
           <div className={styles.mainImage}>
-             <Image 
-               src={product.image} 
-               alt={product.name} 
-               fill
-               style={{ objectFit: 'cover' }}
-               priority
-             />
+            <Image src={product.image} alt={product.name} fill style={{ objectFit: 'contain' }} priority />
           </div>
           {product.hoverImage && (
             <div className={styles.secondaryImage}>
-                 <Image 
-                   src={product.hoverImage} 
-                   alt={`${product.name} Alternate`} 
-                   fill
-                   style={{ objectFit: 'cover' }}
-                 />
+              <Image src={product.hoverImage} alt={`${product.name} Alternate`} fill style={{ objectFit: 'contain' }} />
             </div>
           )}
         </div>
@@ -67,22 +49,24 @@ export default function ProductDetailClient({ product }) {
           <span className={styles.category}>{product.category}</span>
           <h1 className="brand-font">{product.name}</h1>
           <div className={styles.rating}>
-              {[...Array(5)].map((_, i) => (
-                <span key={i} className={i < product.rating ? styles.starFilled : styles.starEmpty}>★</span>
-              ))}
-              <span className={styles.reviewCount}>(Reviews Coming Soon)</span>
+            {[...Array(5)].map((_, index) => (
+              <span key={index} className={index < product.rating ? styles.starFilled : styles.starEmpty}>
+                ★
+              </span>
+            ))}
+            <span className={styles.reviewCount}>(Reviews Coming Soon)</span>
           </div>
-          
+
           <p className={styles.price}>${product.price}</p>
-          
+
           <div className={styles.description}>
             <p>{product.description}</p>
           </div>
 
+          {product.comboNote && <p className={styles.comboNote}>{product.comboNote}</p>}
+
           <div className={styles.fulfillmentNote}>
-            {product.pickupOnly
-              ? '21+ local pickup or local delivery only. No domestic shipping on cannabis items.'
-              : 'Apparel and accessories can be reserved online for shipping or local pickup.'}
+            Merch is shipped nationwide, and shipping card payments are processed securely through Stripe.
           </div>
 
           <div className={styles.form}>
@@ -90,13 +74,16 @@ export default function ProductDetailClient({ product }) {
               <div className={styles.sizeSelection}>
                 <label>Select Size</label>
                 <div className={styles.sizeGrid}>
-                  {product.sizes.map(size => (
-                    <button 
+                  {product.sizes.map((size) => (
+                    <button
                       key={size}
                       className={`${styles.sizeBtn} ${selectedSize === size ? styles.activeSize : ''}`}
                       onClick={() => {
-                          setSelectedSize(size);
-                          try { audioEngine.playClick(); } catch(e){}
+                        setSelectedSize(size);
+
+                        try {
+                          audioEngine.playClick();
+                        } catch (error) {}
                       }}
                     >
                       {size}
@@ -116,7 +103,7 @@ export default function ProductDetailClient({ product }) {
             </div>
 
             <button className={styles.addBtn} onClick={handleAdd}>
-              {product.pickupOnly ? 'Reserve Item' : 'Add to Cart'}
+              {product.category === 'Combos' ? 'Secure the Combo' : 'Add to Cart'}
             </button>
           </div>
 
@@ -124,16 +111,16 @@ export default function ProductDetailClient({ product }) {
             <div className={styles.productDetails}>
               <label>Product Details</label>
               <ul>
-                {product.details.map((detail, i) => (
-                  <li key={i}>{detail}</li>
+                {product.details.map((detail, index) => (
+                  <li key={index}>{detail}</li>
                 ))}
               </ul>
             </div>
           )}
 
           <div className={styles.shippingIndicator}>
-             <span>{product.pickupOnly ? '✓ 21+ ID required at fulfillment' : '✓ Domestic apparel shipping available'}</span>
-             <span>{product.pickupOnly ? '✓ Bakersfield pickup or local delivery only' : '✓ Local pickup available in Bakersfield'}</span>
+            <span>✓ Nationwide shipping available</span>
+            <span>✓ Secure Stripe checkout for shipping orders</span>
           </div>
         </div>
       </div>

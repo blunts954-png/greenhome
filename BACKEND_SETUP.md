@@ -114,22 +114,26 @@ for each row execute procedure public.set_updated_at();
 
 The same SQL also lives in [supabase/migrations/20260319_store_backend.sql](c:/Users/blunt/Desktop/home%20grown/supabase/migrations/20260319_store_backend.sql).
 
-Then run the Square payment field migration:
+Then run the Stripe payment field migration:
 
 ```sql
 alter table if exists public.store_orders
   add column if not exists payment_provider text default 'manual',
   add column if not exists payment_status text,
   add column if not exists payment_reference_id text,
-  add column if not exists square_payment_id text,
-  add column if not exists square_order_id text,
+  add column if not exists stripe_payment_intent_id text,
+  add column if not exists stripe_payment_method_id text,
+  add column if not exists stripe_charge_id text,
   add column if not exists demo_order boolean not null default false;
 
-create index if not exists store_orders_square_payment_id_idx
-  on public.store_orders (square_payment_id);
+create index if not exists store_orders_stripe_payment_intent_id_idx
+  on public.store_orders (stripe_payment_intent_id);
+
+create index if not exists store_orders_stripe_charge_id_idx
+  on public.store_orders (stripe_charge_id);
 ```
 
-That second SQL also lives in [supabase/migrations/20260319_square_payment_fields.sql](c:/Users/blunt/Desktop/home%20grown/supabase/migrations/20260319_square_payment_fields.sql).
+That second SQL also lives in [supabase/migrations/20260319_stripe_payment_fields.sql](c:/Users/blunt/Desktop/home%20grown/supabase/migrations/20260319_stripe_payment_fields.sql).
 
 ## 2. Add Vercel environment variables
 
@@ -139,23 +143,20 @@ Add these first:
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_public_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-ADMIN_DASHBOARD_KEY=change_this_admin_key
-CRON_SECRET=change_this_cron_secret
+ADMIN_DASHBOARD_KEY=HSM2026
 ```
 
-Add the Square values next:
+The admin login accepts `HSM2026` by default. Setting `ADMIN_DASHBOARD_KEY` adds your own override key if you want a second login passcode available.
+
+Add the Stripe values next:
 
 ```env
-NEXT_PUBLIC_SQUARE_APPLICATION_ID=your_square_application_id
-NEXT_PUBLIC_SQUARE_LOCATION_ID=your_square_location_id
-NEXT_PUBLIC_SQUARE_ENVIRONMENT=sandbox
-SQUARE_ACCESS_TOKEN=your_square_access_token
-SQUARE_WEBHOOK_SIGNATURE_KEY=your_square_webhook_signature_key
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_xxx
+STRIPE_SECRET_KEY=sk_test_xxx
+STRIPE_WEBHOOK_SECRET=whsec_xxx
 ```
 
-Use the same environment in both places:
-- `sandbox` while testing with Square sandbox credentials
-- `production` only after you switch to live Square credentials
+Use Stripe test keys first, then replace them with live keys only when you are ready to process real card payments.
 
 Then add mail delivery:
 
@@ -198,14 +199,12 @@ After the env vars are added, redeploy the project.
 - Account bans persist
 - Stored IP bans persist
 - Admin dashboard reads real order/account data
-- Missed pickup enforcement runs from Vercel cron every 15 minutes
-- Shipping + `Card` opens Square Web Payments SDK and charges through the backend
-- Pickup and local delivery cards stay manual and are not entered on the website
+- Shipping + `Card` opens Stripe card entry and charges through the backend
+- Orders are submitted as shipping orders only
 
-Cron config is in [vercel.json](c:/Users/blunt/Desktop/home%20grown/vercel.json).
+Stripe routes:
+- `/api/stripe/payment-intent`
+- `/api/stripe/webhook`
 
-Square webhook endpoint:
-- `/api/square/webhook`
-
-Implementation note:
-- The attached PDF uses older Square naming. This app is already prepared with the current Square SDK shape: `square.js` on the frontend and `SquareClient` on the backend.
+Important note:
+- If you already ran the older Square migration from a previous repo version, you can leave those unused columns in place. The current app now reads and writes the Stripe-specific columns above.

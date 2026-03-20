@@ -9,21 +9,21 @@ export default function ShippingPage() {
     <div className={styles.container}>
       <header className={styles.header}>
         <Truck size={40} className={styles.icon} />
-        <h1 className="brand-font">SHIPPING / RETURNS / PICKUPS</h1>
-        <p>Logistics for the Bakersfield elite.</p>
+        <h1 className="brand-font">SHIPPING / RETURNS</h1>
+        <p>Everything you need to know about how merch moves.</p>
       </header>
 
       <div className={styles.shippingGrid}>
         <div className={styles.shippingSection}>
           <div className={styles.sectionHead}>
             <MapPin size={24} />
-            <h3>LOCAL PICKUP & DELIVERY</h3>
+            <h3>ORDER PROCESSING</h3>
           </div>
           <div className={styles.sectionBody}>
-             <p>Our Bakersfield hub serves as the primary distribution point for all HGM gear and cannabis products.</p>
+             <p>Orders move through a simple shipping-only flow from checkout to delivery.</p>
              <ul>
-               <li><strong>Pickup:</strong> Select pickup during checkout and we&apos;ll follow up with Bakersfield handoff details once the order is confirmed.</li>
-               <li><strong>Delivery:</strong> Local delivery is available for eligible Bakersfield-area orders, including age-gated local menu items where permitted.</li>
+               <li><strong>Processing:</strong> Orders are usually prepared within 24-48 hours.</li>
+               <li><strong>Notifications:</strong> You&apos;ll receive shipping updates by email once the order is in motion.</li>
              </ul>
           </div>
         </div>
@@ -34,11 +34,11 @@ export default function ShippingPage() {
             <h3>DOMESTIC SHIPPING</h3>
           </div>
           <div className={styles.sectionBody}>
-             <p>We ship Apparel and Accessories nationwide across the US.</p>
+             <p>We ship merch and accessories nationwide across the US.</p>
              <ul>
                <li><strong>Handling:</strong> All orders processed within 24-48 hours. Items drop every Friday.</li>
                <li><strong>Carrier:</strong> USPS or UPS Ground. Tracking provided via email once shipped.</li>
-               <li><strong>Restriction:</strong> Cannabis products cannot be shipped. They remain limited to local pickup or local delivery only.</li>
+               <li><strong>Checkout:</strong> Shipping card payments are processed securely through Stripe.</li>
              </ul>
           </div>
         </div>
@@ -64,10 +64,10 @@ export default function ShippingPage() {
             <h3>AUTHENTICITY & QUALITY</h3>
           </div>
           <div className={styles.sectionBody}>
-             <p>Every piece is a testament to the power of persistence.</p>
+             <p>Every piece is part of a real release cycle and built to represent the brand properly.</p>
              <ul>
-               <li><strong>Guarantee:</strong> We stand behind the quality of every screen-print and every flower batch.</li>
-               <li><strong>Compliance:</strong> All cannabis operations strictly follow local Bakersfield and CA guidelines. 21+ ID required for all pickups and deliveries.</li>
+               <li><strong>Guarantee:</strong> We stand behind the quality of every screen-print, garment, and accessory in the store.</li>
+               <li><strong>Checkout:</strong> Shipping orders use Stripe for secure online card processing.</li>
              </ul>
           </div>
         </div>

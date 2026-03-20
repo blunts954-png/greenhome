@@ -77,11 +77,11 @@ export default function Home() {
         <div className={styles.container}>
           <div className={styles.ctaContent}>
             <h2 className="brand-font">SECURE THE NEW DROP</h2>
-            <p>Every currently photographed tee, hat, and combo in this drop is live in the store. Reserve online and choose shipping or Bakersfield pickup at checkout.</p>
+            <p>Every currently photographed tee, hat, and combo in this drop is live in the store and ready for nationwide delivery. As long as the color and style you want are available, we can build the combo that way.</p>
             <div className={styles.ctaValues}>
               <div className={styles.vItem}><span>TEE</span> <strong>$20</strong></div>
               <div className={styles.vItem}><span>HAT</span> <strong>$15</strong></div>
-              <Link href="/shop/hgm-combo-deal" className={styles.vItem}><span>COMBO</span> <strong>$30</strong></Link>
+              <Link href="/shop/hgm-combo-deal" className={styles.vItem}><span>COMBOS</span> <strong>$30</strong></Link>
             </div>
             <Link href="/shop" className={styles.ctaShopBtn}>SHOP THE DROP NOW</Link>
           </div>

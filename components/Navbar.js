@@ -40,7 +40,7 @@ export default function Navbar() {
           
           <ul className={styles.navLinks}>
             <li><a href="/shop" onClick={handleLinkClick}>Shop</a></li>
-            <li><a href="/shop?store=cannabis" onClick={handleLinkClick}>Local Menu</a></li>
+            <li><a href="/about/shipping" onClick={handleLinkClick}>Shipping</a></li>
             <li><a href="/about" onClick={handleLinkClick}>Our Story</a></li>
             <li><a href="/contact" onClick={handleLinkClick}>Connect</a></li>
           </ul>
@@ -65,7 +65,7 @@ export default function Navbar() {
 
       <div className={`${styles.mobileMenu} ${isMenuOpen ? styles.mobileMenuOpen : ''}`}>
         <a href="/shop" onClick={handleLinkClick}>Shop</a>
-        <a href="/shop?store=cannabis" onClick={handleLinkClick}>Local Menu</a>
+        <a href="/about/shipping" onClick={handleLinkClick}>Shipping</a>
         <a href="/about" onClick={handleLinkClick}>Our Story</a>
         <a href="/about/faq" onClick={handleLinkClick}>FAQ</a>
         <a href="/contact" onClick={handleLinkClick}>Connect</a>

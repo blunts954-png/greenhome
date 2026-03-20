@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import styles from './Contact.module.css';
-import { CheckCircle, ArrowLeft, Target, Briefcase, Shirt, Sprout } from 'lucide-react';
+import { CheckCircle, ArrowLeft, Target, Briefcase, Shirt } from 'lucide-react';
 import audioEngine from '@/lib/AudioEngine';
 
 const DIRECT_EMAIL = 'moneygrowontrees80@gmail.com';
@@ -75,23 +75,23 @@ export default function ContactPage() {
         return (
           <div className={styles.quizStep}>
             <h2 className="brand-font">Step 1: Define Your Hustle</h2>
-            <p className={styles.quizText}>Are you planting a single seed or preparing the whole field?</p>
+            <p className={styles.quizText}>Are you reaching out as a customer or about a business opportunity?</p>
             <div className={styles.options}>
               <button 
-                className={`${styles.optionBtn} ${formData.intent === 'Individual' ? styles.active : ''}`}
-                onClick={() => selectOption('intent', 'Individual')}
+                className={`${styles.optionBtn} ${formData.intent === 'Customer' ? styles.active : ''}`}
+                onClick={() => selectOption('intent', 'Customer')}
               >
                 <Target size={40} />
-                <span>INDIVIDUAL CUSTOMER</span>
-                <p>Looking for a fresh drop.</p>
+                <span>CUSTOMER</span>
+                <p>Order questions, merch help, or general support.</p>
               </button>
               <button 
-                className={`${styles.optionBtn} ${formData.intent === 'Wholesale' ? styles.active : ''}`}
-                onClick={() => selectOption('intent', 'Wholesale')}
+                className={`${styles.optionBtn} ${formData.intent === 'Business' ? styles.active : ''}`}
+                onClick={() => selectOption('intent', 'Business')}
               >
                 <Briefcase size={40} />
-                <span>WHOLESALE PARTNER</span>
-                <p>Bulk orders & distribution.</p>
+                <span>BUSINESS / COLLAB</span>
+                <p>Press, booking, partnerships, or wholesale.</p>
               </button>
             </div>
           </div>
@@ -99,24 +99,24 @@ export default function ContactPage() {
       case 2:
         return (
           <div className={styles.quizStep}>
-            <h2 className="brand-font">Step 2: Choose Your Product Root</h2>
-            <p className={styles.quizText}>Where do you want the money to grow?</p>
+            <h2 className="brand-font">Step 2: Choose the Topic</h2>
+            <p className={styles.quizText}>Tell us what the message is about so we can route it fast.</p>
             <div className={styles.options}>
               <button 
-                className={`${styles.optionBtn} ${formData.category === 'Apparel' ? styles.active : ''}`}
-                onClick={() => selectOption('category', 'Apparel')}
+                className={`${styles.optionBtn} ${formData.category === 'Merch' ? styles.active : ''}`}
+                onClick={() => selectOption('category', 'Merch')}
               >
                 <Shirt size={40} />
-                <span>HGM APPAREL</span>
-                <p>Streetwear & Heritage gear.</p>
+                <span>MERCH / ORDER</span>
+                <p>Store questions, shipping, sizing, and support.</p>
               </button>
               <button 
-                className={`${styles.optionBtn} ${formData.category === 'Cannabis' ? styles.active : ''}`}
-                onClick={() => selectOption('category', 'Cannabis')}
+                className={`${styles.optionBtn} ${formData.category === 'Press / Booking' ? styles.active : ''}`}
+                onClick={() => selectOption('category', 'Press / Booking')}
               >
-                <Sprout size={40} />
-                <span>PREMIUM CANNABIS</span>
-                <p>Vape, Flower, and Extracts.</p>
+                <Briefcase size={40} />
+                <span>PRESS / BOOKING</span>
+                <p>Features, appearances, business, and collaborations.</p>
               </button>
             </div>
             <button onClick={handleBack} className={styles.backLink}><ArrowLeft size={16}/> Back</button>
@@ -187,7 +187,7 @@ export default function ContactPage() {
       <section className={styles.hero}>
         <div className={styles.container}>
           <h1 className="brand-font text-gradient">The Growth Protocol</h1>
-          <p className={styles.subtitle}>Money grows where we plant it. Let&apos;s map your trajectory.</p>
+          <p className={styles.subtitle}>Merch support, business inquiries, and label connections in one place.</p>
         </div>
       </section>
 
