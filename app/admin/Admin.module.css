@@ -508,3 +508,401 @@
     gap: 20px;
   }
 }
+
+.loginHelp {
+  margin-top: 18px;
+  color: #666;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.loginError {
+  margin-top: 16px;
+  color: #ff8e8e;
+  font-size: 0.9rem;
+}
+
+.logoutBtn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: #111;
+  color: #fff;
+  border: 1px solid #222;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.topHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.topHeaderActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.expandBtn,
+.refreshBtn,
+.secondaryBtn,
+.primaryBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.expandBtn {
+  color: #888;
+}
+
+.refreshBtn {
+  padding: 12px 16px;
+  background: #111;
+  border: 1px solid #222;
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.refreshBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.statsStrip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  padding: 20px 40px 0;
+}
+
+.statItem {
+  padding: 18px 20px;
+  background: #0a0a0a;
+  border: 1px solid #1a1a1a;
+}
+
+.statVal {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #fff;
+}
+
+.statLabel {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  color: #666;
+}
+
+.contentArea {
+  padding: 24px 40px 40px;
+  display: grid;
+  gap: 16px;
+}
+
+.view {
+  display: grid;
+  gap: 20px;
+}
+
+.viewHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 0;
+}
+
+.viewHeader h2 {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.5rem;
+  letter-spacing: 0.16em;
+}
+
+.viewHeader p {
+  margin: 0;
+  color: #666;
+  line-height: 1.6;
+}
+
+.statusNotice,
+.errorBanner,
+.successBanner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid;
+  font-size: 0.92rem;
+}
+
+.statusNotice {
+  background: rgba(212, 175, 55, 0.08);
+  border-color: rgba(212, 175, 55, 0.35);
+  color: #d4af37;
+}
+
+.errorBanner {
+  background: rgba(120, 18, 18, 0.18);
+  border-color: rgba(255, 82, 82, 0.35);
+  color: #ffb0b0;
+}
+
+.successBanner {
+  background: rgba(71, 133, 39, 0.12);
+  border-color: rgba(71, 133, 39, 0.35);
+  color: #9de27b;
+}
+
+.tableCard {
+  background: #0a0a0a;
+  border: 1px solid #1a1a1a;
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 980px;
+}
+
+.dataTable th,
+.dataTable td {
+  padding: 16px;
+  border-bottom: 1px solid #161616;
+  vertical-align: top;
+  text-align: left;
+}
+
+.dataTable th {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  color: #666;
+}
+
+.primaryCell {
+  font-weight: 800;
+  color: #fff;
+}
+
+.secondaryCell {
+  margin-top: 4px;
+  color: #666;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  border: 1px solid #333;
+}
+
+.statusPending {
+  background: rgba(212, 175, 55, 0.08);
+  border-color: rgba(212, 175, 55, 0.35);
+  color: #d4af37;
+}
+
+.statusCompleted {
+  background: rgba(71, 133, 39, 0.12);
+  border-color: rgba(71, 133, 39, 0.35);
+  color: #9de27b;
+}
+
+.statusCancelled {
+  background: rgba(123, 123, 123, 0.1);
+  border-color: rgba(123, 123, 123, 0.35);
+  color: #cfcfcf;
+}
+
+.statusMissedPickup {
+  background: rgba(120, 18, 18, 0.18);
+  border-color: rgba(255, 82, 82, 0.35);
+  color: #ffb0b0;
+}
+
+.statusDefault {
+  color: #ddd;
+}
+
+.rowActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.primaryBtn,
+.secondaryBtn {
+  padding: 10px 14px;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.primaryBtn {
+  background: #fff;
+  color: #000;
+}
+
+.secondaryBtn {
+  background: #111;
+  color: #fff;
+  border: 1px solid #2a2a2a;
+}
+
+.accountGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.accountCard {
+  padding: 20px;
+  background: #0a0a0a;
+  border: 1px solid #1a1a1a;
+  display: grid;
+  gap: 16px;
+}
+
+.accountHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.accountHeader h3 {
+  margin: 0 0 6px;
+}
+
+.accountHeader p {
+  margin: 0;
+  color: #777;
+  line-height: 1.5;
+}
+
+.accountMeta {
+  display: grid;
+  gap: 8px;
+}
+
+.accountMeta p {
+  margin: 0;
+  color: #bbb;
+  line-height: 1.6;
+}
+
+.accountMeta strong {
+  color: #fff;
+}
+
+.panelGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.infoPanel {
+  padding: 20px;
+  background: #0a0a0a;
+  border: 1px solid #1a1a1a;
+}
+
+.infoPanel h3 {
+  margin: 0 0 12px;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+}
+
+.infoPanel p {
+  margin: 0;
+  color: #777;
+  line-height: 1.7;
+}
+
+.infoList {
+  margin: 0;
+  padding-left: 18px;
+  color: #ddd;
+  line-height: 1.8;
+}
+
+.emptyState {
+  padding: 50px 24px;
+  text-align: center;
+  color: #666;
+  background: #0a0a0a;
+  border: 1px solid #1a1a1a;
+}
+
+@media (max-width: 1200px) {
+  .statsStrip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .topHeader,
+  .contentArea,
+  .statsStrip {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .topHeader {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .topHeaderLeft {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .statsStrip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .statsStrip {
+    grid-template-columns: 1fr;
+  }
+
+  .loginCard {
+    padding: 36px 24px;
+  }
+}

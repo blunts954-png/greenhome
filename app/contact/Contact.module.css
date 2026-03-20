@@ -271,6 +271,34 @@
   font-size: 2.5rem;
 }
 
+.directEmailBox {
+  margin-top: 24px;
+  display: grid;
+  gap: 10px;
+  color: #8c8c8c;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.directEmailBox a {
+  color: var(--gold);
+}
+
+.directEmailLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-width: 200px;
+  padding: 13px 20px;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  color: var(--gold);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }

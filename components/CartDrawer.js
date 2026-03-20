@@ -3,16 +3,18 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useCart } from '@/lib/cart-context';
 import { useOrders } from '@/lib/orders-context';
-import { X, Trash2, ShoppingBag, CheckCircle, Truck, Package, CreditCard, ChevronRight, Mail, Phone, MapPin, MessageSquare } from 'lucide-react';
+import { X, Trash2, ShoppingBag, CheckCircle, Truck, Package, CreditCard, ChevronRight, Mail, Phone, MapPin, MessageSquare, UserRound, CalendarClock } from 'lucide-react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import audioEngine from '@/lib/AudioEngine';
 import styles from './CartDrawer.module.css';
 
 const INITIAL_FORM = {
-  name: '',
+  firstName: '',
+  lastName: '',
   phone: '',
   email: '',
+  birthDate: '',
   address: '',
   notes: '',
   payment: 'Card'
@@ -25,17 +27,34 @@ const springPhysics = {
   damping: 30
 };
 
+function getPaymentLabel(payment, orderType) {
+  if (payment !== 'Card') {
+    return payment;
+  }
+
+  if (orderType === 'Shipping') {
+    return 'Card invoice before shipment';
+  }
+
+  if (orderType === 'Local Delivery') {
+    return 'Card at delivery';
+  }
+
+  return 'Card at pickup';
+}
+
 export default function CartDrawer() {
   const cartContext = useCart();
   const { cartItems = [], cartTotal = 0, isDrawerOpen = false, toggleDrawer = () => {}, removeFromCart = () => {}, clearCart = () => {} } = cartContext || {};
 
   const ordersContext = useOrders();
-  const { addOrder = () => null } = ordersContext || {};
+  const { addOrder = async () => null, isAccountBlocked = async () => null } = ordersContext || {};
 
   const [checkoutStep, setCheckoutStep] = useState('cart');
   const [orderType, setOrderType] = useState('Shipping');
   const [formData, setFormData] = useState(INITIAL_FORM);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [orderError, setOrderError] = useState('');
 
   const hasLocalOnlyItems = useMemo(
     () => cartItems.some((item) => item.pickupOnly),
@@ -47,11 +66,28 @@ export default function CartDrawer() {
     [hasLocalOnlyItems]
   );
 
+  const paymentOptions = useMemo(() => {
+    if (orderType === 'Shipping') {
+      return ['Card', 'Venmo'];
+    }
+
+    return ['Card', 'Cash', 'Venmo'];
+  }, [orderType]);
+
   useEffect(() => {
     if (!fulfillmentOptions.includes(orderType)) {
       setOrderType(fulfillmentOptions[0] || 'Pickup');
     }
   }, [fulfillmentOptions, orderType]);
+
+  useEffect(() => {
+    if (!paymentOptions.includes(formData.payment)) {
+      setFormData((prev) => ({
+        ...prev,
+        payment: paymentOptions[0] || 'Card'
+      }));
+    }
+  }, [formData.payment, paymentOptions]);
 
   useEffect(() => {
     if (!isDrawerOpen) {
@@ -77,12 +113,21 @@ export default function CartDrawer() {
 
   const handleCheckoutInit = () => {
     audioEngine.playClick();
+    setOrderError('');
     setCheckoutStep('contact');
   };
 
-  const handleContactSubmit = (event) => {
+  const handleContactSubmit = async (event) => {
     event.preventDefault();
+
+    const blockedAccount = await isAccountBlocked(formData.email, formData.phone);
+    if (blockedAccount) {
+      setOrderError(blockedAccount.banReason || 'This account is currently blocked.');
+      return;
+    }
+
     audioEngine.playClick();
+    setOrderError('');
     setCheckoutStep('fulfillment');
   };
 
@@ -100,27 +145,43 @@ export default function CartDrawer() {
   const handleFinalSubmit = async () => {
     audioEngine.playClick();
     setIsProcessing(true);
+    setOrderError('');
 
     const orderData = {
       customer: {
-        name: formData.name,
-        phone: formData.phone,
-        email: formData.email,
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        name: `${formData.firstName.trim()} ${formData.lastName.trim()}`.trim(),
+        phone: formData.phone.trim(),
+        email: formData.email.trim(),
+        birthDate: formData.birthDate,
         address: orderType === 'Pickup' ? 'Pickup arranged in Bakersfield' : formData.address.trim(),
         notes: formData.notes.trim()
       },
       items: cartItems.map((item) => ({
+        id: item.id,
+        slug: item.slug,
         name: item.name,
         price: item.price,
         quantity: item.quantity,
-        size: item.selectedSize || null
+        size: item.selectedSize || null,
+        pickupOnly: item.pickupOnly
       })),
       total: cartTotal,
       type: orderType,
       payment: formData.payment
     };
 
-    const newOrder = addOrder(orderData);
+    const newOrder = await addOrder(orderData);
+
+    if (newOrder?.error) {
+      setIsProcessing(false);
+      setOrderError(newOrder.error);
+      if (newOrder.code === 'ACCOUNT_BANNED') {
+        setCheckoutStep('contact');
+      }
+      return;
+    }
 
     if (newOrder) {
       try {
@@ -131,8 +192,11 @@ export default function CartDrawer() {
             orderId: newOrder.id,
             customerName: newOrder.customer.name,
             customerEmail: newOrder.customer.email,
+            customerPhone: newOrder.customer.phone,
+            customerAddress: newOrder.customer.address,
             total: newOrder.total,
             type: newOrder.type,
+            payment: getPaymentLabel(newOrder.payment, newOrder.type),
             items: newOrder.items
           })
         });
@@ -152,7 +216,7 @@ export default function CartDrawer() {
   };
 
   return (
-    <AnimatePresence>
+      <AnimatePresence>
       {isDrawerOpen && (
         <motion.div
           className={styles.overlay}
@@ -202,7 +266,8 @@ export default function CartDrawer() {
                   <div className={styles.orderSummaryBox}>
                     <p>Total: <strong>${cartTotal}</strong></p>
                     <p>Fulfillment: <strong>{orderType}</strong></p>
-                    <p>Payment: <strong>{formData.payment}</strong></p>
+                    <p>Payment: <strong>{getPaymentLabel(formData.payment, orderType)}</strong></p>
+                    {orderType === 'Pickup' && <p>Pickup deadline: <strong>9:30 PM local time</strong></p>}
                   </div>
                   <button className={styles.continueShop} onClick={handleClose}>Continue Shopping</button>
                 </motion.div>
@@ -242,20 +307,32 @@ export default function CartDrawer() {
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                     >
-                      <h3>Contact Details</h3>
-                      <p className={styles.stepDesc}>We need your name, phone, and email to confirm the reservation.</p>
+                      <h3>Create Account</h3>
+                      <p className={styles.stepDesc}>First name, last name, phone, and email are required before checkout can continue.</p>
 
                       <form onSubmit={handleContactSubmit} className={styles.formFields}>
-                        <label className={styles.fieldLabel}>
-                          <span><Mail size={14} /> Name</span>
-                          <input
-                            type="text"
-                            required
-                            placeholder="Full Name"
-                            value={formData.name}
-                            onChange={(event) => setFormData({ ...formData, name: event.target.value })}
-                          />
-                        </label>
+                        <div className={styles.fieldRow}>
+                          <label className={styles.fieldLabel}>
+                            <span><UserRound size={14} /> First Name</span>
+                            <input
+                              type="text"
+                              required
+                              placeholder="First Name"
+                              value={formData.firstName}
+                              onChange={(event) => setFormData({ ...formData, firstName: event.target.value })}
+                            />
+                          </label>
+                          <label className={styles.fieldLabel}>
+                            <span><UserRound size={14} /> Last Name</span>
+                            <input
+                              type="text"
+                              required
+                              placeholder="Last Name"
+                              value={formData.lastName}
+                              onChange={(event) => setFormData({ ...formData, lastName: event.target.value })}
+                            />
+                          </label>
+                        </div>
                         <label className={styles.fieldLabel}>
                           <span><Phone size={14} /> Phone</span>
                           <input
@@ -276,6 +353,18 @@ export default function CartDrawer() {
                             onChange={(event) => setFormData({ ...formData, email: event.target.value })}
                           />
                         </label>
+                        {hasLocalOnlyItems && (
+                          <label className={styles.fieldLabel}>
+                            <span><CalendarClock size={14} /> Date of Birth</span>
+                            <input
+                              type="date"
+                              required
+                              value={formData.birthDate}
+                              onChange={(event) => setFormData({ ...formData, birthDate: event.target.value })}
+                            />
+                          </label>
+                        )}
+                        {orderError && <p className={styles.errorText}>{orderError}</p>}
                         <button type="submit" className={styles.nextBtn}>
                           Choose Fulfillment <ChevronRight size={18} />
                         </button>
@@ -323,25 +412,21 @@ export default function CartDrawer() {
                           </label>
                         ) : (
                           <div className={styles.pickupAlert}>
-                            <p>Pickup orders are arranged in Bakersfield after confirmation. Bring valid ID for age-gated items.</p>
+                            <p>Pickup orders must be collected by 9:30 PM local time. Missed pickups are automatically marked as a no-show and can block the stored account.</p>
                           </div>
                         )}
 
                         <label className={styles.fieldLabel}>
                           <span><CreditCard size={14} /> Payment Method</span>
                           <div className={styles.paymentOptions}>
-                            {[
-                              'Card',
-                              'Cash',
-                              'Venmo'
-                            ].map((method) => (
+                            {paymentOptions.map((method) => (
                               <button
                                 key={method}
                                 type="button"
                                 className={`${styles.payOption} ${formData.payment === method ? styles.activePay : ''}`}
                                 onClick={() => setFormData({ ...formData, payment: method })}
                               >
-                                {method === 'Card' ? 'Card at pickup/delivery' : method}
+                                {getPaymentLabel(method, orderType)}
                               </button>
                             ))}
                           </div>
@@ -371,12 +456,14 @@ export default function CartDrawer() {
                     >
                       <h3>Review</h3>
                       <div className={styles.reviewCard}>
-                        <p><span>Name</span><strong>{formData.name}</strong></p>
+                        <p><span>Name</span><strong>{`${formData.firstName} ${formData.lastName}`.trim()}</strong></p>
                         <p><span>Phone</span><strong>{formData.phone}</strong></p>
                         <p><span>Email</span><strong>{formData.email}</strong></p>
+                        {formData.birthDate && <p><span>Date of Birth</span><strong>{formData.birthDate}</strong></p>}
                         <p><span>Fulfillment</span><strong>{orderType}</strong></p>
-                        <p><span>Payment</span><strong>{formData.payment === 'Card' ? 'Card at fulfillment' : formData.payment}</strong></p>
+                        <p><span>Payment</span><strong>{getPaymentLabel(formData.payment, orderType)}</strong></p>
                         {(orderType !== 'Pickup') && <p><span>Address</span><strong>{formData.address}</strong></p>}
+                        {orderType === 'Pickup' && <p><span>Pickup Deadline</span><strong>9:30 PM local time</strong></p>}
                         {formData.notes && <p><span>Notes</span><strong>{formData.notes}</strong></p>}
                       </div>
 
@@ -396,7 +483,12 @@ export default function CartDrawer() {
                       >
                         {isProcessing ? 'Submitting...' : `Submit Order • $${cartTotal}`}
                       </button>
-                      <p className={styles.submitNote}>Card payments are collected at pickup or delivery, not entered on the website.</p>
+                      {orderError && <p className={styles.errorText}>{orderError}</p>}
+                      <p className={styles.submitNote}>
+                        {orderType === 'Shipping'
+                          ? 'Shipping orders are submitted first. Card payments are collected separately before shipment is released.'
+                          : 'Card payments are collected at pickup or delivery, not entered on the website.'}
+                      </p>
                     </motion.div>
                   )}
                 </>

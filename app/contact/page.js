@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 import styles from './Contact.module.css';
-import { Send, CheckCircle, ArrowRight, ArrowLeft, Target, Briefcase, Shirt, Sprout } from 'lucide-react';
+import { CheckCircle, ArrowLeft, Target, Briefcase, Shirt, Sprout } from 'lucide-react';
 import audioEngine from '@/lib/AudioEngine';
+
+const DIRECT_EMAIL = 'moneygrowontrees80@gmail.com';
 
 export default function ContactPage() {
   const [step, setStep] = useState(1);
@@ -17,6 +19,16 @@ export default function ContactPage() {
   const [status, setStatus] = useState('idle'); // idle, sending, success, error
 
   const totalSteps = 3;
+  const directEmailHref = `mailto:${DIRECT_EMAIL}?subject=${encodeURIComponent(`HGM ${formData.intent || 'Inquiry'}${formData.category ? ` - ${formData.category}` : ''}`)}&body=${encodeURIComponent(
+    [
+      `Name: ${formData.name || ''}`,
+      `Email: ${formData.email || ''}`,
+      `Intent: ${formData.intent || ''}`,
+      `Category: ${formData.category || ''}`,
+      '',
+      formData.message || ''
+    ].join('\n')
+  )}`;
 
   const handleNext = () => {
     try { audioEngine.playClick(); } catch(e){}
@@ -153,6 +165,14 @@ export default function ContactPage() {
                 <button type="submit" className={styles.submitBtn} disabled={status === 'sending'}>
                   {status === 'sending' ? 'TRANSMITTING...' : 'FINALIZE CONNECTION'}
                 </button>
+              </div>
+              <div className={styles.directEmailBox}>
+                <p>Direct inbox backup: <a href={`mailto:${DIRECT_EMAIL}`}>{DIRECT_EMAIL}</a></p>
+                {status === 'error' && (
+                  <a href={directEmailHref} className={styles.directEmailLink}>
+                    Email Us Directly
+                  </a>
+                )}
               </div>
             </form>
           </div>
