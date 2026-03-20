@@ -1,9 +1,16 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 export async function POST(req) {
   try {
+    if (!resend) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Contact email is not configured.' }),
+        { status: 503 }
+      );
+    }
+
     const { name, email, message } = await req.json();
 
     const data = await resend.emails.send({
