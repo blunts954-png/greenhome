@@ -15,6 +15,10 @@ const STORE_CATEGORIES = {
   'Cannabis': ['All', 'Flower', 'Concentrates', 'Disposables', 'Edibles', 'Accessories']
 };
 
+function getStoreFromSearchParams(searchParams) {
+  return searchParams.get('store')?.toLowerCase() === 'cannabis' ? 'Cannabis' : 'Apparel';
+}
+
 export default function ProductGrid() {
   const cartContext = useCart();
   const addToCart = cartContext?.addToCart || (() => {});
@@ -28,6 +32,21 @@ export default function ProductGrid() {
   useEffect(() => {
     const isVerified = localStorage.getItem('age-verified') === 'true';
     setAgeVerified(isVerified);
+  }, []);
+
+  useEffect(() => {
+    const syncStoreFromUrl = () => {
+      const nextStore = getStoreFromSearchParams(new URLSearchParams(window.location.search));
+      setActiveStore(nextStore);
+      setActiveFilter('All');
+    };
+
+    syncStoreFromUrl();
+    window.addEventListener('popstate', syncStoreFromUrl);
+
+    return () => {
+      window.removeEventListener('popstate', syncStoreFromUrl);
+    };
   }, []);
 
   const filteredProducts = PRODUCTS.filter(p => {
@@ -60,6 +79,19 @@ export default function ProductGrid() {
   const handleStoreChange = (store) => {
     setActiveStore(store);
     setActiveFilter('All');
+
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (store === 'Cannabis') {
+        params.set('store', 'cannabis');
+      } else {
+        params.delete('store');
+      }
+
+      const nextUrl = params.toString() ? `${window.location.pathname}?${params.toString()}` : window.location.pathname;
+      window.history.replaceState({}, '', nextUrl);
+    }
+
     try { audioEngine.playClick(); } catch(e){}
   };
 

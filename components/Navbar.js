@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '@/lib/cart-context';
 import { Instagram, Facebook, Menu, ShoppingCart, X } from 'lucide-react';
@@ -33,16 +32,17 @@ export default function Navbar() {
       <nav className={styles.navbar}>
         <div className={styles.container}>
           <div className={styles.logo}>
-            <Link href="/" onClick={handleLinkClick} className={styles.logoLink}>
+            <a href="/" onClick={handleLinkClick} className={styles.logoLink}>
               <Image src="/logo_v3.jpg" alt="HGM Logo" width={40} height={40} className={styles.navLogo} />
               <span className={styles.logoText}>Home Grown Money</span>
-            </Link>
+            </a>
           </div>
           
           <ul className={styles.navLinks}>
-            <li><Link href="/shop">Shop</Link></li>
-            <li><Link href="/about">Our Story</Link></li>
-            <li><Link href="/contact">Connect</Link></li>
+            <li><a href="/shop" onClick={handleLinkClick}>Shop</a></li>
+            <li><a href="/shop?store=cannabis" onClick={handleLinkClick}>Local Menu</a></li>
+            <li><a href="/about" onClick={handleLinkClick}>Our Story</a></li>
+            <li><a href="/contact" onClick={handleLinkClick}>Connect</a></li>
           </ul>
 
           <div className={styles.actions}>
@@ -64,10 +64,11 @@ export default function Navbar() {
       </nav>
 
       <div className={`${styles.mobileMenu} ${isMenuOpen ? styles.mobileMenuOpen : ''}`}>
-        <Link href="/shop" onClick={handleLinkClick}>Shop</Link>
-        <Link href="/about" onClick={handleLinkClick}>Our Story</Link>
-        <Link href="/about/faq" onClick={handleLinkClick}>FAQ</Link>
-        <Link href="/contact" onClick={handleLinkClick}>Connect</Link>
+        <a href="/shop" onClick={handleLinkClick}>Shop</a>
+        <a href="/shop?store=cannabis" onClick={handleLinkClick}>Local Menu</a>
+        <a href="/about" onClick={handleLinkClick}>Our Story</a>
+        <a href="/about/faq" onClick={handleLinkClick}>FAQ</a>
+        <a href="/contact" onClick={handleLinkClick}>Connect</a>
         <div className={styles.mobileSocials}>
           <a href="https://instagram.com/homegrownmoney" target="_blank" rel="noopener noreferrer">Instagram</a>
           <a href="https://facebook.com/homegrownmoney" target="_blank" rel="noopener noreferrer">Facebook</a>

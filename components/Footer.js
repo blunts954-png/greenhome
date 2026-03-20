@@ -38,7 +38,7 @@ export default function Footer() {
             <Link href="/shop">All Products</Link>
             <Link href="/shop/hgm-pink-tee">Featured Tee</Link>
             <Link href="/shop/hgm-trucker-hat">Headwear</Link>
-            <Link href="/shop/hgm-reserve-flower">Local Menu</Link>
+            <Link href="/shop?store=cannabis">Local Menu</Link>
           </div>
 
           <div className={styles.linkStack}>
