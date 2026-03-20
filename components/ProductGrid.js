@@ -80,7 +80,7 @@ export default function ProductGrid() {
         </div>
 
         <div className={styles.categoryHead}>
-          <Image src="/logo.png" alt="HGM Logo" width={80} height={80} className={styles.catLogo} />
+          <Image src="/logo.jpg" alt="HGM Logo" width={80} height={80} className={styles.catLogo} />
           <h2 className="brand-font reveal">
             {activeStore === 'Apparel' ? 'Streetwear & Apparel' : 'Premium Cannabis'}
           </h2>
@@ -168,7 +168,7 @@ export default function ProductGrid() {
                 className={styles.addBtn}
                 onClick={(e) => handleAdd(e, product)}
               >
-                Add to Cart
+                {product.category === 'Combos' ? 'SECURE THE COMBO' : 'Add to Cart'}
               </button>
             </div>
           </Link>

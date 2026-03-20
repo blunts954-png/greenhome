@@ -62,7 +62,7 @@ export default function AdminDashboard() {
     return (
       <div className={styles.loginContainer}>
         <div className={styles.loginCard}>
-          <Image src="/logo.png" alt="HGM Logo" width={100} height={100} className={styles.loginLogo} />
+          <Image src="/logo.jpg" alt="HGM Logo" width={100} height={100} className={styles.loginLogo} />
           <h1>HGM ADMIN</h1>
           <form onSubmit={handleLogin}>
             <input 
@@ -241,7 +241,7 @@ export default function AdminDashboard() {
     <div className={`${styles.dashboard} ${!isSidebarOpen ? styles.sidebarCollapsed : ''}`}>
       <aside className={styles.sidebar}>
         <div className={styles.sideHeader}>
-          <Image src="/logo.png" alt="HGM Logo" width={40} height={40} />
+          <Image src="/logo.jpg" alt="HGM Logo" width={40} height={40} />
           <span>HGM TERMINAL</span>
           <button onClick={() => setIsSidebarOpen(false)} className={styles.collapseBtn}><X size={18} /></button>
         </div>

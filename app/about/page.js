@@ -21,21 +21,23 @@ export default function AboutPage() {
         <div className={styles.container}>
           <div className={styles.content}>
             <div className={`${styles.text} reveal`}>
-              <h2 className="brand-font">Bakersfield Born</h2>
+              <h2 className="brand-font">Built, Not Borrowed</h2>
               <p>
-                Home Grown Money didn&apos;t start in a boardroom. It started in the 661—where the Valley sun 
-                burns as hot as the ambition. We grew up watching the hustle from the ground up, seeing the 
-                grit it takes to build something that lasts in a town known for its roots.
+                Home Grown Money was born the day our founder realized nobody was coming to save him, 
+                sponsor him, or stamp his name with a cosign – it was either build his own lane or die in traffic. 
+                In a small corner of 13O E. 21st St & 210 Goodman St, he planted a seed with no investors, 
+                no endorsements, and no &quot;big organization&quot; umbrella – just muscle, faith, and a stubborn refusal to fold.
               </p>
               <div className={styles.quoteBox}>
                 <p className={styles.quote}>
-                  &quot;In the Valley, we don&apos;t wait for the rain. We build the irrigation ourselves.&quot;
+                  &quot;That moment turned a hustler into a brand architect, when &apos;nothing for sale, just branding&apos; 
+                  stopped being a caption and became a code he lived by.&quot;
                 </p>
               </div>
               <p>
-                The name reflects a simple truth: growth only happens through cultivation. 
-                Whether it&apos;s wealth, knowledge, or influence, you have to plant the seed 
-                and nurture it yourself. Nobody is handing out harvests for free in Bakersfield.
+                From that day forward, every event, every reel, every late-night idea stopped being content 
+                and started being proof that belief in your own name can grow into a street-certified legacy. 
+                We don&apos;t manufacture hype—we manufacture heritage.
               </p>
             </div>
             <div className={`${styles.imageBox} reveal`}>

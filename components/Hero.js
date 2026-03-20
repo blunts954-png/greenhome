@@ -11,17 +11,6 @@ export default function Hero() {
       <Particles />
       <div className={styles.overlay}></div>
       <div className={styles.content}>
-        <div className={styles.logoContainer}>
-          <Image 
-            src="/logo.png" 
-            alt="Home Grown Money" 
-            width={600} 
-            height={600} 
-            className={`${styles.heroLogo} reveal`}
-            priority 
-          />
-          <div className={styles.glow}></div>
-        </div>
         <h2 className={`${styles.headline} reveal`}>Money Grows Where We Plant It</h2>
         <div className={`${styles.newDropBadge} reveal`}>
           <span>NEW T-SHIRT DROP — $20</span>

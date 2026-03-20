@@ -5,9 +5,9 @@
 }
 
 .hero {
-  padding: 100px 0 60px;
+  padding: 120px 0 60px;
   text-align: center;
-  background: linear-gradient(to bottom, #111, black);
+  background: radial-gradient(circle at center, #111 0%, black 100%);
 }
 
 .hero h1 {
@@ -21,7 +21,8 @@
   font-weight: 700;
   text-transform: uppercase;
   color: var(--gold);
-  letter-spacing: 0.2em;
+  letter-spacing: 0.3em;
+  font-size: 0.9rem;
 }
 
 .container {
@@ -30,22 +31,169 @@
   padding: 0 20px;
 }
 
-.contactForm {
-  padding: 80px 0;
+/* Quiz Section */
+.quizSection {
+  padding: 60px 0 120px;
+}
+
+.progressTracker {
+  max-width: 400px;
+  margin: 0 auto 60px;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+.progressLine {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(255,255,255,0.1);
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.progressLine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--progress);
+  height: 100%;
+  background: var(--money-green);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 10px var(--money-green);
+}
+
+.stepIndicator {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #111;
+  border: 2px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 800;
+  z-index: 2;
+  transition: all 0.3s ease;
+  color: #555;
+}
+
+.stepActive {
+  background: var(--money-green);
+  border-color: var(--money-green);
+  color: black;
+  box-shadow: 0 0 15px var(--money-green);
 }
 
 .formWrapper {
-  max-width: 600px;
+  max-width: 700px;
   margin: 0 auto;
 }
 
-.form {
+.quizStep {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.quizStep h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 2rem;
+  color: white;
+}
+
+.quizText {
+  text-align: center;
+  color: #888;
+  margin-bottom: 40px;
+  font-size: 1.1rem;
+}
+
+.options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.optionBtn {
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.optionBtn span {
+  font-weight: 800;
+  font-size: 1.2rem;
+  font-family: var(--font-primary);
+  color: white;
+}
+
+.optionBtn p {
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.optionBtn:hover {
+  border-color: var(--money-green);
+  background: rgba(71, 133, 39, 0.05);
+  transform: translateY(-5px);
+  color: var(--money-green);
+}
+
+.backLink {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: #555;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+}
+
+.backLink:hover {
+  color: var(--gold);
+}
+
+.finalForm {
   background: #111;
   padding: 40px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 50px rgba(0,0,0,0.5);
 }
 
+.formActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.formActions .backLink {
+  margin-top: 0;
+}
+
+.formActions .submitBtn {
+  width: auto;
+  min-width: 200px;
+}
+
+/* Base Styles */
 .formGroup {
   margin-bottom: 30px;
 }
@@ -79,16 +227,15 @@
 }
 
 .textarea {
-  min-height: 150px;
+  min-height: 120px;
   resize: none;
 }
 
 .submitBtn {
-  width: 100%;
   background: var(--money-green);
   color: black;
   border: none;
-  padding: 15px;
+  padding: 15px 30px;
   font-weight: 800;
   font-size: 0.9rem;
   text-transform: uppercase;
@@ -96,40 +243,47 @@
   transition: all 0.3s ease;
 }
 
-.submitBtn:hover {
+.submitBtn:hover:not(:disabled) {
   background: var(--gold);
   transform: translateY(-3px);
   box-shadow: 0 10px 20px rgba(0,0,0,0.3);
 }
 
-@media (max-width: 768px) {
-  .hero h1 {
-    font-size: 3rem;
-  }
+.submitBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .successState {
   text-align: center;
-  padding: 60px 40px;
+  padding: 80px 40px;
   background: #111;
   border: 1px solid var(--money-green);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  animation: scaleUp 0.5s ease-out;
 }
 
 .successState h2 {
   margin: 10px 0;
+  font-size: 2.5rem;
 }
 
-.successState p {
-  color: #888;
-  line-height: 1.6;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.loading {
-  color: #666;
-  text-align: center;
-  padding: 100px 0;
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media (max-width: 768px) {
+  .hero h1 { font-size: 3rem; }
+  .options { grid-template-columns: 1fr; }
+  .optionBtn { padding: 30px 20px; }
+  .progressTracker { max-width: 300px; }
 }

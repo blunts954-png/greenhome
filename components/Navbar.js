@@ -21,7 +21,7 @@ export default function Navbar() {
       <div className={styles.container}>
         <div className={styles.logo}>
           <Link href="/">
-            <Image src="/logo.png" alt="HGM Logo" width={50} height={50} className={styles.navLogo} />
+            <Image src="/logo.jpg" alt="HGM Logo" width={50} height={50} className={styles.navLogo} />
           </Link>
         </div>
         

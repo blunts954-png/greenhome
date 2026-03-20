@@ -22,12 +22,12 @@ export default function ShopPage() {
         <div className={styles.container}>
           <div className={styles.infoGrid}>
             <div className={styles.infoBox}>
-              <h3>In-Store Pickup Only</h3>
-              <p>Reserve online, pay and pick up in-store.</p>
+              <h3>Verified Secure Checkout</h3>
+              <p>Square & Stripe integrated for seamless transactions.</p>
             </div>
             <div className={styles.infoBox}>
-              <h3>Cash on Pickup</h3>
-              <p>Secure in-person transactions only.</p>
+              <h3>Valley Wide Delivery</h3>
+              <p>Secure logistics for the 661 territory.</p>
             </div>
             <div className={styles.infoBox}>
               <h3>Bakersfield Roots</h3>
