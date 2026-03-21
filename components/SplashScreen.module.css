@@ -1,4 +1,5 @@
 .splashOverlay {
+  --splash-logo-size: clamp(220px, 26vw, 320px);
   position: fixed;
   top: 0;
   left: 0;
@@ -44,8 +45,8 @@
 /* Logo Spitting Effect */
 .logoContainer {
   position: relative;
-  width: 400px;
-  height: 400px;
+  width: var(--splash-logo-size);
+  height: var(--splash-logo-size);
   z-index: 10;
   display: flex;
   transition: transform 0.5s ease;
@@ -119,7 +120,7 @@
   position: absolute;
   top: 0;
   left: 50%;
-  width: 400px;
+  width: calc(var(--splash-logo-size) + 80px);
   height: 100%;
   transform: translateX(-50%);
   z-index: 5;
@@ -244,4 +245,22 @@
 
 .hidden {
   display: none;
+}
+
+@media (max-width: 768px) {
+  .splashOverlay {
+    --splash-logo-size: clamp(180px, 54vw, 240px);
+  }
+
+  .logoBadge {
+    padding: 14px;
+  }
+
+  .smokeWelcome {
+    gap: 8px;
+  }
+
+  .smokeLetter {
+    font-size: clamp(2rem, 10vw, 3rem);
+  }
 }

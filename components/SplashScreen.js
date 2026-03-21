@@ -55,8 +55,8 @@ export default function SplashScreen({ onComplete }) {
             <Image 
               src="/logo.jpg" 
               alt="Home Grown Money Logo" 
-              width={400} 
-              height={400} 
+              width={320} 
+              height={320} 
               className={styles.mainLogo}
               priority
             />
@@ -67,8 +67,8 @@ export default function SplashScreen({ onComplete }) {
             <Image 
               src="/logo.jpg" 
               alt="Home Grown Money Logo" 
-              width={400} 
-              height={400} 
+              width={320} 
+              height={320} 
               className={styles.mainLogo}
               priority
             />
