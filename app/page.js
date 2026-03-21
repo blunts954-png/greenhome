@@ -2,6 +2,7 @@ import Hero from "@/components/Hero";
 import ProductGrid from "@/components/ProductGrid";
 import ValueProp from "@/components/ValueProp";
 import SocialFeed from '@/components/SocialFeed';
+import VinylPlayer from '@/components/VinylPlayer';
 import Link from 'next/link';
 import styles from './page.module.css';
 import { Target, Users, TrendingUp, Download } from 'lucide-react';
@@ -10,6 +11,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <VinylPlayer />
       <ValueProp />
 
       {/* Results / Stats Section */}
