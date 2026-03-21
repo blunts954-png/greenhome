@@ -271,34 +271,6 @@
   font-size: 2.5rem;
 }
 
-.directEmailBox {
-  margin-top: 24px;
-  display: grid;
-  gap: 10px;
-  color: #8c8c8c;
-  font-size: 0.88rem;
-  line-height: 1.6;
-}
-
-.directEmailBox a {
-  color: var(--gold);
-}
-
-.directEmailLink {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
-  min-width: 200px;
-  padding: 13px 20px;
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.4);
-  color: var(--gold);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -311,12 +283,7 @@
 
 @media (max-width: 768px) {
   .hero h1 { font-size: 3rem; }
-  .subtitle { letter-spacing: 0.16em; line-height: 1.5; }
   .options { grid-template-columns: 1fr; }
   .optionBtn { padding: 30px 20px; }
   .progressTracker { max-width: 300px; }
-  .finalForm { padding: 24px 18px; }
-  .formActions { flex-direction: column-reverse; align-items: stretch; gap: 18px; }
-  .formActions .submitBtn { width: 100%; min-width: 0; }
-  .successState { padding: 48px 20px; }
 }

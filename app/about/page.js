@@ -24,9 +24,9 @@ export default function AboutPage() {
               <h2 className="brand-font">Built, Not Borrowed</h2>
               <p>
                 Home Grown Money was born the day our founder realized nobody was coming to save him, 
-                sponsor him, or stamp his name with a cosign. It was either build his own lane or stay stuck in traffic. 
-                In Bakersfield, he planted a seed with no investors, no endorsements, and no &quot;big organization&quot; umbrella, 
-                just muscle, faith, and a stubborn refusal to fold.
+                sponsor him, or stamp his name with a cosign – it was either build his own lane or die in traffic. 
+                In a small corner of 13O E. 21st St & 210 Goodman St, he planted a seed with no investors, 
+                no endorsements, and no &quot;big organization&quot; umbrella – just muscle, faith, and a stubborn refusal to fold.
               </p>
               <div className={styles.quoteBox}>
                 <p className={styles.quote}>

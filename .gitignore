@@ -35,4 +35,3 @@ yarn-error.log*
 *.tsbuildinfo
 # build logs
 build_log*.txt
-build_*.txt

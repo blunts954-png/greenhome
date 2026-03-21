@@ -1,5 +1,7 @@
 import { Twilio } from 'twilio';
-import { sendMail } from '@/lib/server-mail';
+import { Resend } from 'resend';
+
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 const recipients = [
   process.env.ALERT_PHONE_1,
@@ -12,7 +14,7 @@ const recipients = [
 
 export async function POST(req) {
   try {
-    const { orderId, customerName, customerEmail, customerPhone, customerAddress, total, type, payment, items } = await req.json();
+    const { orderId, customerName, customerEmail, total, type, items } = await req.json();
 
     // 1. Send SMS via Twilio
     const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -32,29 +34,26 @@ export async function POST(req) {
       }
     }
 
-    // 2. Send EMail via SMTP/Gmail/Resend
-    await sendMail({
-      to: process.env.ORDER_ALERT_TO_EMAIL,
-      subject: `New Order: ${orderId}`,
-      text: `Customer: ${customerName}\nEmail: ${customerEmail}\nPhone: ${customerPhone || 'Not provided'}\nAddress: ${customerAddress || 'Not provided'}\nTotal: $${total}\nType: ${type}\nPayment: ${payment || 'Not provided'}`,
-      replyTo: customerEmail,
-      html: `
-        <div style="font-family: sans-serif; padding: 20px; background: #0a0e05; color: #fff;">
-          <h2 style="color: #478527;">NEW ORDER RECEIVED: ${orderId}</h2>
-          <p><strong>Customer:</strong> ${customerName}</p>
-          <p><strong>Email:</strong> ${customerEmail || 'Not provided'}</p>
-          <p><strong>Phone:</strong> ${customerPhone || 'Not provided'}</p>
-          <p><strong>Address:</strong> ${customerAddress || 'Not provided'}</p>
-          <p><strong>Total:</strong> $${total}</p>
-          <p><strong>Type:</strong> ${type}</p>
-          <p><strong>Payment:</strong> ${payment || 'Not provided'}</p>
-          <h3>Items:</h3>
-          <ul>
-            ${items.map(item => `<li>${item.name} (${item.quantity}) - $${item.price}</li>`).join('')}
-          </ul>
-        </div>
-      `
-    });
+    // 2. Send EMail via Resend
+    if (resend) {
+      await resend.emails.send({
+        from: 'Home Grown Money <onboarding@resend.dev>',
+        to: ['chaoticallyorganizedai@gmail.com'],
+        subject: `🚨 New Order: ${orderId}`,
+        html: `
+          <div style="font-family: sans-serif; padding: 20px; background: #0a0e05; color: #fff;">
+            <h2 style="color: #478527;">NEW ORDER RECEIVED: ${orderId}</h2>
+            <p><strong>Customer:</strong> ${customerName}</p>
+            <p><strong>Total:</strong> $${total}</p>
+            <p><strong>Type:</strong> ${type}</p>
+            <h3>Items:</h3>
+            <ul>
+              ${items.map(item => `<li>${item.name} (${item.quantity}) - $${item.price}</li>`).join('')}
+            </ul>
+          </div>
+        `
+      });
+    }
 
     return new Response(JSON.stringify({ success: true }), { status: 200 });
   } catch (error) {

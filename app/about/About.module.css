@@ -187,29 +187,9 @@
   .hero h1 {
     font-size: 3.5rem;
   }
-
-  .subtitle {
-    letter-spacing: 0.18em;
-    font-size: 0.9rem;
-  }
-
   .content {
     gap: 40px;
   }
-
-  .text {
-    min-width: 0;
-  }
-
-  .text p {
-    font-size: 1rem;
-    line-height: 1.75;
-  }
-
-  .quote {
-    font-size: 1.15rem !important;
-  }
-
   .timelineItem {
     flex-direction: column;
     gap: 10px;
@@ -223,9 +203,5 @@
   }
   .container {
     padding: 0 20px;
-  }
-
-  .ctaSection h2 {
-    font-size: 2.4rem;
   }
 }

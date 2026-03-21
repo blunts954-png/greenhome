@@ -2,10 +2,8 @@
 
 import { useState } from 'react';
 import styles from './Contact.module.css';
-import { CheckCircle, ArrowLeft, Target, Briefcase, Shirt } from 'lucide-react';
+import { Send, CheckCircle, ArrowRight, ArrowLeft, Target, Briefcase, Shirt, Sprout } from 'lucide-react';
 import audioEngine from '@/lib/AudioEngine';
-
-const DIRECT_EMAIL = 'moneygrowontrees80@gmail.com';
 
 export default function ContactPage() {
   const [step, setStep] = useState(1);
@@ -19,16 +17,6 @@ export default function ContactPage() {
   const [status, setStatus] = useState('idle'); // idle, sending, success, error
 
   const totalSteps = 3;
-  const directEmailHref = `mailto:${DIRECT_EMAIL}?subject=${encodeURIComponent(`HGM ${formData.intent || 'Inquiry'}${formData.category ? ` - ${formData.category}` : ''}`)}&body=${encodeURIComponent(
-    [
-      `Name: ${formData.name || ''}`,
-      `Email: ${formData.email || ''}`,
-      `Intent: ${formData.intent || ''}`,
-      `Category: ${formData.category || ''}`,
-      '',
-      formData.message || ''
-    ].join('\n')
-  )}`;
 
   const handleNext = () => {
     try { audioEngine.playClick(); } catch(e){}
@@ -75,23 +63,23 @@ export default function ContactPage() {
         return (
           <div className={styles.quizStep}>
             <h2 className="brand-font">Step 1: Define Your Hustle</h2>
-            <p className={styles.quizText}>Are you reaching out as a customer or about a business opportunity?</p>
+            <p className={styles.quizText}>Are you planting a single seed or preparing the whole field?</p>
             <div className={styles.options}>
               <button 
-                className={`${styles.optionBtn} ${formData.intent === 'Customer' ? styles.active : ''}`}
-                onClick={() => selectOption('intent', 'Customer')}
+                className={`${styles.optionBtn} ${formData.intent === 'Individual' ? styles.active : ''}`}
+                onClick={() => selectOption('intent', 'Individual')}
               >
                 <Target size={40} />
-                <span>CUSTOMER</span>
-                <p>Order questions, merch help, or general support.</p>
+                <span>INDIVIDUAL CUSTOMER</span>
+                <p>Looking for a fresh drop.</p>
               </button>
               <button 
-                className={`${styles.optionBtn} ${formData.intent === 'Business' ? styles.active : ''}`}
-                onClick={() => selectOption('intent', 'Business')}
+                className={`${styles.optionBtn} ${formData.intent === 'Wholesale' ? styles.active : ''}`}
+                onClick={() => selectOption('intent', 'Wholesale')}
               >
                 <Briefcase size={40} />
-                <span>BUSINESS / COLLAB</span>
-                <p>Press, booking, partnerships, or wholesale.</p>
+                <span>WHOLESALE PARTNER</span>
+                <p>Bulk orders & distribution.</p>
               </button>
             </div>
           </div>
@@ -99,24 +87,24 @@ export default function ContactPage() {
       case 2:
         return (
           <div className={styles.quizStep}>
-            <h2 className="brand-font">Step 2: Choose the Topic</h2>
-            <p className={styles.quizText}>Tell us what the message is about so we can route it fast.</p>
+            <h2 className="brand-font">Step 2: Choose Your Product Root</h2>
+            <p className={styles.quizText}>Where do you want the money to grow?</p>
             <div className={styles.options}>
               <button 
-                className={`${styles.optionBtn} ${formData.category === 'Merch' ? styles.active : ''}`}
-                onClick={() => selectOption('category', 'Merch')}
+                className={`${styles.optionBtn} ${formData.category === 'Apparel' ? styles.active : ''}`}
+                onClick={() => selectOption('category', 'Apparel')}
               >
                 <Shirt size={40} />
-                <span>MERCH / ORDER</span>
-                <p>Store questions, shipping, sizing, and support.</p>
+                <span>HGM APPAREL</span>
+                <p>Streetwear & Heritage gear.</p>
               </button>
               <button 
-                className={`${styles.optionBtn} ${formData.category === 'Press / Booking' ? styles.active : ''}`}
-                onClick={() => selectOption('category', 'Press / Booking')}
+                className={`${styles.optionBtn} ${formData.category === 'Cannabis' ? styles.active : ''}`}
+                onClick={() => selectOption('category', 'Cannabis')}
               >
-                <Briefcase size={40} />
-                <span>PRESS / BOOKING</span>
-                <p>Features, appearances, business, and collaborations.</p>
+                <Sprout size={40} />
+                <span>PREMIUM CANNABIS</span>
+                <p>Vape, Flower, and Extracts.</p>
               </button>
             </div>
             <button onClick={handleBack} className={styles.backLink}><ArrowLeft size={16}/> Back</button>
@@ -166,14 +154,6 @@ export default function ContactPage() {
                   {status === 'sending' ? 'TRANSMITTING...' : 'FINALIZE CONNECTION'}
                 </button>
               </div>
-              <div className={styles.directEmailBox}>
-                <p>Direct inbox backup: <a href={`mailto:${DIRECT_EMAIL}`}>{DIRECT_EMAIL}</a></p>
-                {status === 'error' && (
-                  <a href={directEmailHref} className={styles.directEmailLink}>
-                    Email Us Directly
-                  </a>
-                )}
-              </div>
             </form>
           </div>
         );
@@ -187,7 +167,7 @@ export default function ContactPage() {
       <section className={styles.hero}>
         <div className={styles.container}>
           <h1 className="brand-font text-gradient">The Growth Protocol</h1>
-          <p className={styles.subtitle}>Merch support, business inquiries, and label connections in one place.</p>
+          <p className={styles.subtitle}>Money grows where we plant it. Let&apos;s map your trajectory.</p>
         </div>
       </section>
 
