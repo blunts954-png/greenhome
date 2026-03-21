@@ -278,7 +278,7 @@ export default function CartDrawer() {
                   animate={{ opacity: 1, scale: 1 }}
                 >
                   <div className={styles.successLogo}>
-                    <Image src="/logo_v3.jpg" alt="HGM" width={52} height={52} />
+                    <Image src="/logo-mark.png" alt="HGM" width={36} height={56} />
                   </div>
                   <CheckCircle size={60} className={styles.successIcon} />
                   <h3>

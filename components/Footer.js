@@ -13,7 +13,7 @@ export default function Footer() {
       <div className={styles.container}>
         {/* Brand Section */}
         <div className={styles.brand}>
-          <Image src="/logo_v3.jpg" alt="HGM Logo" width={88} height={88} className={styles.footerLogo} />
+          <Image src="/logo-mark.png" alt="HGM Logo" width={60} height={92} className={styles.footerLogo} />
           <p className={styles.tagline}>Money Grows Where We Plant It.</p>
           <div className={styles.newsletter}>
             <h4>Be First for the Next Drop</h4>

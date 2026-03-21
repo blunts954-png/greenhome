@@ -21,6 +21,7 @@
 }
 
 .footerLogo {
+  display: block;
   margin-bottom: 25px;
   filter: drop-shadow(0 0 30px rgba(71, 133, 39, 0.2));
 }

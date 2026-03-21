@@ -60,7 +60,7 @@ export default function ProductGrid() {
     <section className={styles.section} id="shop">
       <div className={styles.header}>
         <div className={styles.categoryHead}>
-          <Image src="/logo_v3.jpg" alt="HGM Logo" width={60} height={60} className={styles.catLogo} />
+          <Image src="/logo-mark.png" alt="HGM Logo" width={44} height={68} className={styles.catLogo} />
           <h2 className="brand-font reveal">Record Label Merch</h2>
         </div>
 

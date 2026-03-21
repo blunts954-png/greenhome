@@ -53,10 +53,10 @@ export default function SplashScreen({ onComplete }) {
         <div className={styles.logoHalfLeft}>
           <div className={styles.logoBadge}>
             <Image 
-              src="/logo.jpg" 
+              src="/logo-mark.png" 
               alt="Home Grown Money Logo" 
-              width={320} 
-              height={320} 
+              width={260} 
+              height={410} 
               className={styles.mainLogo}
               priority
             />
@@ -65,10 +65,10 @@ export default function SplashScreen({ onComplete }) {
         <div className={styles.logoHalfRight}>
           <div className={styles.logoBadge}>
             <Image 
-              src="/logo.jpg" 
+              src="/logo-mark.png" 
               alt="Home Grown Money Logo" 
-              width={320} 
-              height={320} 
+              width={260} 
+              height={410} 
               className={styles.mainLogo}
               priority
             />
