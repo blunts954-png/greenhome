@@ -36,3 +36,4 @@ yarn-error.log*
 # build logs
 build_log*.txt
 build_*.txt
+local_build_error*.log
