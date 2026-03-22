@@ -130,7 +130,7 @@ export default function ProductGrid() {
         <div className={styles.categoryHead}>
           <Image src="/logo-mark.png" alt="HGM Logo" width={44} height={68} className={styles.catLogo} />
           <h2 className="brand-font reveal">
-            {activeStore === 'Apparel' ? 'Apparel & Accessories' : 'Bakersfield Local Cannabis Menu'}
+            {activeStore === 'Apparel' ? 'Apparel & Accessories' : 'Bakersfield Delivery Menu'}
           </h2>
         </div>
 

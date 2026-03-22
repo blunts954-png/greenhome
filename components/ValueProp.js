@@ -3,18 +3,18 @@ import styles from './ValueProp.module.css';
 
 const VALUES = [
   {
-    title: 'Bakersfield Rooted',
-    description: 'Built from the ground up in Bakersfield with a local cannabis menu and branded apparel that both represent the business the right way.',
+    title: 'All On Da Muscle',
+    description: 'Bakersfield-born and bred with zero outside investors. Home Grown Money is built on pure hustle and unwavering self-belief. APTTMH.',
     icon: <TrendingUp className={styles.iconElement} />
   },
   {
-    title: 'Flower + Fits',
-    description: 'The local menu stays separated and age-gated, while tees, hats, and combos stay photographed, organized, and easy to reserve.',
+    title: 'Culture & Community',
+    description: 'We host the city\'s Puff & Paint brunches and community gatherings. From 130 E. 21st St to Wake & Bake Blvd, we are local staples.',
     icon: <Award className={styles.iconElement} />
   },
   {
-    title: 'Clear Fulfillment',
-    description: 'Apparel ships nationwide through Stripe checkout. Cannabis reservations stay 21+ and local to Bakersfield pickup.',
+    title: 'Nationwide & Local',
+    description: 'Premium apparel ships US-wide via Stripe checkout. Local 21+ cannabis delivery stays verified in Bakersfield and Riverside.',
     icon: <Users className={styles.iconElement} />
   }
 ];
