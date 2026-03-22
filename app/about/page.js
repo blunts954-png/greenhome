@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export const metadata = {
   title: "Our Story | Home Grown Money",
-  description: "The origin of Home Grown Money. Founded in Bakersfield, rooted in persistence, and built for the hustle.",
+  description: "The origin of Home Grown Money, the Bakersfield cannabis business that also built a branded apparel lane around the same roots.",
 };
 
 export default function AboutPage() {
@@ -23,21 +23,17 @@ export default function AboutPage() {
             <div className={`${styles.text} reveal`}>
               <h2 className="brand-font">Built, Not Borrowed</h2>
               <p>
-                Home Grown Money was born the day our founder realized nobody was coming to save him, 
-                sponsor him, or stamp his name with a cosign – it was either build his own lane or die in traffic. 
-                In a small corner of 13O E. 21st St & 210 Goodman St, he planted a seed with no investors, 
-                no endorsements, and no &quot;big organization&quot; umbrella – just muscle, faith, and a stubborn refusal to fold.
+                Home Grown Money was built in Bakersfield as a cannabis business rooted in local hustle, consistency, and self-made growth. 
+                Apparel came next, not as a separate company, but as an extension of the same identity that built the local menu and the customer base around it.
               </p>
               <div className={styles.quoteBox}>
                 <p className={styles.quote}>
-                  &quot;That moment turned a hustler into a brand architect, when &apos;nothing for sale, just branding&apos; 
-                  stopped being a caption and became a code he lived by.&quot;
+                  &quot;The plant built the roots. The clothing carried the name. Both sides of the business grew out of Bakersfield the same way: local first and built from the ground up.&quot;
                 </p>
               </div>
               <p>
-                From that day forward, every event, every reel, every late-night idea stopped being content 
-                and started being proof that belief in your own name can grow into a street-certified legacy. 
-                We don&apos;t manufacture hype—we manufacture heritage.
+                From there, the mission stayed simple: keep the local menu clear, keep the apparel real, and make sure the business never loses the city it came from. 
+                Home Grown Money is still built around that same code today.
               </p>
             </div>
             <div className={`${styles.imageBox} reveal`}>
@@ -61,28 +57,28 @@ export default function AboutPage() {
               <div className={styles.year}>2022</div>
               <div className={styles.event}>
                 <h3>The First Seed</h3>
-                <p>HGM launched with 3 designs out of a garage in East Bakersfield.</p>
+                <p>Home Grown Money started building its local cannabis roots in Bakersfield.</p>
               </div>
             </div>
             <div className={`${styles.timelineItem} reveal`}>
               <div className={styles.year}>2023</div>
               <div className={styles.event}>
                 <h3>The Bloom</h3>
-                <p>Expanded to the full &apos;Money Grows&apos; collection. High-end textiles met the hustle.</p>
+                <p>The brand expanded into apparel so customers could wear the identity the business was building locally.</p>
               </div>
             </div>
             <div className={`${styles.timelineItem} reveal`}>
               <div className={styles.year}>2024</div>
               <div className={styles.event}>
                 <h3>Rooted Deep</h3>
-                <p>Opened our first flagship presence and collaborated with local Valley artists.</p>
+                <p>The business tightened its Bakersfield presence with a clearer local menu and more consistent product identity.</p>
               </div>
             </div>
             <div className={`${styles.timelineItem} reveal`}>
               <div className={styles.year}>2026</div>
               <div className={styles.event}>
                 <h3>The Harvest</h3>
-                <p>HGM becomes a global symbol for those who cultivate their own future.</p>
+                <p>Home Grown Money runs as a cannabis business with apparel attached, not the other way around.</p>
               </div>
             </div>
           </div>
@@ -91,9 +87,9 @@ export default function AboutPage() {
 
       <section className={`${styles.ctaSection} reveal`}>
         <div className={styles.container}>
-          <h2 className="brand-font">Join the Movement</h2>
-          <p>Don&apos;t just watch the growth. Be part of the cultivation.</p>
-          <Link href="/shop" className={styles.ctaBtn}>Shop the Collection</Link>
+          <h2 className="brand-font">Tap Into the Store</h2>
+          <p>Browse the apparel drop or enter the Bakersfield local menu.</p>
+          <Link href="/shop" className={styles.ctaBtn}>Open the Store</Link>
         </div>
       </section>
     </div>

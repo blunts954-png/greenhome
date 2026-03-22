@@ -23,23 +23,24 @@ const geistMono = localFont({
 const SITE_URL = "https://homegrownmoney.com";
 
 export const metadata = {
-  title: "Home Grown Money | Official Merch Store",
-  description: "Shop official Home Grown Money merch with nationwide shipping and secure Stripe checkout for shipping orders.",
+  title: "Home Grown Money | Bakersfield & Riverside Cannabis Delivery & Apparel",
+  description: "Bakersfield & Riverside's premier cannabis delivery and reserve menu. Shop local weed or branded apparel with nationwide shipping and Bakersfield pickup.",
   keywords: [
+    "Bakersfield cannabis delivery",
+    "Riverside cannabis delivery",
     "Home Grown Money",
-    "Home Grown Money merch",
-    "record label merch",
-    "HGM tees",
-    "HGM hats",
-    "streetwear merch"
+    "HGM apparel",
+    "local weed delivery Bakersfield",
+    "21+ cannabis menu",
+    "HGM hoodies and hats"
   ],
   metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Home Grown Money | Official Merch Store",
-    description: "Official Home Grown Money merch with nationwide shipping and secure Stripe checkout for shipping orders.",
+    title: "Home Grown Money | Bakersfield & Riverside Cannabis Delivery & Apparel",
+    description: "Bakersfield & Riverside cannabis reservations for local delivery, plus branded apparel with nationwide shipping and Stripe checkout.",
     url: SITE_URL,
     siteName: "Home Grown Money",
     images: [
@@ -56,7 +57,7 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Home Grown Money",
-    description: "Official Home Grown Money merch with nationwide shipping.",
+    description: "Bakersfield & Riverside cannabis reservations and branded apparel.",
     images: ["/images/hero-bg.png"],
   },
 };
@@ -79,12 +80,13 @@ export default function RootLayout({ children }) {
               "name": "Home Grown Money",
               "image": `${SITE_URL}/images/hero-bg.png`,
               "url": SITE_URL,
-              "description": "Official Home Grown Money merch storefront with nationwide shipping and secure Stripe checkout for shipping orders.",
+              "description": "Bakersfield and Riverside cannabis company providing local delivery and reserve menus, plus premium apparel.",
               "priceRange": "$$",
               "address": {
                 "@type": "PostalAddress",
                 "addressLocality": "Bakersfield",
                 "addressRegion": "CA",
+                "postalCode": "93301",
                 "addressCountry": "US"
               },
               "geo": {
@@ -93,15 +95,23 @@ export default function RootLayout({ children }) {
                 "longitude": -119.0187
               },
               "areaServed": [
-                {
-                  "@type": "City",
-                  "name": "Bakersfield"
-                },
-                {
-                  "@type": "AdministrativeArea",
-                  "name": "Kern County"
-                }
+                { "@type": "City", "name": "Bakersfield" },
+                { "@type": "City", "name": "Riverside" },
+                { "@type": "State", "name": "California" }
               ],
+              "hasOfferCatalog": {
+                "@type": "OfferCatalog",
+                "name": "Local Menu Highlights",
+                "itemListElement": [
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cannabis Delivery" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Apparel Shipping" } }
+                ]
+              },
+              "potentialAction": {
+                "@type": "OrderAction",
+                "target": `${SITE_URL}/shop`,
+                "deliveryMethod": ["http://purl.org/goodrelations/v1#DeliveryModeDirectDelivery", "http://purl.org/goodrelations/v1#PickupInStore"]
+              },
               "sameAs": [
                 "https://instagram.com/homegrownmoney",
                 "https://facebook.com/homegrownmoney"
@@ -124,4 +134,3 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
-

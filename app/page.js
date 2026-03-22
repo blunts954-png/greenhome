@@ -29,7 +29,7 @@ export default function Home() {
             <div className={styles.statCard}>
               <TrendingUp size={40} color="#478527" />
               <h3>PRIME</h3>
-              <p>QUALITY THAT REFINES THE STREETS</p>
+              <p>LOCAL FLOWER, FITS, AND REAL INVENTORY</p>
             </div>
           </div>
         </div>
@@ -40,10 +40,8 @@ export default function Home() {
           <div className={styles.storyContent}>
             <h2 className="brand-font text-gradient">Cultivated in the Valley</h2>
             <p>
-              Home Grown Money was born the day he realized nobody was coming to save him, sponsor him, 
-              or stamp his name with a cosign. It was either build his own lane or stay stuck in traffic. 
-              In Bakersfield, he planted a seed with no investors, no endorsements, and no big-organization umbrella, 
-              just muscle, faith, and a stubborn refusal to fold.
+              Home Grown Money was built in Bakersfield as a cannabis business first, with apparel added as an extension of the brand. 
+              The local menu stays rooted in the city, the clothing carries the same identity nationwide, and both sides of the business are meant to feel direct, clean, and real.
             </p>
             <Link href="/about" className={styles.storyBtn}>Read Our Story</Link>
           </div>
@@ -76,14 +74,14 @@ export default function Home() {
       <section className={`${styles.ctaBanner} reveal`}>
         <div className={styles.container}>
           <div className={styles.ctaContent}>
-            <h2 className="brand-font">SECURE THE NEW DROP</h2>
-            <p>Every currently photographed tee, hat, and combo in this drop is live in the store and ready for nationwide delivery. As long as the color and style you want are available, we can build the combo that way.</p>
+            <h2 className="brand-font">APPAREL + LOCAL MENU</h2>
+            <p>Every photographed tee, hat, and combo is live for shipping or Bakersfield pickup. The local cannabis menu is separated, age-gated, and reserved for 21+ Bakersfield pickup only.</p>
             <div className={styles.ctaValues}>
               <div className={styles.vItem}><span>TEE</span> <strong>$20</strong></div>
               <div className={styles.vItem}><span>HAT</span> <strong>$15</strong></div>
               <Link href="/shop/hgm-combo-deal" className={styles.vItem}><span>COMBOS</span> <strong>$30</strong></Link>
             </div>
-            <Link href="/shop" className={styles.ctaShopBtn}>SHOP THE DROP NOW</Link>
+            <Link href="/shop?store=cannabis" className={styles.ctaShopBtn}>VIEW THE LOCAL MENU</Link>
           </div>
         </div>
       </section>

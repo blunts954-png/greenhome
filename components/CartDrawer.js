@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useCart } from '@/lib/cart-context';
 import { useOrders } from '@/lib/orders-context';
-import { X, Trash2, ShoppingBag, CheckCircle, Truck, CreditCard, ChevronRight, Mail, Phone, MapPin, MessageSquare, UserRound } from 'lucide-react';
+import { X, Trash2, ShoppingBag, CheckCircle, Truck, Package, CreditCard, ChevronRight, Mail, Phone, MapPin, MessageSquare, UserRound } from 'lucide-react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import audioEngine from '@/lib/AudioEngine';
@@ -17,6 +17,7 @@ const INITIAL_FORM = {
   lastName: '',
   phone: '',
   email: '',
+  birthDate: '',
   address: '',
   notes: '',
   payment: 'Card'
@@ -41,7 +42,7 @@ function getPaymentLabel(payment, orderType) {
     return payment;
   }
 
-  return orderType === 'Shipping' ? 'Stripe card before shipment' : payment;
+  return orderType === 'Shipping' ? 'Stripe card before shipment' : 'Card at pickup';
 }
 
 function formatPaymentText(value = '') {
@@ -66,8 +67,32 @@ export default function CartDrawer() {
   const [orderError, setOrderError] = useState('');
   const [submittedOrder, setSubmittedOrder] = useState(null);
 
-  const paymentOptions = useMemo(() => ['Card', 'Venmo'], []);
-  const needsHostedCardStep = formData.payment === 'Card' && orderType === 'Shipping';
+  const hasLocalOnlyItems = useMemo(
+    () => cartItems.some((item) => item.storeSection === 'cannabis' || item.pickupOnly),
+    [cartItems]
+  );
+
+  const fulfillmentOptions = useMemo(
+    () => {
+      // Apparel only orders can ship US-wide
+      if (!hasLocalOnlyItems) return ['Shipping', 'Pickup', 'Delivery'];
+      // Cannabis or mixed orders stay local
+      return ['Pickup', 'Delivery'];
+    },
+    [hasLocalOnlyItems]
+  );
+
+  const paymentOptions = useMemo(
+    () => {
+      if (orderType === 'Shipping') return ['Card'];
+      // Both Apparel and Cannabis can now use Card or Cash locals
+      return ['Card', 'Cash'];
+    },
+    [orderType]
+  );
+
+  const needsHostedCardStep = formData.payment === 'Card';
+
   const checkoutPayload = useMemo(
     () => ({
       customer: {
@@ -76,8 +101,8 @@ export default function CartDrawer() {
         name: `${formData.firstName.trim()} ${formData.lastName.trim()}`.trim(),
         phone: formData.phone.trim(),
         email: formData.email.trim(),
-        birthDate: '',
-        address: formData.address.trim(),
+        birthDate: formData.birthDate || '',
+        address: orderType === 'Pickup' ? '' : formData.address.trim(),
         notes: formData.notes.trim()
       },
       items: cartItems.map((item) => ({
@@ -94,6 +119,12 @@ export default function CartDrawer() {
     }),
     [cartItems, cartTotal, formData, orderType]
   );
+
+  useEffect(() => {
+    if (!fulfillmentOptions.includes(orderType)) {
+      setOrderType(fulfillmentOptions[0] || 'Pickup');
+    }
+  }, [fulfillmentOptions, orderType]);
 
   useEffect(() => {
     if (!paymentOptions.includes(formData.payment)) {
@@ -154,7 +185,7 @@ export default function CartDrawer() {
   const handleFulfillmentSubmit = (event) => {
     event.preventDefault();
 
-    if (!formData.address.trim()) {
+    if (orderType === 'Shipping' && !formData.address.trim()) {
       return;
     }
 
@@ -166,6 +197,7 @@ export default function CartDrawer() {
     audioEngine.playClick();
     setIsProcessing(true);
     setOrderError('');
+
     const orderData = {
       ...checkoutPayload
     };
@@ -235,7 +267,7 @@ export default function CartDrawer() {
   };
 
   return (
-      <AnimatePresence>
+    <AnimatePresence>
       {isDrawerOpen && (
         <motion.div
           className={styles.overlay}
@@ -272,11 +304,7 @@ export default function CartDrawer() {
 
             <div className={styles.itemsContainer}>
               {checkoutStep === 'success' ? (
-                <motion.div
-                  className={styles.successState}
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                >
+                <motion.div className={styles.successState} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }}>
                   <div className={styles.successLogo}>
                     <Image src="/logo-mark.png" alt="HGM" width={36} height={56} />
                   </div>
@@ -292,8 +320,8 @@ export default function CartDrawer() {
                     {submittedOrder?.demo
                       ? 'This demo reached the payment finish point successfully. No real order was stored and no card was charged.'
                       : submittedOrder?.paymentProvider === 'stripe'
-                        ? 'Stripe approved the card payment and the order record was saved successfully.'
-                      : 'Your order details were captured successfully. We&apos;ll follow up using the contact information you provided.'}
+                        ? 'Stripe approved the shipping payment and the order record was saved successfully.'
+                        : 'Your order details were captured successfully. We will follow up using the contact information you provided.'}
                   </p>
                   <div className={styles.orderSummaryBox}>
                     <p>Order ID: <strong>{submittedOrder?.id || 'Demo'}</strong></p>
@@ -319,13 +347,18 @@ export default function CartDrawer() {
                       {cartItems.map((item) => (
                         <div key={`${item.id}-${item.selectedSize || 'na'}`} className={styles.cartItem}>
                           <div className={styles.itemImg}>
-                            <Image src={item.image} alt={item.name} fill style={{ objectFit: 'contain' }} />
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              fill
+                              style={{ objectFit: item.storeSection === 'apparel' ? 'contain' : 'cover' }}
+                            />
                           </div>
                           <div className={styles.itemMeta}>
                             <h3>{item.name}</h3>
                             {item.selectedSize && <p className={styles.sizeInfo}>Size: {item.selectedSize}</p>}
                             <p className={styles.price}>${item.price} x {item.quantity}</p>
-                            <p className={styles.fulfillmentTag}>Ships nationwide</p>
+                            <p className={styles.fulfillmentTag}>{item.pickupOnly ? '21+ pickup only' : 'Shipping or pickup'}</p>
                           </div>
                           <button className={styles.removeBtn} onClick={() => handleRemove(item.id, item.selectedSize)} aria-label={`Remove ${item.name}`}>
                             <Trash2 size={16} />
@@ -336,13 +369,13 @@ export default function CartDrawer() {
                   )}
 
                   {checkoutStep === 'contact' && (
-                    <motion.div
-                      className={styles.checkoutForm}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                    >
+                    <motion.div className={styles.checkoutForm} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
                       <h3>Create Account</h3>
-                      <p className={styles.stepDesc}>First name, last name, phone, and email are required before checkout can continue.</p>
+                      <p className={styles.stepDesc}>
+                        {hasLocalOnlyItems
+                          ? 'First name, last name, phone, email, and date of birth are required before a 21+ local reservation can continue.'
+                          : 'First name, last name, phone, and email are required before checkout can continue.'}
+                      </p>
 
                       <form onSubmit={handleContactSubmit} className={styles.formFields}>
                         <div className={styles.fieldRow}>
@@ -387,6 +420,17 @@ export default function CartDrawer() {
                             onChange={(event) => setFormData({ ...formData, email: event.target.value })}
                           />
                         </label>
+                        {hasLocalOnlyItems && (
+                          <label className={styles.fieldLabel}>
+                            <span>Date of Birth</span>
+                            <input
+                              type="date"
+                              required
+                              value={formData.birthDate}
+                              onChange={(event) => setFormData({ ...formData, birthDate: event.target.value })}
+                            />
+                          </label>
+                        )}
                         {orderError && <p className={styles.errorText}>{orderError}</p>}
                         <button type="submit" className={styles.nextBtn}>
                           Choose Fulfillment <ChevronRight size={18} />
@@ -396,26 +440,44 @@ export default function CartDrawer() {
                   )}
 
                   {checkoutStep === 'fulfillment' && (
-                    <motion.div
-                      className={styles.checkoutForm}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                    >
+                    <motion.div className={styles.checkoutForm} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
                       <h3>Fulfillment & Payment</h3>
                       <p className={styles.stepDesc}>
-                        Enter your shipping details, then choose how you want to pay.
+                        {hasLocalOnlyItems
+                          ? 'Local 21+ orders support Pickup or Delivery. 9:30 PM deadline applies for all same-day fulfillment.'
+                          : 'Choose shipping, Pickup or Riverside/Bakersfield Delivery.'}
                       </p>
 
+                      <div className={styles.typeToggle}>
+                        {fulfillmentOptions.map((option) => (
+                          <button
+                            key={option}
+                            type="button"
+                            className={`${styles.typeBtn} ${orderType === option ? styles.activeType : ''}`}
+                            onClick={() => setOrderType(option)}
+                          >
+                            {option === 'Pickup' ? <Package size={18} /> : option === 'Delivery' ? <Truck size={18} /> : <Truck size={18} />}
+                            {option}
+                          </button>
+                        ))}
+                      </div>
+
                       <form onSubmit={handleFulfillmentSubmit} className={styles.formFields}>
-                        <label className={styles.fieldLabel}>
-                          <span><MapPin size={14} /> Shipping Address</span>
-                          <textarea
-                            required
-                            placeholder="Enter shipping address"
-                            value={formData.address}
-                            onChange={(event) => setFormData({ ...formData, address: event.target.value })}
-                          />
-                        </label>
+                        {orderType === 'Shipping' ? (
+                          <label className={styles.fieldLabel}>
+                            <span><MapPin size={14} /> Shipping Address</span>
+                            <textarea
+                              required
+                              placeholder="Enter shipping address"
+                              value={formData.address}
+                              onChange={(event) => setFormData({ ...formData, address: event.target.value })}
+                            />
+                          </label>
+                        ) : (
+                          <div className={styles.pickupAlert}>
+                            Local fulfillment is arranged in Bakersfield. 🚨 <strong>Pickups must be completed by 9:30 PM.</strong> No-shows for delivery or pickup result in an immediate permanent account/IP ban.
+                          </div>
+                        )}
 
                         <label className={styles.fieldLabel}>
                           <span><CreditCard size={14} /> Payment Method</span>
@@ -436,7 +498,7 @@ export default function CartDrawer() {
                         <label className={styles.fieldLabel}>
                           <span><MessageSquare size={14} /> Notes</span>
                           <textarea
-                            placeholder="Add sizing notes, shipping requests, or any other order details"
+                            placeholder="Add pickup timing, apparel color requests, or any other order details"
                             value={formData.notes}
                             onChange={(event) => setFormData({ ...formData, notes: event.target.value })}
                           />
@@ -450,19 +512,16 @@ export default function CartDrawer() {
                   )}
 
                   {checkoutStep === 'review' && (
-                    <motion.div
-                      className={styles.reviewContainer}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                    >
+                    <motion.div className={styles.reviewContainer} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
                       <h3>Review</h3>
                       <div className={styles.reviewCard}>
                         <p><span>Name</span><strong>{`${formData.firstName} ${formData.lastName}`.trim()}</strong></p>
                         <p><span>Phone</span><strong>{formData.phone}</strong></p>
                         <p><span>Email</span><strong>{formData.email}</strong></p>
-                        <p><span>Fulfillment</span><strong>Shipping</strong></p>
+                        <p><span>Fulfillment</span><strong>{orderType}</strong></p>
                         <p><span>Payment</span><strong>{getPaymentLabel(formData.payment, orderType)}</strong></p>
-                        <p><span>Address</span><strong>{formData.address}</strong></p>
+                        {hasLocalOnlyItems && <p><span>Date of Birth</span><strong>{formData.birthDate}</strong></p>}
+                        {orderType === 'Shipping' && <p><span>Address</span><strong>{formData.address}</strong></p>}
                         {formData.notes && <p><span>Notes</span><strong>{formData.notes}</strong></p>}
                       </div>
 
@@ -475,37 +534,31 @@ export default function CartDrawer() {
                         ))}
                       </div>
 
-                      <button
-                        className={styles.finalSubmitBtn}
-                        disabled={isProcessing}
-                        onClick={handleReviewContinue}
-                      >
+                      <button className={styles.finalSubmitBtn} disabled={isProcessing} onClick={handleReviewContinue}>
                         {isProcessing
                           ? 'Submitting...'
                           : CHECKOUT_DEMO_MODE && needsHostedCardStep
                             ? `Continue to Card Demo • $${cartTotal}`
                             : needsHostedCardStep
                               ? `Continue to Secure Card • $${cartTotal}`
-                            : `${CHECKOUT_DEMO_MODE ? 'Submit Demo Order' : 'Submit Order'} • $${cartTotal}`}
+                              : `${CHECKOUT_DEMO_MODE ? 'Submit Demo Order' : 'Submit Order'} • $${cartTotal}`}
                       </button>
                       {orderError && <p className={styles.errorText}>{orderError}</p>}
                       <p className={styles.submitNote}>
                         {CHECKOUT_DEMO_MODE && needsHostedCardStep
                           ? 'Demo checkout is active. The next step is a non-live card screen and no charge will be created.'
                           : needsHostedCardStep
-                            ? 'The next step opens Stripe secure card fields. Card details stay inside Stripe Elements and are not typed into your server.'
-                            : 'Shipping orders can be reserved with Venmo, or paid online by card when Stripe is enabled.'}
+                            ? 'Local and shipping card payments run through Stripe for immediate security.'
+                            : orderType === 'Shipping'
+                              ? 'Shipping orders require card payment before fulfillment.'
+                              : 'Cash payments are collected locally in Bakersfield and Riverside.'}
                       </p>
                     </motion.div>
                   )}
 
                   {checkoutStep === 'payment' && needsHostedCardStep && (
                     CHECKOUT_DEMO_MODE ? (
-                      <motion.div
-                        className={styles.checkoutForm}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                      >
+                      <motion.div className={styles.checkoutForm} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
                         <h3>Card Demo</h3>
                         <p className={styles.stepDesc}>
                           This is a demo payment screen only. Card details are not sent anywhere and no charge will be created.
@@ -569,14 +622,10 @@ export default function CartDrawer() {
                         </form>
                       </motion.div>
                     ) : (
-                      <motion.div
-                        className={styles.checkoutForm}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                      >
+                      <motion.div className={styles.checkoutForm} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
                         <h3>Secure Card Entry</h3>
                         <p className={styles.stepDesc}>
-                          This step is ready for Stripe Elements. Once your Stripe publishable key, secret key, and webhook secret are added, shipping card orders will confirm here and complete on the backend.
+                          This step is ready for Stripe Elements. Shipping card orders confirm here and complete on the backend.
                         </p>
 
                         <StripeCardStep

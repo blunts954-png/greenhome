@@ -272,6 +272,15 @@
   background: rgba(71, 133, 39, 0.12);
 }
 
+.pickupAlert {
+  padding: 14px 15px;
+  background: rgba(71, 133, 39, 0.08);
+  border: 1px solid rgba(71, 133, 39, 0.22);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
 .paymentOptions {
   display: grid;
   gap: 8px;

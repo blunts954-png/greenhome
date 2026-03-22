@@ -1,18 +1,26 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getProductSchema } from '@/lib/products';
 import { useCart } from '@/lib/cart-context';
 import audioEngine from '@/lib/AudioEngine';
+import AgeGate from '@/components/AgeGate';
 import styles from './ProductDetail.module.css';
 
 export default function ProductDetailClient({ product }) {
   const { addToCart } = useCart();
   const [selectedSize, setSelectedSize] = useState(product.sizes?.length === 1 ? product.sizes[0] : null);
   const [quantity, setQuantity] = useState(1);
+  const [ageVerified, setAgeVerified] = useState(false);
+  const isCannabis = product.storeSection === 'cannabis';
 
   const productSchema = getProductSchema(product);
+
+  useEffect(() => {
+    const isVerified = localStorage.getItem('age-verified') === 'true';
+    setAgeVerified(isVerified);
+  }, []);
 
   const handleAdd = () => {
     if (!selectedSize && product.sizes?.length > 1) {
@@ -29,6 +37,7 @@ export default function ProductDetailClient({ product }) {
 
   return (
     <div className={styles.wrapper}>
+      <AgeGate isActive={isCannabis && !ageVerified} onVerify={() => setAgeVerified(true)} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
@@ -36,11 +45,11 @@ export default function ProductDetailClient({ product }) {
       <div className={styles.container}>
         <div className={styles.media}>
           <div className={styles.mainImage}>
-            <Image src={product.image} alt={product.name} fill style={{ objectFit: 'contain' }} priority />
+            <Image src={product.image} alt={product.name} fill style={{ objectFit: isCannabis ? 'cover' : 'contain' }} priority />
           </div>
           {product.hoverImage && (
             <div className={styles.secondaryImage}>
-              <Image src={product.hoverImage} alt={`${product.name} Alternate`} fill style={{ objectFit: 'contain' }} />
+              <Image src={product.hoverImage} alt={`${product.name} Alternate`} fill style={{ objectFit: isCannabis ? 'cover' : 'contain' }} />
             </div>
           )}
         </div>
@@ -66,7 +75,9 @@ export default function ProductDetailClient({ product }) {
           {product.comboNote && <p className={styles.comboNote}>{product.comboNote}</p>}
 
           <div className={styles.fulfillmentNote}>
-            Merch is shipped nationwide, and shipping card payments are processed securely through Stripe.
+            {isCannabis
+              ? '21+ only. Cannabis reservations are for Bakersfield pickup only and require valid ID at fulfillment.'
+              : 'Apparel and accessories can ship nationwide with Stripe card checkout, or be arranged for Bakersfield pickup.'}
           </div>
 
           <div className={styles.form}>
@@ -103,7 +114,7 @@ export default function ProductDetailClient({ product }) {
             </div>
 
             <button className={styles.addBtn} onClick={handleAdd}>
-              {product.category === 'Combos' ? 'Secure the Combo' : 'Add to Cart'}
+              {product.category === 'Combos' ? 'Build the Combo' : product.pickupOnly ? 'Reserve Item' : 'Add to Cart'}
             </button>
           </div>
 
@@ -119,8 +130,8 @@ export default function ProductDetailClient({ product }) {
           )}
 
           <div className={styles.shippingIndicator}>
-            <span>✓ Nationwide shipping available</span>
-            <span>✓ Secure Stripe checkout for shipping orders</span>
+            <span>{isCannabis ? '✓ 21+ ID required at pickup' : '✓ Nationwide apparel shipping available'}</span>
+            <span>{isCannabis ? '✓ Bakersfield pickup only' : '✓ Stripe card checkout for shipping orders'}</span>
           </div>
         </div>
       </div>

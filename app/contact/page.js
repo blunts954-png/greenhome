@@ -83,7 +83,7 @@ export default function ContactPage() {
               >
                 <Target size={40} />
                 <span>CUSTOMER</span>
-                <p>Order questions, merch help, or general support.</p>
+                <p>Order support, pickup coordination, or local menu questions.</p>
               </button>
               <button 
                 className={`${styles.optionBtn} ${formData.intent === 'Business' ? styles.active : ''}`}
@@ -91,7 +91,7 @@ export default function ContactPage() {
               >
                 <Briefcase size={40} />
                 <span>BUSINESS / COLLAB</span>
-                <p>Press, booking, partnerships, or wholesale.</p>
+                <p>Wholesale, partnerships, licensing, or collaborations.</p>
               </button>
             </div>
           </div>
@@ -103,20 +103,20 @@ export default function ContactPage() {
             <p className={styles.quizText}>Tell us what the message is about so we can route it fast.</p>
             <div className={styles.options}>
               <button 
-                className={`${styles.optionBtn} ${formData.category === 'Merch' ? styles.active : ''}`}
-                onClick={() => selectOption('category', 'Merch')}
+                className={`${styles.optionBtn} ${formData.category === 'Store / Reservation' ? styles.active : ''}`}
+                onClick={() => selectOption('category', 'Store / Reservation')}
               >
                 <Shirt size={40} />
-                <span>MERCH / ORDER</span>
-                <p>Store questions, shipping, sizing, and support.</p>
+                <span>STORE / RESERVATION</span>
+                <p>Apparel orders, local menu reservations, shipping, and pickup support.</p>
               </button>
               <button 
-                className={`${styles.optionBtn} ${formData.category === 'Press / Booking' ? styles.active : ''}`}
-                onClick={() => selectOption('category', 'Press / Booking')}
+                className={`${styles.optionBtn} ${formData.category === 'Business / Wholesale' ? styles.active : ''}`}
+                onClick={() => selectOption('category', 'Business / Wholesale')}
               >
                 <Briefcase size={40} />
-                <span>PRESS / BOOKING</span>
-                <p>Features, appearances, business, and collaborations.</p>
+                <span>BUSINESS / WHOLESALE</span>
+                <p>Partnerships, licensing, events, and wholesale conversations.</p>
               </button>
             </div>
             <button onClick={handleBack} className={styles.backLink}><ArrowLeft size={16}/> Back</button>
@@ -187,7 +187,7 @@ export default function ContactPage() {
       <section className={styles.hero}>
         <div className={styles.container}>
           <h1 className="brand-font text-gradient">The Growth Protocol</h1>
-          <p className={styles.subtitle}>Merch support, business inquiries, and label connections in one place.</p>
+          <p className={styles.subtitle}>Apparel support, local menu questions, and business inquiries in one place.</p>
         </div>
       </section>
 

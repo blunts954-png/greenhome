@@ -13,6 +13,38 @@
   text-align: center;
 }
 
+.storeToggle {
+  display: inline-flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.storeBtn {
+  min-width: 142px;
+  padding: 12px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  background: transparent;
+  color: #d0d0d0;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.storeBtn:hover {
+  color: white;
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.activeStore {
+  color: white;
+  border-color: rgba(71, 133, 39, 0.84);
+  background: rgba(71, 133, 39, 0.18);
+  box-shadow: 0 0 0 1px rgba(71, 133, 39, 0.16);
+}
+
 .categoryHead {
   display: flex;
   align-items: center;
@@ -28,7 +60,7 @@
 }
 
 .categoryHead h2 {
-  font-size: clamp(2.3rem, 5vw, 4.2rem);
+  font-size: clamp(2.2rem, 5vw, 4.2rem);
   line-height: 0.95;
 }
 
@@ -355,6 +387,14 @@
   .header {
     gap: 18px;
     margin-bottom: 38px;
+  }
+
+  .storeToggle {
+    gap: 10px;
+  }
+
+  .storeBtn {
+    min-width: 132px;
   }
 
   .categoryHead {

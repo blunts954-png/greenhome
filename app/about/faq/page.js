@@ -8,23 +8,23 @@ import Link from 'next/link';
 const FAQS = [
   {
     q: "How do I pay for my order?",
-    a: "Shipping card payments are processed securely through Stripe. You can also place a shipping order with Venmo if needed."
+    a: "Apparel shipping orders can be paid securely through Stripe. Pickup orders can also be arranged with cash, card, or Venmo depending on the fulfillment type."
   },
   {
     q: "How long does shipping take?",
-    a: "Orders are typically processed in 24-48 hours. Tracking is sent by email once your package is on the way."
+    a: "Apparel orders are typically processed in 24-48 hours. Tracking is sent by email once the package is on the way."
   },
   {
-    q: "Do you offer delivery?",
-    a: "This store is shipping-only. Orders are delivered nationwide."
+    q: "Can cannabis be shipped?",
+    a: "No. The cannabis menu is 21+ and local to Bakersfield pickup only."
   },
   {
-    q: "What's the Material quality of the tees?",
-    a: "Our live tee drop uses premium cotton blanks with the Money Tree front graphic and a clean standard fit built for everyday wear."
+    q: "How does the split menu work?",
+    a: "Apparel and accessories can ship nationwide or be picked up locally. Flower, concentrates, edibles, and disposables are kept behind the 21+ local menu and must be picked up in Bakersfield."
   },
   {
     q: "Can I return an item?",
-    a: "Unworn merch can be reviewed for exchange or store credit after contact. Reach out through the contact page and include your order details."
+    a: "Unworn apparel can be reviewed for exchange or store credit after contact. Cannabis reservations are final once fulfilled."
   }
 ];
 
@@ -36,7 +36,7 @@ export default function FAQPage() {
       <header className={styles.header}>
         <HelpCircle size={40} className={styles.icon} />
         <h1 className="brand-font">FREQUENTLY ASKED</h1>
-        <p>Everything you need to know about the HGM lifestyle.</p>
+        <p>Everything you need to know about the apparel store, the local menu, and Bakersfield pickup rules.</p>
       </header>
 
       <div className={styles.faqList}>

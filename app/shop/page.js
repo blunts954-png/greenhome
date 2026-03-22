@@ -2,8 +2,8 @@ import ProductGrid from '@/components/ProductGrid';
 import styles from './Shop.module.css';
 
 export const metadata = {
-  title: "Shop Home Grown Money | Official Merch",
-  description: "Browse the full Home Grown Money merch catalog with nationwide shipping and secure Stripe checkout for shipping orders.",
+  title: "Shop Home Grown Money | Apparel and Bakersfield Local Menu",
+  description: "Browse Home Grown Money apparel with nationwide shipping and Stripe checkout, plus the 21+ Bakersfield local cannabis menu for pickup reservations.",
   alternates: {
     canonical: '/shop',
   },
@@ -26,15 +26,15 @@ export default function ShopPage() {
           <div className={styles.infoGrid}>
             <div className={styles.infoBox}>
               <h3>Accurate Checkout Flow</h3>
-              <p>Shipping card payments are handled through Stripe, with a clean delivery-only checkout flow.</p>
+              <p>Apparel can ship with Stripe or be arranged for Bakersfield pickup, while cannabis stays local and pickup-only.</p>
             </div>
             <div className={styles.infoBox}>
               <h3>Clear Shipping Rules</h3>
-              <p>Merch ships nationwide across the US with a straightforward checkout flow.</p>
+              <p>Apparel ships nationwide across the US. Cannabis is 21+ and reserved for Bakersfield pickup only.</p>
             </div>
             <div className={styles.infoBox}>
-              <h3>Drop Accuracy</h3>
-              <p>Every live product photo in this drop is represented in the store.</p>
+              <h3>Separated Menus</h3>
+              <p>The apparel catalog and local cannabis menu are split cleanly so customers know what can ship and what stays local.</p>
             </div>
           </div>
         </div>

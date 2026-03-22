@@ -14,7 +14,7 @@ const recipients = [
 
 export async function POST(req) {
   try {
-    const { orderId, customerName, customerEmail, total, type, items } = await req.json();
+    const { orderId, customerName, customerEmail, customerPhone, total, type, items } = await req.json();
 
     // 1. Send SMS via Twilio
     const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -23,18 +23,31 @@ export async function POST(req) {
 
     if (accountSid && authToken && fromNumber) {
       const client = new Twilio(accountSid, authToken);
-      const smsBody = `🚨 HGM NEW ORDER: ${orderId} | ${customerName} | $${total} | ${type.toUpperCase()}`;
       
-      try {
-        await Promise.all(recipients.map(num => 
-          client.messages.create({ body: smsBody, from: fromNumber, to: num })
-        ));
-      } catch (smsErr) {
-        console.error('Twilio SMS error:', smsErr);
+      // ADMIN ALERTS
+      if (recipients.length > 0) {
+        const smsBody = `🚨 HGM NEW ORDER: ${orderId} | ${customerName} | $${total} | ${type.toUpperCase()}`;
+        try {
+          await Promise.all(recipients.map(num => 
+            client.messages.create({ body: smsBody, from: fromNumber, to: num })
+          ));
+        } catch (smsErr) {
+          console.error('Twilio Admin SMS error:', smsErr);
+        }
+      }
+
+      // CUSTOMER CONFIRMATION (Optional)
+      if (customerPhone && process.env.ENABLE_CUSTOMER_SMS === 'true') {
+        const customerBody = `HGM: Order ${orderId} confirmed! Thanks for the support, ${customerName.split(' ')[0]}. We'll reach out shortly for ${type.toLowerCase()} details.`;
+        try {
+          await client.messages.create({ body: customerBody, from: fromNumber, to: customerPhone });
+        } catch (custSmsErr) {
+          console.error('Twilio Customer SMS error:', custSmsErr);
+        }
       }
     }
 
-    // 2. Send EMail via Resend
+    // 2. Send Email via Resend
     if (resend) {
       await resend.emails.send({
         from: 'Home Grown Money <onboarding@resend.dev>',

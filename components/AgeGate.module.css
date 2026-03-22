@@ -1,0 +1,95 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(10px);
+}
+
+.modal {
+  width: min(100%, 520px);
+  padding: 48px 36px 40px;
+  text-align: center;
+  background:
+    radial-gradient(circle at top, rgba(71, 133, 39, 0.18), transparent 48%),
+    linear-gradient(180deg, #0b1006 0%, #050703 100%);
+  border: 1px solid rgba(71, 133, 39, 0.3);
+  border-radius: 30px;
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.72);
+}
+
+.logoContainer {
+  margin-bottom: 22px;
+}
+
+.ageLogo {
+  width: 54px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 18px rgba(71, 133, 39, 0.25));
+}
+
+.modal h2 {
+  margin-bottom: 14px;
+  color: white;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.modal p {
+  margin-bottom: 28px;
+  color: rgba(255, 255, 255, 0.76);
+  line-height: 1.65;
+}
+
+.actions {
+  display: grid;
+  gap: 12px;
+}
+
+.verifyBtn {
+  width: 100%;
+  padding: 16px 18px;
+  border-radius: 999px;
+  background: white;
+  color: black;
+  font-size: 0.84rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.verifyBtn:hover {
+  background: var(--gold);
+}
+
+.exitLink {
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.exitLink:hover {
+  color: white;
+}
+
+.disclaimer {
+  margin: 28px 0 0 !important;
+  color: rgba(255, 255, 255, 0.44) !important;
+  font-size: 0.74rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 640px) {
+  .modal {
+    padding: 38px 22px 32px;
+    border-radius: 24px;
+  }
+}

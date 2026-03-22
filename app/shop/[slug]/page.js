@@ -17,7 +17,9 @@ export async function generateMetadata({ params }) {
     };
   }
 
-  const fulfillmentCopy = 'Available for nationwide shipping.';
+  const fulfillmentCopy = product.pickupOnly
+    ? 'Available for verified 21+ Bakersfield pickup only.'
+    : 'Available for nationwide apparel shipping or Bakersfield pickup.';
 
   return {
     title: `${product.name} | Home Grown Money`,

@@ -199,8 +199,9 @@ After the env vars are added, redeploy the project.
 - Account bans persist
 - Stored IP bans persist
 - Admin dashboard reads real order/account data
-- Shipping + `Card` opens Stripe card entry and charges through the backend
-- Orders are submitted as shipping orders only
+- Apparel shipping + `Card` opens Stripe card entry and charges through the backend
+- Apparel pickup orders can be submitted without online card entry
+- Local cannabis reservations stay 21+ and Bakersfield pickup only
 
 Stripe routes:
 - `/api/stripe/payment-intent`

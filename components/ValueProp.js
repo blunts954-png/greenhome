@@ -3,18 +3,18 @@ import styles from './ValueProp.module.css';
 
 const VALUES = [
   {
-    title: 'Independent Label',
-    description: 'Built from the ground up with real drops, original visuals, and merch that carries the brand forward.',
+    title: 'Bakersfield Rooted',
+    description: 'Built from the ground up in Bakersfield with a local cannabis menu and branded apparel that both represent the business the right way.',
     icon: <TrendingUp className={styles.iconElement} />
   },
   {
-    title: 'Certified Quality',
-    description: '100% premium materials. Every SKU is tested for color-fastness, fit, and heritage-grade feel.',
+    title: 'Flower + Fits',
+    description: 'The local menu stays separated and age-gated, while tees, hats, and combos stay photographed, organized, and easy to reserve.',
     icon: <Award className={styles.iconElement} />
   },
   {
-    title: 'Nationwide Shipping',
-    description: 'Merch ships across the US, and shipping card payments run through secure Stripe checkout.',
+    title: 'Clear Fulfillment',
+    description: 'Apparel ships nationwide through Stripe checkout. Cannabis reservations stay 21+ and local to Bakersfield pickup.',
     icon: <Users className={styles.iconElement} />
   }
 ];

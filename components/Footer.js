@@ -36,9 +36,10 @@ export default function Footer() {
           <div className={styles.linkStack}>
             <h5>The Goods</h5>
             <Link href="/shop">All Products</Link>
+            <Link href="/shop?store=cannabis">Local Menu</Link>
             <Link href="/shop/hgm-pink-tee">Featured Tee</Link>
-            <Link href="/shop/hgm-trucker-hat">Headwear</Link>
-            <Link href="/shop/hgm-combo-deal">Combo Deals</Link>
+            <Link href="/shop/hgm-reserve-flower">Reserve Flower</Link>
+            <Link href="/shop/hgm-combo-deal">Combo Fits</Link>
           </div>
 
           <div className={styles.linkStack}>
@@ -56,10 +57,10 @@ export default function Footer() {
             <span>Bakersfield, CA</span>
           </div>
           <div className={styles.contactItem}>
-            <span>Official merch ships nationwide</span>
+            <span>Apparel ships nationwide</span>
           </div>
           <div className={styles.contactItem}>
-            <span>Stripe checkout is live for shipping orders</span>
+            <span>21+ cannabis reservations for local Bakersfield pickup or delivery</span>
           </div>
         </div>
       </div>
@@ -72,7 +73,7 @@ export default function Footer() {
               &copy; {currentYear} Home Grown Money &middot; Money grows where we plant it &middot; All rights reserved.
             </p>
             <p className={styles.credit}>
-              Built empowered by{' '}
+              Power by{' '}
               <a
                 href="https://chaoticallyorganizedai.com"
                 target="_blank"

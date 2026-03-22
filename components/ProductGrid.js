@@ -1,30 +1,62 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/lib/cart-context';
 import audioEngine from '@/lib/AudioEngine';
 import { PRODUCTS } from '@/lib/products';
+import AgeGate from './AgeGate';
 import styles from './ProductGrid.module.css';
 
-const CATEGORIES = ['All', 'Tees', 'Hats', 'Combos'];
+const STORES = ['Apparel', 'Cannabis'];
+const STORE_CATEGORIES = {
+  Apparel: ['All', 'Tees', 'Hats', 'Combos'],
+  Cannabis: ['All', 'Flower', 'Concentrates', 'Edibles', 'Disposables', 'Accessories']
+};
+
+function getStoreFromSearchParams(searchParams) {
+  return searchParams.get('store')?.toLowerCase() === 'cannabis' ? 'Cannabis' : 'Apparel';
+}
 
 export default function ProductGrid() {
   const cartContext = useCart();
   const addToCart = cartContext?.addToCart || (() => {});
 
+  const [activeStore, setActiveStore] = useState('Apparel');
   const [activeFilter, setActiveFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSizes, setSelectedSizes] = useState({});
+  const [ageVerified, setAgeVerified] = useState(false);
+
+  useEffect(() => {
+    const isVerified = localStorage.getItem('age-verified') === 'true';
+    setAgeVerified(isVerified);
+  }, []);
+
+  useEffect(() => {
+    const syncStoreFromUrl = () => {
+      const nextStore = getStoreFromSearchParams(new URLSearchParams(window.location.search));
+      setActiveStore(nextStore);
+      setActiveFilter('All');
+    };
+
+    syncStoreFromUrl();
+    window.addEventListener('popstate', syncStoreFromUrl);
+
+    return () => {
+      window.removeEventListener('popstate', syncStoreFromUrl);
+    };
+  }, []);
 
   const filteredProducts = PRODUCTS.filter((product) => {
+    const storeMatch = product.storeSection.toLowerCase() === activeStore.toLowerCase();
     const categoryMatch = activeFilter === 'All' || product.category === activeFilter;
     const searchMatch =
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.category.toLowerCase().includes(searchQuery.toLowerCase());
 
-    return categoryMatch && searchMatch;
+    return storeMatch && categoryMatch && searchMatch;
   });
 
   const handleSizeSelect = (event, productId, size) => {
@@ -56,27 +88,71 @@ export default function ProductGrid() {
     addToCart({ ...product, selectedSize: size });
   };
 
+  const handleStoreChange = (store) => {
+    setActiveStore(store);
+    setActiveFilter('All');
+
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+
+      if (store === 'Cannabis') {
+        params.set('store', 'cannabis');
+      } else {
+        params.delete('store');
+      }
+
+      const nextUrl = params.toString() ? `${window.location.pathname}?${params.toString()}` : window.location.pathname;
+      window.history.replaceState({}, '', nextUrl);
+    }
+
+    try {
+      audioEngine.playClick();
+    } catch (error) {}
+  };
+
   return (
     <section className={styles.section} id="shop">
+      <AgeGate isActive={activeStore === 'Cannabis' && !ageVerified} onVerify={() => setAgeVerified(true)} />
       <div className={styles.header}>
+        <div className={`${styles.storeToggle} reveal`}>
+          {STORES.map((store) => (
+            <button
+              key={store}
+              type="button"
+              className={`${styles.storeBtn} ${activeStore === store ? styles.activeStore : ''}`}
+              onClick={() => handleStoreChange(store)}
+            >
+              {store}
+            </button>
+          ))}
+        </div>
+
         <div className={styles.categoryHead}>
           <Image src="/logo-mark.png" alt="HGM Logo" width={44} height={68} className={styles.catLogo} />
-          <h2 className="brand-font reveal">Record Label Merch</h2>
+          <h2 className="brand-font reveal">
+            {activeStore === 'Apparel' ? 'Apparel & Accessories' : 'Bakersfield Local Cannabis Menu'}
+          </h2>
         </div>
 
         <div className={`${styles.socialProof} reveal`}>
           <span className={styles.stars}>★★★★★</span>
-          <span>Official Home Grown Money merch with nationwide shipping and secure Stripe checkout for shipping orders.</span>
+          <span>
+            {activeStore === 'Apparel'
+              ? 'Apparel ships nationwide or can be arranged for Bakersfield pickup/delivery.'
+              : '21+ only. Cannabis reservations are for Bakersfield pickup or local delivery.'}
+          </span>
         </div>
 
         <div className={`${styles.storeNotice} reveal`}>
-          Every photographed tee, hat, and combo in this drop is live in the store and available for nationwide delivery.
+          {activeStore === 'Apparel'
+            ? 'Tees, hats, beanies, and combo fits are live now with shipping, pickup, and local delivery options.'
+            : 'Flower, concentrates, edibles, disposables, and smoking accessories are separated here for local 21+ pickup and delivery.'}
         </div>
 
         <div className={`${styles.searchBar} reveal`}>
           <input
             type="text"
-            placeholder="Search merch..."
+            placeholder={activeStore === 'Apparel' ? 'Search apparel...' : 'Search local menu...'}
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
             className={styles.searchInput}
@@ -84,7 +160,7 @@ export default function ProductGrid() {
         </div>
 
         <div className={`${styles.filterTabs} reveal`}>
-          {CATEGORIES.map((category) => (
+          {STORE_CATEGORIES[activeStore].map((category) => (
             <button
               key={category}
               type="button"
@@ -112,7 +188,7 @@ export default function ProductGrid() {
                   src={product.image}
                   alt={product.name}
                   fill
-                  style={{ objectFit: 'contain' }}
+                  style={{ objectFit: product.storeSection === 'apparel' ? 'contain' : 'cover' }}
                   className={styles.productImg}
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
@@ -121,7 +197,7 @@ export default function ProductGrid() {
                     src={product.hoverImage}
                     alt={`${product.name} Alternate`}
                     fill
-                    style={{ objectFit: 'contain' }}
+                    style={{ objectFit: product.storeSection === 'apparel' ? 'contain' : 'cover' }}
                     className={styles.hoverImg}
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
@@ -159,9 +235,11 @@ export default function ProductGrid() {
               <p className={styles.description}>{product.description}</p>
               {product.comboNote && <p className={styles.comboNote}>{product.comboNote}</p>}
               <p className={styles.price}>${product.price}</p>
-              <p className={styles.fulfillment}>Ships nationwide</p>
+              <p className={styles.fulfillment}>
+                {product.pickupOnly ? '21+ Bakersfield pickup / delivery' : 'Shipping, pickup, or delivery'}
+              </p>
               <button type="button" className={styles.addBtn} onClick={(event) => handleAdd(event, product)}>
-                {product.category === 'Combos' ? 'Secure the Combo' : 'Add to Cart'}
+                {product.category === 'Combos' ? 'Build the Combo' : product.pickupOnly ? 'Reserve Item' : 'Add to Cart'}
               </button>
             </div>
           </Link>
@@ -171,7 +249,7 @@ export default function ProductGrid() {
       {filteredProducts.length === 0 && (
         <div className={styles.emptyState}>
           <h3>No products match that search.</h3>
-          <p>Try a different keyword or category.</p>
+          <p>Try a different keyword or switch store sections.</p>
         </div>
       )}
     </section>

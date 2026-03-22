@@ -46,6 +46,7 @@ export default function Navbar() {
           
           <ul className={styles.navLinks}>
             <li><Link href="/shop" onClick={handleLinkClick}>Shop</Link></li>
+            <li><Link href="/shop?store=cannabis" onClick={handleLinkClick}>Local Menu</Link></li>
             <li><Link href="/about/shipping" onClick={handleLinkClick}>Shipping</Link></li>
             <li><Link href="/about" onClick={handleLinkClick}>Our Story</Link></li>
             <li><Link href="/contact" onClick={handleLinkClick}>Connect</Link></li>
@@ -71,6 +72,7 @@ export default function Navbar() {
 
       <div className={`${styles.mobileMenu} ${isMenuOpen ? styles.mobileMenuOpen : ''}`}>
         <Link href="/shop" onClick={handleLinkClick}>Shop</Link>
+        <Link href="/shop?store=cannabis" onClick={handleLinkClick}>Local Menu</Link>
         <Link href="/about/shipping" onClick={handleLinkClick}>Shipping</Link>
         <Link href="/about" onClick={handleLinkClick}>Our Story</Link>
         <Link href="/about/faq" onClick={handleLinkClick}>FAQ</Link>
