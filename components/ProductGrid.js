@@ -183,7 +183,7 @@ export default function ProductGrid() {
         {filteredProducts.map((product) => (
           <Link key={product.id} href={`/shop/${product.slug}`} className={`${styles.card} reveal`}>
             <div className={styles.imageContainer}>
-              <div className={styles.imageWrapper}>
+              <div className={`${styles.imageWrapper} ${product.hoverImage ? styles.withHover : ''}`}>
                 <Image
                   src={product.image}
                   alt={product.name}

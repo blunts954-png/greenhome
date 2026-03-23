@@ -200,13 +200,16 @@
 }
 
 .card:hover .productImg {
+  transform: scale(1.08);
+}
+
+.card:hover .withHover .productImg {
   opacity: 0;
-  transform: scale(1.03);
 }
 
 .card:hover .hoverImg {
   opacity: 1;
-  transform: scale(1.03);
+  transform: scale(1.08);
 }
 
 .overlay {
