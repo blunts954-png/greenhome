@@ -30,7 +30,7 @@ export default function Footer() {
             <h5>The Brand</h5>
             <Link href="/about">Our Story</Link>
             <Link href="/about/faq">FAQ</Link>
-            <Link href="/about/shipping">Shipping & Returns</Link>
+            <Link href="/legal" className={styles.legalHighlight}>LEGAL DISCLOSURE</Link>
           </div>
           
           <div className={styles.linkStack}>

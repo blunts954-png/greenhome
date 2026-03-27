@@ -77,9 +77,10 @@ export default function Home() {
             <h2 className="brand-font">APPAREL + LOCAL MENU</h2>
             <p>Every photographed tee, hat, and combo is live for shipping or Bakersfield pickup. The local cannabis menu is separated, age-gated, and reserved for 21+ Bakersfield pickup only.</p>
             <div className={styles.ctaValues}>
-              <div className={styles.vItem}><span>TEE</span> <strong>$20</strong></div>
+              <div className={styles.vItem}><span>TEE</span> <strong>$30</strong></div>
               <div className={styles.vItem}><span>HAT</span> <strong>$15</strong></div>
-              <Link href="/shop/hgm-combo-deal" className={styles.vItem}><span>COMBOS</span> <strong>$30</strong></Link>
+              <div className={styles.vItem}><span>BEANIE</span> <strong>$15</strong></div>
+              <Link href="/shop" className={styles.vItem}><span>COMBOS</span> <strong>$30</strong></Link>
             </div>
             <Link href="/shop?store=cannabis" className={styles.ctaShopBtn}>VIEW THE LOCAL MENU</Link>
           </div>

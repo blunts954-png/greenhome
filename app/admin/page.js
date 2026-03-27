@@ -55,6 +55,7 @@ function formatPaymentText(value = '') {
 export default function AdminDashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeTab, setActiveTab] = useState('orders');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [search, setSearch] = useState('');
   const [authChecked, setAuthChecked] = useState(false);
@@ -139,7 +140,7 @@ export default function AdminDashboard() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ password })
+        body: JSON.stringify({ username, password })
       });
       const payload = await response.json();
 
@@ -147,6 +148,7 @@ export default function AdminDashboard() {
         throw new Error(payload.error || 'Invalid admin key.');
       }
 
+      setUsername('');
       setPassword('');
       setIsAuthenticated(true);
       await loadDashboard();
@@ -316,6 +318,13 @@ export default function AdminDashboard() {
           <Image src="/logo_v3.jpg" alt="HGM Logo" width={100} height={100} className={styles.loginLogo} />
           <h1>HGM ADMIN</h1>
           <form onSubmit={handleLogin}>
+            <input
+              type="text"
+              placeholder="TERMINAL USER"
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+              className={styles.loginInput}
+            />
             <input
               type="password"
               placeholder="TERMINAL KEY"

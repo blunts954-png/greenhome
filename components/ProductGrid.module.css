@@ -64,6 +64,15 @@
   line-height: 0.95;
 }
 
+.callToAction {
+  margin-top: 12px;
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  font-weight: 900;
+  color: #478527;
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 40px rgba(71, 133, 39, 0.3);
+}
+
 .socialProof {
   width: min(100%, 880px);
   margin: 0 auto;

@@ -11,8 +11,8 @@ import styles from './ProductGrid.module.css';
 
 const STORES = ['Apparel', 'Cannabis'];
 const STORE_CATEGORIES = {
-  Apparel: ['All', 'Tees', 'Hats', 'Combos'],
-  Cannabis: ['All', 'Flower', 'Concentrates', 'Edibles', 'Disposables', 'Accessories']
+  Apparel: ['All', 'Tees', 'Hats', 'Beanies', 'Combos', 'Accessories'],
+  Cannabis: ['All', 'Flower', 'Concentrates', 'Edibles', 'Disposables']
 };
 
 function getStoreFromSearchParams(searchParams) {
@@ -132,6 +132,11 @@ export default function ProductGrid() {
           <h2 className="brand-font reveal">
             {activeStore === 'Apparel' ? 'Apparel & Accessories' : 'Bakersfield Delivery Menu'}
           </h2>
+          {activeStore === 'Cannabis' && (
+            <div className={`${styles.callToAction} brand-font reveal`}>
+              CALL US NOW: (661) 501-1881
+            </div>
+          )}
         </div>
 
         <div className={`${styles.socialProof} reveal`}>
@@ -234,12 +239,29 @@ export default function ProductGrid() {
               <h3>{product.name}</h3>
               <p className={styles.description}>{product.description}</p>
               {product.comboNote && <p className={styles.comboNote}>{product.comboNote}</p>}
-              <p className={styles.price}>${product.price}</p>
-              <p className={styles.fulfillment}>
-                {product.pickupOnly ? '21+ Bakersfield pickup / delivery' : 'Shipping, pickup, or delivery'}
+              <p className={styles.price}>
+                {product.price === null ? 'CALL FOR DONATION' : `$${product.price}`}
               </p>
-              <button type="button" className={styles.addBtn} onClick={(event) => handleAdd(event, product)}>
-                {product.category === 'Combos' ? 'Build the Combo' : product.pickupOnly ? 'Reserve Item' : 'Add to Cart'}
+              <p className={styles.fulfillment}>
+                {product.pickupOnly ? '21+ ONLY • IN-STORE PICKUP ONLY' : 'Shipping, pickup, or delivery'}
+              </p>
+              <button
+                type="button"
+                className={styles.addBtn}
+                onClick={(event) => {
+                  if (product.price === null) {
+                    event.preventDefault();
+                    window.location.href = 'tel:6615011881';
+                  } else {
+                    handleAdd(event, product);
+                  }
+                }}
+              >
+                {product.category === 'Combos'
+                  ? 'Build the Combo'
+                  : product.price === null
+                    ? 'CALL TO RESERVE'
+                    : 'Add to Cart'}
               </button>
             </div>
           </Link>

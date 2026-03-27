@@ -66,7 +66,9 @@ export default function ProductDetailClient({ product }) {
             <span className={styles.reviewCount}>(Reviews Coming Soon)</span>
           </div>
 
-          <p className={styles.price}>${product.price}</p>
+          <p className={styles.price}>
+            {product.price === null ? 'CALL FOR DONATION' : `$${product.price}`}
+          </p>
 
           <div className={styles.description}>
             <p>{product.description}</p>
@@ -113,8 +115,22 @@ export default function ProductDetailClient({ product }) {
               </div>
             </div>
 
-            <button className={styles.addBtn} onClick={handleAdd}>
-              {product.category === 'Combos' ? 'Build the Combo' : product.pickupOnly ? 'Reserve Item' : 'Add to Cart'}
+            <button
+              className={styles.addBtn}
+              onClick={(event) => {
+                if (product.price === null) {
+                  event.preventDefault();
+                  window.location.href = 'tel:6615011881';
+                } else {
+                  handleAdd();
+                }
+              }}
+            >
+              {product.category === 'Combos'
+                ? 'Build the Combo'
+                : product.price === null
+                  ? 'CALL TO RESERVE'
+                  : 'Add to Cart'}
             </button>
           </div>
 
@@ -131,7 +147,7 @@ export default function ProductDetailClient({ product }) {
 
           <div className={styles.shippingIndicator}>
             <span>{isCannabis ? '✓ 21+ ID required at pickup' : '✓ Nationwide apparel shipping available'}</span>
-            <span>{isCannabis ? '✓ Bakersfield pickup only' : '✓ Stripe card checkout for shipping orders'}</span>
+            <span>{isCannabis ? '✖ NO SHIPPING AVAILABLE' : '✓ Stripe card checkout for shipping orders'}</span>
           </div>
         </div>
       </div>

@@ -26,13 +26,13 @@ export async function POST(request) {
     );
   }
 
-  const { password = '' } = await request.json();
+  const { username = '', password = '' } = await request.json();
 
-  if (!isValidAdminPassword(password)) {
+  if (!isValidAdminCredentials(username, password)) {
     return NextResponse.json(
       {
         authenticated: false,
-        error: 'Invalid admin key.'
+        error: 'Invalid admin credentials.'
       },
       { status: 401 }
     );
