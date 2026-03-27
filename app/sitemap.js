@@ -1,7 +1,7 @@
 import { PRODUCTS } from '@/lib/products';
 
 export default async function sitemap() {
-  const baseUrl = 'https://homegrownmoney.vercel.app';
+  const baseUrl = 'https://homegrownmoney.com';
 
   const productUrls = PRODUCTS.map((product) => ({
     url: `${baseUrl}/shop/${product.slug}`,

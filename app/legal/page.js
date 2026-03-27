@@ -42,7 +42,7 @@ export default function LegalPage() {
       </section>
 
       <section className={styles.section}>
-        <h2 className="brand-font">4. "HOME GROWN" MISSION</h2>
+        <h2 className="brand-font">4. &quot;HOME GROWN&quot; MISSION</h2>
         <p>
           Everything we do is built on the foundation of the Bakersfield community. 
           We are not a corporate chain; we are locally rooted, 100% authentic, and committed to providing the highest grade product 

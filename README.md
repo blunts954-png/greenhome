@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs. org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Home Grown Money
 
-## Getting Started
+Next.js storefront and admin dashboard for the Home Grown Money website.
 
-First, run the development server:
+## What is in this repo
+
+- Public marketing site and landing page
+- Product catalog with apparel and local menu sections
+- Cart, checkout, and Stripe payment flow for shipping orders
+- Contact form, legal page, FAQ, and shipping content
+- Supabase-backed order storage, account bans, and admin dashboard
+
+## Local development
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Copy the example environment file and fill in real values:
+
+```bash
+cp .env.example .env.local
+```
+
+3. Start the dev server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Environment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The app supports:
 
-## Learn More
+- Supabase for order storage and account checks
+- Stripe for card checkout
+- Gmail SMTP or optional SMTP / Resend fallback for contact and order emails
+- Optional Twilio alerts for local pickup and delivery notifications
 
-To learn more about Next.js, take a look at the following resources:
+Review [.env.example](./.env.example) before running locally or deploying.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Important paths
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `app/` app router pages and API routes
+- `components/` storefront UI, cart, splash, and shared sections
+- `lib/` cart state, products, admin auth, Stripe, and server store logic
+- `supabase/migrations/` database schema for orders and payment fields
 
-## Deploy on Vercel
+## Deployment notes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Production domain metadata currently points to `https://homegrownmoney.com`
+- Git remote for this repo should be `https://github.com/blunts954-png/greenhome.git`
+- Run `npm run build` before pushing deployment changes

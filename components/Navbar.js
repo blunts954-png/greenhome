@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '@/lib/cart-context';
 import { Instagram, Facebook, Menu, ShoppingCart, X } from 'lucide-react';
-import audioEngine from '@/lib/AudioEngine';
 import styles from './Navbar.module.css';
 
 export default function Navbar() {
@@ -14,18 +13,15 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   const handleCartClick = () => {
-    audioEngine.playClick();
     toggleDrawer();
   };
 
   const handleMenuToggle = () => {
-    try { audioEngine.playClick(); } catch (e) {}
     setIsMenuOpen((prev) => !prev);
   };
 
   const handleLinkClick = () => {
     setIsMenuOpen(false);
-    try { audioEngine.playClick(); } catch (e) {}
   };
 
   return (

@@ -8,7 +8,7 @@ import Link from 'next/link';
 const FAQS = [
   {
     q: "How do I pay for my order?",
-    a: "Apparel shipping orders can be paid securely through Stripe. Pickup orders can also be arranged with cash, card, or Venmo depending on the fulfillment type."
+    a: "Apparel shipping orders are set up for Stripe card checkout. Local pickup and delivery orders can be arranged with cash or card depending on the fulfillment type."
   },
   {
     q: "How long does shipping take?",
@@ -16,11 +16,11 @@ const FAQS = [
   },
   {
     q: "Can cannabis be shipped?",
-    a: "No. The cannabis menu is 21+ and local to Bakersfield pickup only."
+    a: "No. The cannabis menu is 21+ and limited to Bakersfield pickup or delivery."
   },
   {
     q: "How does the split menu work?",
-    a: "Apparel and accessories can ship nationwide or be picked up locally. Flower, concentrates, edibles, and disposables are kept behind the 21+ local menu and must be picked up in Bakersfield."
+    a: "Apparel and accessories can ship nationwide or be fulfilled locally. Flower, concentrates, edibles, disposables, and pre-rolls stay behind the 21+ Bakersfield local menu."
   },
   {
     q: "Can I return an item?",
@@ -36,7 +36,7 @@ export default function FAQPage() {
       <header className={styles.header}>
         <HelpCircle size={40} className={styles.icon} />
         <h1 className="brand-font">FREQUENTLY ASKED</h1>
-        <p>Everything you need to know about the apparel store, the local menu, and Bakersfield pickup rules.</p>
+        <p>Everything you need to know about the apparel store, the local menu, and Bakersfield fulfillment rules.</p>
       </header>
 
       <div className={styles.faqList}>

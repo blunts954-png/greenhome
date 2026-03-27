@@ -6,7 +6,7 @@ import { useOrders } from '@/lib/orders-context';
 import { X, Trash2, ShoppingBag, CheckCircle, Truck, Package, CreditCard, ChevronRight, Mail, Phone, MapPin, MessageSquare, UserRound } from 'lucide-react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import audioEngine from '@/lib/AudioEngine';
+import { isStripePublicConfigured } from '@/lib/stripe-public';
 import StripeCardStep from './StripeCardStep';
 import styles from './CartDrawer.module.css';
 
@@ -66,6 +66,7 @@ export default function CartDrawer() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderError, setOrderError] = useState('');
   const [submittedOrder, setSubmittedOrder] = useState(null);
+  const stripeReady = isStripePublicConfigured();
 
   const hasLocalOnlyItems = useMemo(
     () => cartItems.some((item) => item.storeSection === 'cannabis' || item.pickupOnly),
@@ -92,6 +93,7 @@ export default function CartDrawer() {
   );
 
   const needsHostedCardStep = formData.payment === 'Card';
+  const stripeUnavailable = !CHECKOUT_DEMO_MODE && needsHostedCardStep && !stripeReady;
 
   const checkoutPayload = useMemo(
     () => ({
@@ -145,24 +147,15 @@ export default function CartDrawer() {
     }
   }, [isDrawerOpen]);
 
-  useEffect(() => {
-    if (isDrawerOpen) {
-      audioEngine.playClick();
-    }
-  }, [isDrawerOpen]);
-
   const handleClose = () => {
-    audioEngine.playClick();
     toggleDrawer();
   };
 
   const handleRemove = (id, size) => {
-    audioEngine.playClick();
     removeFromCart(id, size);
   };
 
   const handleCheckoutInit = () => {
-    audioEngine.playClick();
     setOrderError('');
     setSubmittedOrder(null);
     setCheckoutStep('contact');
@@ -177,7 +170,6 @@ export default function CartDrawer() {
       return;
     }
 
-    audioEngine.playClick();
     setOrderError('');
     setCheckoutStep('fulfillment');
   };
@@ -189,12 +181,10 @@ export default function CartDrawer() {
       return;
     }
 
-    audioEngine.playClick();
     setCheckoutStep('review');
   };
 
   const handleFinalSubmit = async (paymentRequest = null) => {
-    audioEngine.playClick();
     setIsProcessing(true);
     setOrderError('');
 
@@ -253,7 +243,6 @@ export default function CartDrawer() {
 
   const handleReviewContinue = () => {
     if (needsHostedCardStep) {
-      audioEngine.playClick();
       setCheckoutStep('payment');
       return;
     }
@@ -445,7 +434,7 @@ export default function CartDrawer() {
                       <p className={styles.stepDesc}>
                         {hasLocalOnlyItems
                           ? 'Local 21+ orders support Pickup or Delivery. 9:30 PM deadline applies for all same-day fulfillment.'
-                          : 'Choose shipping, Pickup or Riverside/Bakersfield Delivery.'}
+                          : 'Choose shipping, Bakersfield pickup, or Bakersfield delivery.'}
                       </p>
 
                       <div className={styles.typeToggle}>
@@ -534,8 +523,10 @@ export default function CartDrawer() {
                         ))}
                       </div>
 
-                      <button className={styles.finalSubmitBtn} disabled={isProcessing} onClick={handleReviewContinue}>
-                        {isProcessing
+                      <button className={styles.finalSubmitBtn} disabled={isProcessing || stripeUnavailable} onClick={handleReviewContinue}>
+                        {stripeUnavailable
+                          ? 'Stripe Setup Required'
+                          : isProcessing
                           ? 'Submitting...'
                           : CHECKOUT_DEMO_MODE && needsHostedCardStep
                             ? `Continue to Card Demo • $${cartTotal}`
@@ -543,6 +534,11 @@ export default function CartDrawer() {
                               ? `Continue to Secure Card • $${cartTotal}`
                               : `${CHECKOUT_DEMO_MODE ? 'Submit Demo Order' : 'Submit Order'} • $${cartTotal}`}
                       </button>
+                      {!stripeReady && needsHostedCardStep && !CHECKOUT_DEMO_MODE && (
+                        <p className={styles.errorText}>
+                          Shipping card checkout is not live yet. Add the customer&apos;s Stripe keys to enable this step.
+                        </p>
+                      )}
                       {orderError && <p className={styles.errorText}>{orderError}</p>}
                       <p className={styles.submitNote}>
                         {CHECKOUT_DEMO_MODE && needsHostedCardStep
@@ -551,7 +547,7 @@ export default function CartDrawer() {
                             ? 'Local and shipping card payments run through Stripe for immediate security.'
                             : orderType === 'Shipping'
                               ? 'Shipping orders require card payment before fulfillment.'
-                              : 'Cash payments are collected locally in Bakersfield and Riverside.'}
+                              : 'Cash payments are collected locally in Bakersfield.'}
                       </p>
                     </motion.div>
                   )}

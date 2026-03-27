@@ -12,14 +12,14 @@ export default function Hero() {
       <div className={styles.content}>
         <h1 className={`${styles.headline} reveal`}>Money Grows Where We Plant It</h1>
         <div className={`${styles.newDropBadge} reveal`}>
-          <span>APPAREL (US-WIDE SHIPPING) + BAKERSFIELD DELIVERY</span>
+          <span>APPAREL (US-WIDE SHIPPING) + BAKERSFIELD LOCAL MENU</span>
         </div>
         <p className={`${styles.subcopy} reveal`}>
-          Bakersfield-born, premium streetwear rooted in culture, community, and the hustle. US-wide apparel shipping and local verified delivery.
+          Bakersfield-born, premium streetwear rooted in culture, community, and the hustle. Apparel ships nationwide while the 21+ local menu stays fulfilled in Bakersfield.
         </p>
         <div className={`${styles.ctaContainer} reveal`}>
           <Link href="/shop" className={styles.primaryCta}>SHOP APPAREL</Link>
-          <Link href="/shop?store=cannabis" className={styles.secondaryCta}>LOCAL DELIVERY MENU</Link>
+          <Link href="/shop?store=cannabis" className={styles.secondaryCta}>BAKERSFIELD LOCAL MENU</Link>
         </div>
       </div>
     </section>

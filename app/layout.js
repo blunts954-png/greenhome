@@ -23,11 +23,10 @@ const geistMono = localFont({
 const SITE_URL = "https://homegrownmoney.com";
 
 export const metadata = {
-  title: "Home Grown Money | Bakersfield & Riverside Cannabis Delivery & Apparel",
-  description: "Bakersfield & Riverside's premier cannabis delivery and reserve menu. Shop local weed or branded apparel with nationwide shipping and Bakersfield pickup.",
+  title: "Home Grown Money | Bakersfield Local Delivery & Nationwide Apparel",
+  description: "Shop Home Grown Money apparel with nationwide shipping, plus Bakersfield local pickup and delivery for the 21+ menu.",
   keywords: [
     "Bakersfield cannabis delivery",
-    "Riverside cannabis delivery",
     "Home Grown Money",
     "HGM apparel",
     "local weed delivery Bakersfield",
@@ -39,8 +38,8 @@ export const metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "Home Grown Money | Bakersfield & Riverside Cannabis Delivery & Apparel",
-    description: "Bakersfield & Riverside cannabis reservations for local delivery, plus branded apparel with nationwide shipping and Stripe checkout.",
+    title: "Home Grown Money | Bakersfield Local Delivery & Nationwide Apparel",
+    description: "Bakersfield local pickup and delivery for the 21+ menu, plus branded apparel with nationwide shipping and secure checkout.",
     url: SITE_URL,
     siteName: "Home Grown Money",
     images: [
@@ -57,7 +56,7 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Home Grown Money",
-    description: "Bakersfield & Riverside cannabis reservations and branded apparel.",
+    description: "Bakersfield local pickup and delivery, plus branded apparel with nationwide shipping.",
     images: ["/images/hero-bg.png"],
   },
 };
@@ -80,7 +79,7 @@ export default function RootLayout({ children }) {
               "name": "Home Grown Money",
               "image": `${SITE_URL}/images/hero-bg.png`,
               "url": SITE_URL,
-              "description": "Bakersfield and Riverside cannabis company providing local delivery and reserve menus, plus premium apparel.",
+              "description": "Bakersfield cannabis delivery and pickup service with a nationwide apparel storefront.",
               "priceRange": "$$",
               "address": {
                 "@type": "PostalAddress",
@@ -96,7 +95,6 @@ export default function RootLayout({ children }) {
               },
               "areaServed": [
                 { "@type": "City", "name": "Bakersfield" },
-                { "@type": "City", "name": "Riverside" },
                 { "@type": "State", "name": "California" }
               ],
               "hasOfferCatalog": {

@@ -3,7 +3,7 @@ import styles from './Shop.module.css';
 
 export const metadata = {
   title: "Shop Home Grown Money | Apparel and Bakersfield Local Menu",
-  description: "Browse Home Grown Money apparel with nationwide shipping and Stripe checkout, plus the 21+ Bakersfield local cannabis menu for pickup reservations.",
+  description: "Browse Home Grown Money apparel with nationwide shipping, plus the 21+ Bakersfield local menu for pickup and delivery.",
   alternates: {
     canonical: '/shop',
   },
@@ -26,11 +26,11 @@ export default function ShopPage() {
           <div className={styles.infoGrid}>
             <div className={styles.infoBox}>
               <h3>Accurate Checkout Flow</h3>
-              <p>Apparel can ship with Stripe or be arranged for Bakersfield pickup, while cannabis stays local and pickup-only.</p>
+              <p>Apparel can ship with Stripe or be arranged for Bakersfield pickup, while the 21+ menu stays local to Bakersfield pickup and delivery.</p>
             </div>
             <div className={styles.infoBox}>
               <h3>Clear Shipping Rules</h3>
-              <p>Apparel ships nationwide across the US. Cannabis is 21+ and reserved for Bakersfield pickup only.</p>
+              <p>Apparel ships nationwide across the US. Cannabis is 21+ and reserved for Bakersfield pickup or delivery only.</p>
             </div>
             <div className={styles.infoBox}>
               <h3>Separated Menus</h3>

@@ -20,7 +20,7 @@ export default function ShippingPage() {
             <h3>ORDER PROCESSING</h3>
           </div>
           <div className={styles.sectionBody}>
-             <p>Orders are split clearly between nationwide apparel shipping and Bakersfield-only pickup reservations for cannabis.</p>
+             <p>Orders are split clearly between nationwide apparel shipping and Bakersfield-only local fulfillment for cannabis.</p>
              <ul>
                <li><strong>Processing:</strong> Orders are usually prepared within 24-48 hours.</li>
                <li><strong>Notifications:</strong> You&apos;ll receive email updates once your order is confirmed or in motion.</li>
@@ -46,14 +46,14 @@ export default function ShippingPage() {
         <div className={styles.shippingSection}>
           <div className={styles.sectionHead}>
             <MapPin size={24} />
-            <h3>LOCAL CANNABIS PICKUP</h3>
+            <h3>LOCAL CANNABIS FULFILLMENT</h3>
           </div>
           <div className={styles.sectionBody}>
              <p>The cannabis menu is separated from apparel and stays local to Bakersfield.</p>
              <ul>
                <li><strong>Age Gate:</strong> You must be 21+ to enter the local menu and reserve cannabis items.</li>
-               <li><strong>Fulfillment:</strong> Cannabis reservations are for Bakersfield pickup only.</li>
-               <li><strong>ID:</strong> Valid ID is required at pickup for all cannabis reservations.</li>
+               <li><strong>Fulfillment:</strong> Cannabis reservations are for Bakersfield pickup or delivery only.</li>
+               <li><strong>ID:</strong> Valid ID is required at pickup or delivery for all cannabis reservations.</li>
              </ul>
           </div>
         </div>
@@ -68,7 +68,7 @@ export default function ShippingPage() {
              <ul>
                <li><strong>Apparel:</strong> 14-day return window for unworn items in original packaging.</li>
                <li><strong>Cannabis:</strong> Local cannabis reservations are final once fulfilled.</li>
-               <li><strong>Process:</strong> Use the Connect form to start an apparel return or exchange request.</li>
+               <li><strong>Process:</strong> Use the Connect page to start an apparel return or exchange request.</li>
              </ul>
           </div>
         </div>

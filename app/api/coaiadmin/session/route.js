@@ -4,7 +4,7 @@ import {
   clearAdminSession,
   hasAdminSession,
   isAdminConfigured,
-  isValidAdminPassword,
+  isValidAdminCredentials,
   setAdminSession
 } from '@/lib/admin-auth';
 
@@ -20,7 +20,7 @@ export async function POST(request) {
     return NextResponse.json(
       {
         authenticated: false,
-        error: 'Admin access is disabled until ADMIN_DASHBOARD_KEY is configured.'
+        error: 'Admin access is disabled until ADMIN_DASHBOARD_USER and ADMIN_DASHBOARD_KEY are configured.'
       },
       { status: 503 }
     );

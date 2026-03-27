@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import styles from './Contact.module.css';
 import { CheckCircle, ArrowLeft, Target, Briefcase, Shirt } from 'lucide-react';
-import audioEngine from '@/lib/AudioEngine';
 
 const DIRECT_EMAIL = 'moneygrowontrees80@gmail.com';
 
@@ -31,17 +30,14 @@ export default function ContactPage() {
   )}`;
 
   const handleNext = () => {
-    try { audioEngine.playClick(); } catch(e){}
     setStep(prev => prev + 1);
   };
 
   const handleBack = () => {
-    try { audioEngine.playClick(); } catch(e){}
     setStep(prev => prev - 1);
   };
 
   const selectOption = (field, value) => {
-    try { audioEngine.playClick(); } catch(e){}
     setFormData(prev => ({ ...prev, [field]: value }));
     handleNext();
   };
@@ -49,7 +45,6 @@ export default function ContactPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('sending');
-    try { audioEngine.playClick(); } catch(e){}
     
     try {
       const resp = await fetch('/api/contact', {

@@ -32,11 +32,11 @@ export default function AboutPage() {
                 </p>
               </div>
               <p>
-                Represented by brand ambassador <strong>Asia the MF Dime</strong>, HGM has evolved from a Bakersfield-based digital brand into a community presence that bridges streetwear, art, and local industry. 
-                Whether it&apos;s our interactive &quot;Puff & Paint&quot; brunches at 130 E. 21st St or our new storefront on <strong>Wake & Bake Blvd (210 Goodman St)</strong>, we are deeply intertwined with the city we call home.
+                HGM has grown from a Bakersfield-based digital brand into a storefront identity that connects streetwear, local loyalty, and the everyday grind.
+                The goal is simple: keep the brand rooted in the city while giving customers a clean, direct way to shop the drop and access the local menu.
               </p>
               <p>
-                Our positive impact on Bakersfield youth and local culture has even caught the attention of <strong>23ABC News</strong>, highlighting our commitment to more than just commerce—it&apos;s about building a legacy.
+                Everything on the site is meant to reflect that same approach, from product presentation to fulfillment rules, so customers know exactly what ships nationwide and what stays local to Bakersfield.
               </p>
             </div>
             <div className={`${styles.imageBox} reveal`}>
@@ -66,22 +66,22 @@ export default function AboutPage() {
             <div className={`${styles.timelineItem} reveal`}>
               <div className={styles.year}>2023</div>
               <div className={styles.event}>
-                <h3>Puff & Paint</h3>
-                <p>Launched community events at 130 E. 21st St, merging art and local culture into social brunches.</p>
+                <h3>Local Momentum</h3>
+                <p>The brand tightened its look, expanded apparel drops, and built stronger roots in the Bakersfield customer base.</p>
               </div>
             </div>
             <div className={`${styles.timelineItem} reveal`}>
               <div className={styles.year}>2024</div>
               <div className={styles.event}>
-                <h3>23ABC Recognition</h3>
-                <p>Highlighted by local news for our positive impact on the community and commitment to the hustle.</p>
+                <h3>Storefront Focus</h3>
+                <p>Products, fulfillment, and brand presentation were organized into a cleaner storefront experience for apparel and the local menu.</p>
               </div>
             </div>
             <div className={`${styles.timelineItem} reveal`}>
               <div className={styles.year}>2026</div>
               <div className={styles.event}>
-                <h3>Wake & Bake Blvd</h3>
-                <p>Opened our 210 Goodman St location, cementing Home Grown Money as a physical staple on Bakersfield&apos;s map.</p>
+                <h3>Ready to Scale</h3>
+                <p>Home Grown Money now stands as a brand built for repeat drops, local fulfillment, and a more polished customer experience.</p>
               </div>
             </div>
           </div>
@@ -91,10 +91,10 @@ export default function AboutPage() {
       <section className={`${styles.ctaSection} reveal`}>
         <div className={styles.container}>
           <h2 className="brand-font">Tap Into the Source</h2>
-          <p>Browse premium streetwear or enter the Bakersfield delivery menu. All praises to the most high.</p>
+          <p>Browse premium streetwear or enter the Bakersfield local menu. All praises to the most high.</p>
           <div className={styles.ctaRow}>
             <Link href="/shop" className={styles.ctaBtn}>Shop Apparel</Link>
-            <Link href="/shop?store=cannabis" className={styles.ctaBtnSecondary}>Bakersfield Delivery</Link>
+            <Link href="/shop?store=cannabis" className={styles.ctaBtnSecondary}>Bakersfield Local Menu</Link>
           </div>
         </div>
       </section>

@@ -5,6 +5,6 @@ export default function robots() {
       allow: '/',
       disallow: '/admin/',
     },
-    sitemap: 'https://homegrownmoney.vercel.app/sitemap.xml',
+    sitemap: 'https://homegrownmoney.com/sitemap.xml',
   }
 }

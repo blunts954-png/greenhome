@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import SplashScreen from './SplashScreen';
 import CartDrawer from './CartDrawer';
-import audioEngine from '@/lib/AudioEngine';
 import BackToTop from './BackToTop';
 
 export default function RootClientWrapper({ children }) {
@@ -21,7 +20,6 @@ export default function RootClientWrapper({ children }) {
       return undefined;
     }
 
-    const humRef = audioEngine.playSubHum();
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -38,7 +36,6 @@ export default function RootClientWrapper({ children }) {
 
     return () => {
       observer.disconnect();
-      audioEngine.stopSubHum(humRef);
     };
   }, [showContent]);
 

@@ -4,7 +4,7 @@ import ValueProp from "@/components/ValueProp";
 import SocialFeed from '@/components/SocialFeed';
 import Link from 'next/link';
 import styles from './page.module.css';
-import { Target, Users, TrendingUp, Download } from 'lucide-react';
+import { Target, Users, TrendingUp, ArrowRight } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -18,18 +18,18 @@ export default function Home() {
           <div className={styles.statsGrid}>
             <div className={styles.statCard}>
               <Target size={40} color="#478527" />
-              <h3>100%</h3>
-              <p>BAKERSFIELD BORN & CULTIVATED</p>
+              <h3>LOCAL</h3>
+              <p>BAKERSFIELD PICKUP + DELIVERY</p>
             </div>
             <div className={styles.statCard}>
               <Users size={40} color="#d4af37" />
-              <h3>5,000+</h3>
-              <p>COMMUNITY MEMBERS SEEDED</p>
+              <h3>US-WIDE</h3>
+              <p>APPAREL + ACCESSORIES SHIPPING</p>
             </div>
             <div className={styles.statCard}>
               <TrendingUp size={40} color="#478527" />
-              <h3>PRIME</h3>
-              <p>LOCAL FLOWER, FITS, AND REAL INVENTORY</p>
+              <h3>READY</h3>
+              <p>REAL INVENTORY WITH CLEAR FULFILLMENT</p>
             </div>
           </div>
         </div>
@@ -56,15 +56,17 @@ export default function Home() {
       <section className={`${styles.leadMagnet} reveal`}>
         <div className={styles.container}>
           <div className={styles.leadContent}>
-            <h2 className="brand-font">Claim Your Growth Blueprint</h2>
-            <p>Ready to level up? Secure our exclusive guide on cultivation and community building.</p>
+            <h2 className="brand-font">Need Help With an Order?</h2>
+            <p>Use the Connect page for apparel questions, delivery coordination, return requests, or wholesale conversations.</p>
             <div className={styles.magnetActions}>
-              <input type="email" placeholder="YOUR EMAIL ADDRESS" className={styles.magnetInput} />
-              <button className={styles.magnetBtn}>
-                GET IT NOW <Download size={18} />
-              </button>
+              <Link href="/contact" className={styles.magnetBtn}>
+                CONNECT NOW <ArrowRight size={18} />
+              </Link>
+              <Link href="/shop" className={styles.magnetBtn}>
+                SHOP THE DROP <ArrowRight size={18} />
+              </Link>
             </div>
-            <p className={styles.magnetFootnote}>*100% Authentic. Zero Overhyped BS.</p>
+            <p className={styles.magnetFootnote}>Customer support, local coordination, and partnership inquiries all route through one page.</p>
           </div>
         </div>
       </section>
@@ -80,7 +82,7 @@ export default function Home() {
               <div className={styles.vItem}><span>TEE</span> <strong>$30</strong></div>
               <div className={styles.vItem}><span>HAT</span> <strong>$15</strong></div>
               <div className={styles.vItem}><span>BEANIE</span> <strong>$15</strong></div>
-              <Link href="/shop" className={styles.vItem}><span>COMBOS</span> <strong>$30</strong></Link>
+              <Link href="/shop" className={styles.vItem}><span>COMBOS</span> <strong>$35</strong></Link>
             </div>
             <Link href="/shop?store=cannabis" className={styles.ctaShopBtn}>VIEW THE LOCAL MENU</Link>
           </div>

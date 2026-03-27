@@ -143,10 +143,11 @@ Add these first:
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_public_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-ADMIN_DASHBOARD_KEY=HSM2026
+ADMIN_DASHBOARD_USER=your_admin_username
+ADMIN_DASHBOARD_KEY=your_admin_password
 ```
 
-The admin login accepts `HSM2026` by default. Setting `ADMIN_DASHBOARD_KEY` adds your own override key if you want a second login passcode available.
+The admin area now requires both `ADMIN_DASHBOARD_USER` and `ADMIN_DASHBOARD_KEY`. There is no built-in fallback credential.
 
 Add the Stripe values next:
 
@@ -166,6 +167,7 @@ CONTACT_TO_EMAIL=moneygrowontrees80@gmail.com
 ORDER_ALERT_TO_EMAIL=moneygrowontrees80@gmail.com
 GMAIL_USER=moneygrowontrees80@gmail.com
 GMAIL_APP_PASSWORD=your_gmail_app_password
+ENABLE_CUSTOMER_ORDER_EMAIL=true
 ```
 
 Optional:
@@ -182,7 +184,7 @@ ALERT_PHONE_5=
 ALERT_PHONE_6=
 ```
 
-If you still want the non-live card flow while setup is incomplete, you can turn the demo checkout back on:
+If you still want the non-live card flow while setup is incomplete in staging, you can turn the demo checkout back on:
 
 ```env
 NEXT_PUBLIC_CHECKOUT_DEMO_MODE=true

@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import styles from './SplashScreen.module.css';
-import audioEngine from '@/lib/AudioEngine';
 
 export default function SplashScreen({ onComplete }) {
   const [stage, setStage] = useState('entering'); // entering, opening, hidden
@@ -12,13 +11,6 @@ export default function SplashScreen({ onComplete }) {
     // Stage 1: Fast Entry (0.75s)
     const t1 = setTimeout(() => {
       setStage('opening');
-      try {
-        audioEngine.init();
-        audioEngine.playClick();
-        audioEngine.playHiss();
-      } catch (e) {
-        console.warn("Audio init failed, continuing splash...", e);
-      }
     }, 750);
     
     // Stage 2: Fade out / Reveal (Total 3.5s)

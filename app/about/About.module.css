@@ -164,6 +164,32 @@
   margin-bottom: 40px;
 }
 
+.ctaRow {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.ctaBtnSecondary {
+  display: inline-block;
+  padding: 18px 40px;
+  background: transparent;
+  color: white;
+  text-decoration: none;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  transition: all 0.3s ease;
+}
+
+.ctaBtnSecondary:hover {
+  border-color: var(--money-green);
+  background: rgba(71, 133, 39, 0.14);
+  transform: translateY(-5px);
+}
+
 .ctaBtn {
   display: inline-block;
   padding: 18px 40px;

@@ -16,10 +16,9 @@ export default function Footer() {
           <Image src="/logo-mark.png" alt="HGM Logo" width={60} height={92} className={styles.footerLogo} />
           <p className={styles.tagline}>Money Grows Where We Plant It.</p>
           <div className={styles.newsletter}>
-            <h4>Be First for the Next Drop</h4>
+            <h4>Questions or Custom Orders?</h4>
             <div className={styles.emailForm}>
-              <input type="email" placeholder="Email Address" className={styles.emailInput} aria-label="Email address" />
-              <Link href="/contact" className={styles.emailBtn}>Join</Link>
+              <Link href="/contact" className={styles.emailBtn}>Connect</Link>
             </div>
           </div>
         </div>
@@ -60,7 +59,7 @@ export default function Footer() {
             <span>Apparel ships nationwide</span>
           </div>
           <div className={styles.contactItem}>
-            <span>21+ cannabis reservations for local Bakersfield pickup or delivery</span>
+            <span>21+ cannabis reservations for Bakersfield pickup or delivery</span>
           </div>
         </div>
       </div>
@@ -71,17 +70,6 @@ export default function Footer() {
           <div className={styles.bottomCopy}>
             <p className={styles.legal}>
               &copy; {currentYear} Home Grown Money &middot; Money grows where we plant it &middot; All rights reserved.
-            </p>
-            <p className={styles.credit}>
-              Power by{' '}
-              <a
-                href="https://chaoticallyorganizedai.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.creditLink}
-              >
-                ChaoticallyorganizedAI.com
-              </a>
             </p>
           </div>
           <div className={styles.footerSocials}>

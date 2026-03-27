@@ -9,12 +9,12 @@ const VALUES = [
   },
   {
     title: 'Culture & Community',
-    description: 'We host the city\'s Puff & Paint brunches and community gatherings. From 130 E. 21st St to Wake & Bake Blvd, we are local staples.',
+    description: 'The brand is rooted in Bakersfield culture, direct customer relationships, and a storefront experience that feels personal.',
     icon: <Award className={styles.iconElement} />
   },
   {
     title: 'Nationwide & Local',
-    description: 'Premium apparel ships US-wide via Stripe checkout. Local 21+ cannabis delivery stays verified in Bakersfield and Riverside.',
+    description: 'Premium apparel ships nationwide. The 21+ local menu stays limited to Bakersfield pickup and delivery.',
     icon: <Users className={styles.iconElement} />
   }
 ];

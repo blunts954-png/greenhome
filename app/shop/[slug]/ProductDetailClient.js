@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { getProductSchema } from '@/lib/products';
 import { useCart } from '@/lib/cart-context';
-import audioEngine from '@/lib/AudioEngine';
 import AgeGate from '@/components/AgeGate';
 import styles from './ProductDetail.module.css';
 
@@ -27,10 +26,6 @@ export default function ProductDetailClient({ product }) {
       alert('Please select a size');
       return;
     }
-
-    try {
-      audioEngine.playClick();
-    } catch (error) {}
 
     addToCart({ ...product, selectedSize, quantity });
   };
@@ -57,14 +52,6 @@ export default function ProductDetailClient({ product }) {
         <div className={styles.content}>
           <span className={styles.category}>{product.category}</span>
           <h1 className="brand-font">{product.name}</h1>
-          <div className={styles.rating}>
-            {[...Array(5)].map((_, index) => (
-              <span key={index} className={index < product.rating ? styles.starFilled : styles.starEmpty}>
-                ★
-              </span>
-            ))}
-            <span className={styles.reviewCount}>(Reviews Coming Soon)</span>
-          </div>
 
           <p className={styles.price}>
             {product.price === null ? 'CALL FOR DONATION' : `$${product.price}`}
@@ -78,7 +65,7 @@ export default function ProductDetailClient({ product }) {
 
           <div className={styles.fulfillmentNote}>
             {isCannabis
-              ? '21+ only. Cannabis reservations are for Bakersfield pickup only and require valid ID at fulfillment.'
+              ? '21+ only. Cannabis reservations are for Bakersfield pickup or delivery and require valid ID at fulfillment.'
               : 'Apparel and accessories can ship nationwide with Stripe card checkout, or be arranged for Bakersfield pickup.'}
           </div>
 
@@ -91,13 +78,7 @@ export default function ProductDetailClient({ product }) {
                     <button
                       key={size}
                       className={`${styles.sizeBtn} ${selectedSize === size ? styles.activeSize : ''}`}
-                      onClick={() => {
-                        setSelectedSize(size);
-
-                        try {
-                          audioEngine.playClick();
-                        } catch (error) {}
-                      }}
+                      onClick={() => setSelectedSize(size)}
                     >
                       {size}
                     </button>
@@ -146,7 +127,7 @@ export default function ProductDetailClient({ product }) {
           )}
 
           <div className={styles.shippingIndicator}>
-            <span>{isCannabis ? '✓ 21+ ID required at pickup' : '✓ Nationwide apparel shipping available'}</span>
+            <span>{isCannabis ? '✓ 21+ ID required at local fulfillment' : '✓ Nationwide apparel shipping available'}</span>
             <span>{isCannabis ? '✖ NO SHIPPING AVAILABLE' : '✓ Stripe card checkout for shipping orders'}</span>
           </div>
         </div>
