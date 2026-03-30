@@ -13,11 +13,11 @@ export default function SplashScreen({ onComplete }) {
       setStage('opening');
     }, 750);
     
-    // Stage 2: Fade out / Reveal (Total 3.5s)
+    // Stage 2: Fade out / Reveal (Total 3.2s)
     const t2 = setTimeout(() => {
       setStage('hidden');
       if (onComplete) onComplete();
-    }, 3500);
+    }, 3200);
 
     return () => {
       clearTimeout(t1);

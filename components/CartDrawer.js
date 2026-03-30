@@ -333,6 +333,11 @@ export default function CartDrawer() {
                 <>
                   {checkoutStep === 'cart' && (
                     <div className={styles.cartList}>
+                      {hasLocalOnlyItems && cartItems.some(i => i.storeSection === 'apparel') && (
+                        <div className={styles.mixedCartNotice}>
+                          🚨 This cart contains 21+ menu items. <strong>Local Bakersfield fulfillment only</strong> for the entire order. Shipping is disabled.
+                        </div>
+                      )}
                       {cartItems.map((item) => (
                         <div key={`${item.id}-${item.selectedSize || 'na'}`} className={styles.cartItem}>
                           <div className={styles.itemImg}>
