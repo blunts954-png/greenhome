@@ -21,6 +21,16 @@ export default function SocialFeed() {
                <h2 className="brand-font">THE CULTURE</h2>
             </div>
             <p>Direct from the 661. Follow the brand across Instagram and the live storefront.</p>
+            <a
+              href="https://instagram.com/homegrownmoney"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.instaFollow}
+              aria-label="Follow Home Grown Money on Instagram"
+            >
+              <Instagram size={16} />
+              @homegrownmoney
+            </a>
         </div>
         <div className={styles.feed}>
           {POSTS.map(post => (

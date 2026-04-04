@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { CartProvider } from "@/lib/cart-context";
 import { OrdersProvider } from "@/lib/orders-context";
 import RootClientWrapper from "@/components/RootClientWrapper";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -128,6 +129,7 @@ export default function RootLayout({ children }) {
             </RootClientWrapper>
           </CartProvider>
         </OrdersProvider>
+        <Analytics />
       </body>
     </html>
   );

@@ -13,13 +13,12 @@ import {
   Settings,
   Users,
   Search,
+  ShoppingCart,
   Eye,
   EyeOff
 } from 'lucide-react';
 import { PRODUCTS } from '@/lib/products';
 import styles from './page.module.css';
-
-const PAGE_SIZE = 20;
 
 const MOCK_DATA = {
   backendReady: true,
@@ -52,8 +51,6 @@ export default function AdminDashboard() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [search, setSearch] = useState('');
-  const [ordersPage, setOrdersPage] = useState(0);
-  const [accountsPage, setAccountsPage] = useState(0);
   const [authChecked, setAuthChecked] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [adminConfigured, setAdminConfigured] = useState(true);
@@ -99,12 +96,15 @@ export default function AdminDashboard() {
     }
   }, [loadInventory]);
 
+  // FIX 2: Use GET to check existing session instead of POST with empty body
   useEffect(() => {
     let mounted = true;
 
     async function bootstrap() {
       try {
-        const response = await fetch('/api/coaiadmin/session');
+        const response = await fetch('/api/coaiadmin/session', {
+          method: 'GET'
+        });
         const payload = await response.json();
 
         if (!mounted) {
@@ -163,24 +163,25 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleOrderStatusUpdate = async (orderId, status) => {
+  // FIX 1: Hit the correct per-order PATCH endpoint
+  const handleOrderStatusUpdate = async (orderNumber, status) => {
     setIsLoading(true);
     setActionError('');
     setActionNotice('');
 
     try {
-      const response = await fetch('/api/coaiadmin/dashboard', {
+      const response = await fetch(`/api/coaiadmin/orders/${encodeURIComponent(orderNumber)}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'update_order', orderId, status })
+        body: JSON.stringify({ status })
       });
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.message || 'Failed to update order.');
+        throw new Error(error.error || 'Failed to update order.');
       }
 
-      setActionNotice(`Order ${orderId} marked as ${status}.`);
+      setActionNotice(`Order ${orderNumber} marked as ${status}.`);
       await loadDashboard();
     } catch (error) {
       setActionError(error.message);
@@ -212,21 +213,22 @@ export default function AdminDashboard() {
     }
   };
 
+  // FIX 1: Hit the correct per-account PATCH endpoint for ban toggle
   const handleBanToggle = async (account, banned) => {
     setIsLoading(true);
     setActionError('');
     setActionNotice('');
 
     try {
-      const response = await fetch('/api/coaiadmin/dashboard', {
+      const response = await fetch(`/api/coaiadmin/accounts/${encodeURIComponent(account.id)}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'toggle_ban', customerName: account.name, customerEmail: account.email, banned, ip: account.lastIp })
+        body: JSON.stringify({ banned, reason: banned ? 'Blocked by admin.' : '' })
       });
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.message || 'Failed to update ban status.');
+        throw new Error(error.error || 'Failed to update ban status.');
       }
 
       setActionNotice(`${account.name} is now ${banned ? 'Banned' : 'Restored'}.`);
@@ -237,11 +239,6 @@ export default function AdminDashboard() {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    setOrdersPage(0);
-    setAccountsPage(0);
-  }, [search]);
 
   const handleRefresh = () => {
     loadDashboard();
@@ -267,12 +264,6 @@ export default function AdminDashboard() {
       account.lastIp?.toLowerCase().includes(term)
     );
   });
-
-  const ordersPageCount = Math.ceil(filteredOrders.length / PAGE_SIZE);
-  const pagedOrders = filteredOrders.slice(ordersPage * PAGE_SIZE, (ordersPage + 1) * PAGE_SIZE);
-
-  const accountsPageCount = Math.ceil(filteredAccounts.length / PAGE_SIZE);
-  const pagedAccounts = filteredAccounts.slice(accountsPage * PAGE_SIZE, (accountsPage + 1) * PAGE_SIZE);
 
   const filteredInventory = PRODUCTS.filter((product) => {
     const term = search.toLowerCase();
@@ -300,25 +291,19 @@ export default function AdminDashboard() {
           <h1>HGM ADMIN</h1>
           {adminConfigured ? (
             <form onSubmit={handleLogin}>
-              <label htmlFor="admin-user" className="sr-only">Admin Username</label>
               <input
-                id="admin-user"
                 type="text"
                 placeholder="ADMIN USER"
                 value={username}
                 onChange={(event) => setUsername(event.target.value)}
                 className={styles.loginInput}
-                autoComplete="username"
               />
-              <label htmlFor="admin-pass" className="sr-only">Admin Password</label>
               <input
-                id="admin-pass"
                 type="password"
                 placeholder="ADMIN PASSWORD"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 className={styles.loginInput}
-                autoComplete="current-password"
               />
               <button type="submit" className={styles.loginBtn} disabled={isLoading}>
                 {isLoading ? 'ACCESSING...' : 'ACCESS SYSTEM'}
@@ -365,13 +350,7 @@ export default function AdminDashboard() {
         </nav>
 
         <div className={styles.sidebarFooter}>
-          <button
-            className={styles.logoutBtn}
-            onClick={async () => {
-              await fetch('/api/coaiadmin/session', { method: 'DELETE' });
-              window.location.reload();
-            }}
-          >
+          <button className={styles.logoutBtn} onClick={() => window.location.reload()}>
             <ArrowLeft size={16} />
             System Exit
           </button>
@@ -421,14 +400,14 @@ export default function AdminDashboard() {
 
         <div className={styles.contentArea}>
           {actionError && (
-            <div className={styles.errorBanner} role="alert">
+            <div className={styles.errorBanner}>
               <AlertCircle size={18} />
               <span>{actionError}</span>
             </div>
           )}
 
           {actionNotice && (
-            <div className={styles.successBanner} role="status">
+            <div className={styles.successBanner}>
               <CheckCircle2 size={18} />
               <span>{actionNotice}</span>
             </div>
@@ -462,7 +441,7 @@ export default function AdminDashboard() {
                         </tr>
                       </thead>
                       <tbody>
-                        {pagedOrders.map((order) => (
+                        {filteredOrders.map((order) => (
                           <tr key={order.id}>
                             <td>
                               <div className={styles.primaryCell}>{order.id}</div>
@@ -498,25 +477,6 @@ export default function AdminDashboard() {
                       </tbody>
                     </table>
                   </div>
-                  {ordersPageCount > 1 && (
-                    <div className={styles.pagination}>
-                      <button
-                        className={styles.pageBtn}
-                        onClick={() => setOrdersPage((p) => Math.max(0, p - 1))}
-                        disabled={ordersPage === 0}
-                      >
-                        Prev
-                      </button>
-                      <span className={styles.pageInfo}>{ordersPage + 1} / {ordersPageCount}</span>
-                      <button
-                        className={styles.pageBtn}
-                        onClick={() => setOrdersPage((p) => Math.min(ordersPageCount - 1, p + 1))}
-                        disabled={ordersPage >= ordersPageCount - 1}
-                      >
-                        Next
-                      </button>
-                    </div>
-                  )}
                 </div>
               )}
             </div>
@@ -566,7 +526,7 @@ export default function AdminDashboard() {
               </div>
 
               <div className={styles.accountGrid}>
-                {pagedAccounts.map((account) => (
+                {filteredAccounts.map((account) => (
                   <article key={account.id} className={styles.accountCard}>
                     <div className={styles.accountHeader}>
                       <div>
@@ -588,25 +548,6 @@ export default function AdminDashboard() {
                   </article>
                 ))}
               </div>
-              {accountsPageCount > 1 && (
-                <div className={styles.pagination}>
-                  <button
-                    className={styles.pageBtn}
-                    onClick={() => setAccountsPage((p) => Math.max(0, p - 1))}
-                    disabled={accountsPage === 0}
-                  >
-                    Prev
-                  </button>
-                  <span className={styles.pageInfo}>{accountsPage + 1} / {accountsPageCount}</span>
-                  <button
-                    className={styles.pageBtn}
-                    onClick={() => setAccountsPage((p) => Math.min(accountsPageCount - 1, p + 1))}
-                    disabled={accountsPage >= accountsPageCount - 1}
-                  >
-                    Next
-                  </button>
-                </div>
-              )}
             </div>
           )}
 
@@ -628,7 +569,7 @@ export default function AdminDashboard() {
                 <div className={styles.infoPanel}>
                   <h3>Admin Protocol</h3>
                   <p>Access level: **ROOT**</p>
-                  <p>User identifier: {process.env.ADMIN_DASHBOARD_USER || 'homegrownmoney'}</p>
+                  <p>Session: HTTP-only cookie</p>
                 </div>
               </div>
             </div>

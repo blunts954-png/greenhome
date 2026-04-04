@@ -1,0 +1,217 @@
+.footer {
+  background: #050505;
+  padding-top: 100px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  z-index: 10;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.5fr 3fr;
+  gap: 80px;
+  padding: 0 40px 60px;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+}
+
+.footerLogo {
+  display: block;
+  margin-bottom: 25px;
+  filter: drop-shadow(0 0 30px rgba(71, 133, 39, 0.2));
+}
+
+.tagline {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: white;
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin-bottom: 40px;
+}
+
+.newsletter h4 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #666;
+  letter-spacing: 0.2em;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.emailForm {
+  display: flex;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 100px;
+  padding: 5px;
+  max-width: 400px;
+}
+
+.emailInput {
+  background: transparent;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  flex: 1;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.emailInput:focus { outline: none; }
+
+.emailBtn {
+  background: white;
+  color: black;
+  border: none;
+  padding: 0 25px;
+  border-radius: 100px;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.emailBtn:hover {
+  background: var(--money-green);
+  color: white;
+}
+
+.linksGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.linkStack h5 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: white;
+  letter-spacing: 0.2em;
+  font-weight: 900;
+  margin-bottom: 30px;
+}
+
+.linkStack a {
+  display: block;
+  text-decoration: none;
+  color: #777;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+}
+
+.linkStack a:hover {
+  color: var(--money-green);
+  transform: translateX(5px);
+}
+
+/* FIX 5: Added missing legalHighlight class */
+.legalHighlight {
+  color: var(--gold) !important;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  font-size: 0.78rem !important;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+  padding-bottom: 2px;
+}
+
+.legalHighlight:hover {
+  color: #fff !important;
+  border-bottom-color: rgba(255, 255, 255, 0.4);
+}
+
+.contactStrip {
+  grid-column: 1 / -1;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: space-between;
+  padding-top: 40px;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #555;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.contactItem span { color: #888; }
+
+.bottomBar {
+  background: black;
+  padding: 30px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.bottomContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+}
+
+.bottomCopy {
+  display: grid;
+  gap: 8px;
+}
+
+.legal {
+  font-size: 0.7rem;
+  color: #444;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.credit {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #6b6b6b;
+  font-weight: 600;
+}
+
+.creditLink {
+  color: #9de27b;
+  text-decoration: none;
+}
+
+.creditLink:hover {
+  color: #fff;
+}
+
+.footerSocials {
+  display: flex;
+  gap: 20px;
+}
+
+.footerSocials a {
+  color: #444;
+  transition: color 0.3s ease;
+}
+
+.footerSocials a:hover { color: var(--money-green); }
+
+@media (max-width: 992px) {
+  .container {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+  
+  .contactStrip {
+    flex-direction: column;
+    gap: 20px;
+  }
+}

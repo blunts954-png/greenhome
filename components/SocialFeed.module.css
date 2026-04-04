@@ -35,6 +35,26 @@
   font-size: 0.9rem;
 }
 
+.instaFollow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 10px 20px;
+  border: 1px solid var(--money-green);
+  color: var(--money-green);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.instaFollow:hover {
+  background: var(--money-green);
+  color: #000;
+}
+
 .feed {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));

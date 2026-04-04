@@ -59,7 +59,7 @@ export default function Navbar() {
               {cartCount > 0 && <span className={styles.cartCount}>{cartCount}</span>}
             </button>
 
-            <button className={styles.menuBtn} onClick={handleMenuToggle} aria-label="Open navigation">
+            <button className={styles.menuBtn} onClick={handleMenuToggle} aria-label={isMenuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={isMenuOpen}>
               {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>

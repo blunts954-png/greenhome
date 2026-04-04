@@ -60,12 +60,17 @@ export default function AgeGate({ onVerify, isActive }) {
   }
 
   return (
-    <div className={styles.overlay}>
-      <div className={styles.modal}>
+    <div className={styles.overlay} role="presentation">
+      <div
+        className={styles.modal}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="age-gate-title"
+      >
         <div className={styles.logoContainer}>
           <Image src="/logo-mark.png" alt="HGM Logo" width={54} height={84} className={styles.ageLogo} priority />
         </div>
-        <h2>ARE YOU 21 OR OVER?</h2>
+        <h2 id="age-gate-title">ARE YOU 21 OR OVER?</h2>
         <p>You must be 21+ with valid ID to view and reserve items for Bakersfield pickup or delivery.</p>
         <div className={styles.actions}>
           <button type="button" className={styles.verifyBtn} onClick={handleVerify}>

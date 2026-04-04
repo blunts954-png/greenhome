@@ -83,9 +83,6 @@ create table if not exists public.banned_ips (
   updated_at timestamptz not null default timezone('utc', now())
 );
 
-create index if not exists banned_ips_active_idx
-  on public.banned_ips (active);
-
 create or replace function public.set_updated_at()
 returns trigger
 language plpgsql
@@ -134,6 +131,29 @@ create index if not exists store_orders_stripe_charge_id_idx
 ```
 
 That second SQL also lives in [supabase/migrations/20260319_stripe_payment_fields.sql](c:/Users/blunt/Desktop/home%20grown/supabase/migrations/20260319_stripe_payment_fields.sql).
+
+Then run the inventory management migration:
+
+```sql
+CREATE TABLE IF NOT EXISTS inventory_status (
+  slug TEXT PRIMARY KEY,
+  is_out_of_stock BOOLEAN DEFAULT FALSE,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+ALTER TABLE inventory_status ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Admin Service Role Full Access" ON inventory_status
+  FOR ALL
+  USING (true)
+  WITH CHECK (true);
+
+CREATE POLICY "Public Read Access" ON inventory_status
+  FOR SELECT
+  USING (true);
+```
+
+That third SQL also lives in [supabase/migrations/20260326_inventory_management.sql](c:/Users/blunt/Desktop/home%20grown/supabase/migrations/20260326_inventory_management.sql).
 
 ## 2. Add Vercel environment variables
 
@@ -191,19 +211,25 @@ NEXT_PUBLIC_CHECKOUT_DEMO_MODE=true
 CHECKOUT_DEMO_MODE=true
 ```
 
-## 3. Redeploy on Vercel
+## 3. Delete `netlify.toml`
 
-After the env vars are added, redeploy the project.
+The `netlify.toml` in the repo root was left over from an earlier static-export configuration. It is incompatible with the current Next.js server-side features (API routes, server components, dynamic rendering). Remove it before deploying to Vercel.
 
-## 4. What should work after deploy
+## 4. Redeploy on Vercel
+
+After the env vars are added and `netlify.toml` is removed, redeploy the project.
+
+## 5. What should work after deploy
 
 - Orders save to Supabase
 - Account bans persist
 - Stored IP bans persist
 - Admin dashboard reads real order/account data
+- Inventory stock toggles from the admin reflect on the public storefront
 - Apparel shipping + `Card` opens Stripe card entry and charges through the backend
 - Apparel pickup orders can be submitted without online card entry
 - Local cannabis reservations stay 21+ and Bakersfield pickup only
+- Rate limiting is active on contact, orders, account check, and Stripe payment intent endpoints
 
 Stripe routes:
 - `/api/stripe/payment-intent`

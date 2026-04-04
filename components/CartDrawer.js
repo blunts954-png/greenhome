@@ -23,13 +23,6 @@ const INITIAL_FORM = {
   payment: 'Card'
 };
 
-const INITIAL_CARD_FORM = {
-  cardName: '',
-  cardNumber: '',
-  expiry: '',
-  cvc: ''
-};
-
 const springPhysics = {
   type: 'spring',
   mass: 1.2,
@@ -62,7 +55,6 @@ export default function CartDrawer() {
   const [checkoutStep, setCheckoutStep] = useState('cart');
   const [orderType, setOrderType] = useState('Shipping');
   const [formData, setFormData] = useState(INITIAL_FORM);
-  const [cardForm, setCardForm] = useState(INITIAL_CARD_FORM);
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderError, setOrderError] = useState('');
   const [submittedOrder, setSubmittedOrder] = useState(null);
@@ -142,7 +134,6 @@ export default function CartDrawer() {
       setTimeout(() => {
         setCheckoutStep('cart');
         setSubmittedOrder(null);
-        setCardForm(INITIAL_CARD_FORM);
       }, 300);
     }
   }, [isDrawerOpen]);
@@ -236,23 +227,17 @@ export default function CartDrawer() {
     setTimeout(() => {
       clearCart();
       setFormData(INITIAL_FORM);
-      setCardForm(INITIAL_CARD_FORM);
       setOrderType('Shipping');
     }, 500);
   };
 
   const handleReviewContinue = () => {
-    if (needsHostedCardStep) {
+    if (needsHostedCardStep && !CHECKOUT_DEMO_MODE) {
       setCheckoutStep('payment');
       return;
     }
 
     handleFinalSubmit();
-  };
-
-  const handleDemoPaymentSubmit = async (event) => {
-    event.preventDefault();
-    await handleFinalSubmit();
   };
 
   return (
@@ -283,12 +268,17 @@ export default function CartDrawer() {
               </button>
             </div>
 
-            <div className={styles.statusBar}>
-              <span className={checkoutStep === 'cart' ? styles.activeStep : ''}>Cart</span>
-              <span className={checkoutStep === 'contact' ? styles.activeStep : ''}>Contact</span>
-              <span className={checkoutStep === 'fulfillment' ? styles.activeStep : ''}>Fulfillment</span>
-              <span className={checkoutStep === 'review' ? styles.activeStep : ''}>Review</span>
-              <span className={checkoutStep === 'payment' ? styles.activeStep : ''}>Payment</span>
+            <div className={styles.statusBar} role="list" aria-label="Checkout steps">
+              {['cart', 'contact', 'fulfillment', 'review', 'payment'].map((step) => (
+                <span
+                  key={step}
+                  role="listitem"
+                  className={checkoutStep === step ? styles.activeStep : ''}
+                  aria-current={checkoutStep === step ? 'step' : undefined}
+                >
+                  {step.charAt(0).toUpperCase() + step.slice(1)}
+                </span>
+              ))}
             </div>
 
             <div className={styles.itemsContainer}>
@@ -425,7 +415,7 @@ export default function CartDrawer() {
                             />
                           </label>
                         )}
-                        {orderError && <p className={styles.errorText}>{orderError}</p>}
+                        {orderError && <p className={styles.errorText} role="alert">{orderError}</p>}
                         <button type="submit" className={styles.nextBtn}>
                           Choose Fulfillment <ChevronRight size={18} />
                         </button>
@@ -533,112 +523,42 @@ export default function CartDrawer() {
                           ? 'Stripe Setup Required'
                           : isProcessing
                           ? 'Submitting...'
-                          : CHECKOUT_DEMO_MODE && needsHostedCardStep
-                            ? `Continue to Card Demo • $${cartTotal}`
-                            : needsHostedCardStep
-                              ? `Continue to Secure Card • $${cartTotal}`
-                              : `${CHECKOUT_DEMO_MODE ? 'Submit Demo Order' : 'Submit Order'} • $${cartTotal}`}
+                          : needsHostedCardStep
+                            ? `Continue to Secure Card • $${cartTotal}`
+                            : `Submit Order • $${cartTotal}`}
                       </button>
-                      {!stripeReady && needsHostedCardStep && !CHECKOUT_DEMO_MODE && (
-                        <p className={styles.errorText}>
-                          Shipping card checkout is not live yet. Add the customer&apos;s Stripe keys to enable this step.
+                      {!stripeReady && needsHostedCardStep && (
+                        <p className={styles.errorText} role="alert">
+                          Shipping card checkout is not live yet. Add the Stripe keys to enable this step.
                         </p>
                       )}
-                      {orderError && <p className={styles.errorText}>{orderError}</p>}
+                      {orderError && <p className={styles.errorText} role="alert">{orderError}</p>}
                       <p className={styles.submitNote}>
-                        {CHECKOUT_DEMO_MODE && needsHostedCardStep
-                          ? 'Demo checkout is active. The next step is a non-live card screen and no charge will be created.'
-                          : needsHostedCardStep
-                            ? 'Local and shipping card payments run through Stripe for immediate security.'
-                            : orderType === 'Shipping'
-                              ? 'Shipping orders require card payment before fulfillment.'
-                              : 'Cash payments are collected locally in Bakersfield.'}
+                        {needsHostedCardStep
+                          ? 'Card payments run through Stripe for immediate security.'
+                          : orderType === 'Shipping'
+                            ? 'Shipping orders require card payment before fulfillment.'
+                            : 'Cash payments are collected locally in Bakersfield.'}
                       </p>
                     </motion.div>
                   )}
 
                   {checkoutStep === 'payment' && needsHostedCardStep && (
-                    CHECKOUT_DEMO_MODE ? (
-                      <motion.div className={styles.checkoutForm} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
-                        <h3>Card Demo</h3>
-                        <p className={styles.stepDesc}>
-                          This is a demo payment screen only. Card details are not sent anywhere and no charge will be created.
-                        </p>
+                    <motion.div className={styles.checkoutForm} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
+                      <h3>Secure Card Entry</h3>
+                      <p className={styles.stepDesc}>
+                        Card payments are processed securely through Stripe. Your order is confirmed immediately after approval.
+                      </p>
 
-                        <form onSubmit={handleDemoPaymentSubmit} className={styles.formFields}>
-                          <label className={styles.fieldLabel}>
-                            <span><UserRound size={14} /> Cardholder Name</span>
-                            <input
-                              type="text"
-                              required
-                              placeholder="Name on Card"
-                              value={cardForm.cardName}
-                              onChange={(event) => setCardForm({ ...cardForm, cardName: event.target.value })}
-                            />
-                          </label>
-
-                          <label className={styles.fieldLabel}>
-                            <span><CreditCard size={14} /> Card Number</span>
-                            <input
-                              type="text"
-                              inputMode="numeric"
-                              required
-                              placeholder="4242 4242 4242 4242"
-                              value={cardForm.cardNumber}
-                              onChange={(event) => setCardForm({ ...cardForm, cardNumber: event.target.value })}
-                            />
-                          </label>
-
-                          <div className={styles.fieldRow}>
-                            <label className={styles.fieldLabel}>
-                              <span>Expiry</span>
-                              <input
-                                type="text"
-                                required
-                                placeholder="12/28"
-                                value={cardForm.expiry}
-                                onChange={(event) => setCardForm({ ...cardForm, expiry: event.target.value })}
-                              />
-                            </label>
-                            <label className={styles.fieldLabel}>
-                              <span>CVC</span>
-                              <input
-                                type="text"
-                                inputMode="numeric"
-                                required
-                                placeholder="123"
-                                value={cardForm.cvc}
-                                onChange={(event) => setCardForm({ ...cardForm, cvc: event.target.value })}
-                              />
-                            </label>
-                          </div>
-
-                          <div className={styles.demoNotice}>
-                            Card demo only. Use test-style placeholder data and continue to the final success screen.
-                          </div>
-
-                          <button type="submit" className={styles.finalSubmitBtn} disabled={isProcessing}>
-                            {isProcessing ? 'Finishing Demo...' : `Finish Demo Checkout • $${cartTotal}`}
-                          </button>
-                        </form>
-                      </motion.div>
-                    ) : (
-                      <motion.div className={styles.checkoutForm} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
-                        <h3>Secure Card Entry</h3>
-                        <p className={styles.stepDesc}>
-                          This step is ready for Stripe Elements. Shipping card orders confirm here and complete on the backend.
-                        </p>
-
-                        <StripeCardStep
-                          amount={cartTotal}
-                          order={checkoutPayload}
-                          customer={checkoutPayload.customer}
-                          isProcessing={isProcessing}
-                          onConfirmed={handleFinalSubmit}
-                        />
-                        {orderError && <p className={styles.errorText}>{orderError}</p>}
-                      </motion.div>
-                    )
+                      <StripeCardStep
+                        amount={cartTotal}
+                        order={checkoutPayload}
+                        customer={checkoutPayload.customer}
+                        isProcessing={isProcessing}
+                        onConfirmed={handleFinalSubmit}
+                      />
+                      {orderError && <p className={styles.errorText} role="alert">{orderError}</p>}
+                    </motion.div>
                   )}
                 </>
               )}

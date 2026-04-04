@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm.cmd install:*)",
+      "Read(//c/Users/blunt/AppData/Roaming/npm//**)",
+      "Read(//mnt/c/Users/blunt/AppData/Roaming/**)",
+      "Bash(\"/c/Users/blunt/AppData/Roaming/npm/pnpm\" add:*)",
+      "Read(//c/Program Files/**)",
+      "Read(//c/Program Files \\(x86\\)/**)",
+      "Bash(find /c -name \"node.exe\")"
+    ]
+  }
+}
