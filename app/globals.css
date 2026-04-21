@@ -72,6 +72,17 @@ section {
 }
 
 /* Accessibility utility */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease-out;
+}
+
+.revealActive {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .sr-only {
   position: absolute;
   width: 1px;

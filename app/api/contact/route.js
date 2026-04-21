@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { Twilio } from 'twilio';
+import twilio from 'twilio';
 
 import { getContactInbox, isMailConfigured, sendEmail } from '@/lib/server-mail';
 import { checkRateLimit, getRateLimitKey } from '@/lib/rate-limit';
@@ -59,7 +59,7 @@ export async function POST(req) {
     const fromNumber = process.env.TWILIO_PHONE_NUMBER;
 
     if (accountSid && authToken && fromNumber && recipients.length > 0) {
-      const client = new Twilio(accountSid, authToken);
+      const client = twilio(accountSid, authToken);
       const smsBody = `HGM CONTACT: ${cleanIntent} | ${cleanCategory} | ${cleanName} | ${cleanEmail}`;
       
       try {

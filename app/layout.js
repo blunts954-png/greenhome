@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import { CartProvider } from "@/lib/cart-context";
 import { OrdersProvider } from "@/lib/orders-context";
 import RootClientWrapper from "@/components/RootClientWrapper";
-import { Analytics } from "@vercel/analytics/next";
+import { Analytics } from "@vercel/analytics/react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -82,8 +82,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="search" type="application/opensearchdescription+xml" title="Home Grown Money" href="/opensearch.xml" />
         <meta name="geo.region" content="US-CA" />
         <meta name="geo.placename" content="Bakersfield" />
         <meta name="geo.position" content="35.3733;-119.0187" />
