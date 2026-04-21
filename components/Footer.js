@@ -37,7 +37,7 @@ export default function Footer() {
             <Link href="/shop">All Products</Link>
             <Link href="/shop?store=cannabis">Local Menu</Link>
             <Link href="/shop/hgm-pink-tee">Featured Tee</Link>
-            <Link href="/shop/hgm-reserve-flower">Reserve Flower</Link>
+            <Link href="/shop/flower-legends-series">Reserve Flower</Link>
             <Link href="/shop/hgm-combo-deal">Combo Fits</Link>
           </div>
 
