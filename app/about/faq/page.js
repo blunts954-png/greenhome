@@ -20,7 +20,7 @@ const FAQS = [
   },
   {
     q: "How does the split menu work?",
-    a: "Apparel and accessories can ship nationwide or be fulfilled locally. Flower, concentrates, edibles, disposables, and pre-rolls stay behind the 21+ Bakersfield local menu."
+    a: "Apparel can ship nationwide or be fulfilled locally. Flower, concentrates, edibles, disposables, and pre-rolls stay behind the 21+ Bakersfield local menu."
   },
   {
     q: "Can I return an item?",

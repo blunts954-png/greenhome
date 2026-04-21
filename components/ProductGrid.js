@@ -11,7 +11,7 @@ import styles from './ProductGrid.module.css';
 
 const STORES = ['Apparel', 'Cannabis'];
 const STORE_CATEGORIES = {
-  Apparel: ['All', 'Tees', 'Hats', 'Beanies', 'Combos', 'Accessories'],
+  Apparel: ['All', 'Tees', 'Hats', 'Beanies', 'Combos'],
   Cannabis: ['All', 'Flower', 'Concentrates', 'Edibles', 'Disposables', 'Pre-Rolls']
 };
 
@@ -43,10 +43,9 @@ function GridContent() {
     setAgeVerified(isVerified);
   }, []);
 
+  // FIX: Always load inventory status — removed env var gate
   useEffect(() => {
     async function loadInventory() {
-      if (process.env.NEXT_PUBLIC_ENABLE_MANAGEMENT_TERMINAL !== 'true') return;
-      
       try {
         const response = await fetch('/api/coaiadmin/inventory');
         if (response.ok) {
@@ -54,7 +53,7 @@ function GridContent() {
           setInventoryStatus(data.status || []);
         }
       } catch (err) {
-        console.error('Failed to load inventory status:', err);
+        // Inventory endpoint may not be configured yet — silently skip
       }
     }
     loadInventory();
@@ -88,9 +87,16 @@ function GridContent() {
   };
 
   const filteredProducts = PRODUCTS.filter((product) => {
-    const storeMatch = product.storeSection === activeStore.toLowerCase();
+    const query = searchParams.get('q')?.toLowerCase() || '';
+    
+    const storeMatch = query ? true : product.storeSection === activeStore.toLowerCase();
     const categoryMatch = activeFilter === 'All' || product.category === activeFilter;
-    return storeMatch && categoryMatch;
+    const searchMatch = !query || 
+      product.name.toLowerCase().includes(query) || 
+      product.description.toLowerCase().includes(query) ||
+      product.category.toLowerCase().includes(query);
+
+    return storeMatch && categoryMatch && searchMatch;
   });
 
   return (
@@ -103,8 +109,10 @@ function GridContent() {
         }} 
       />
 
-      <div className={styles.container}>
-        <div className={styles.storePicker}>
+      {/* FIX 7: Removed styles.container ref — section already has max-width via .section */}
+      <div className={styles.header}>
+        {/* FIX 6: storePicker → storeToggle to match CSS module */}
+        <div className={styles.storeToggle}>
           {STORES.map((store) => (
             <button
               key={store}
@@ -137,7 +145,20 @@ function GridContent() {
           </span>
         </div>
 
-        <div className={`${styles.filters} reveal`}>
+        {/* FIX 6: filters → filterTabs to match CSS module */}
+        {searchParams.get('q') && (
+          <div className={`${styles.searchResultInfo} reveal`}>
+            Showing results for: <strong>"{searchParams.get('q')}"</strong>
+            <button onClick={() => {
+              const params = new URLSearchParams(window.location.search);
+              params.delete('q');
+              window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
+              window.location.reload();
+            }} className={styles.clearSearch}>Clear Search</button>
+          </div>
+        )}
+
+        <div className={`${styles.filterTabs} reveal`}>
           {STORE_CATEGORIES[activeStore].map((category) => (
             <button
               key={category}
@@ -158,15 +179,17 @@ function GridContent() {
               <Link
                 key={product.slug}
                 href={`/shop/${product.slug}`}
-                className={`${styles.productCard} ${isOutOfStock ? styles.outOfStock : ''} reveal`}
+                /* FIX 4: productCard → card to match CSS module */
+                className={`${styles.card} ${isOutOfStock ? styles.outOfStock : ''} reveal`}
               >
                 <div className={styles.imageContainer}>
+                  {/* FIX 4: pImg → productImg to match CSS module */}
                   <Image
                     src={product.image}
                     alt={product.name}
                     fill
                     style={{ objectFit: activeStore === 'Cannabis' ? 'cover' : 'contain' }}
-                    className={styles.pImg}
+                    className={styles.productImg}
                     sizes="(max-width: 768px) 50vw, 25vw"
                   />
                   {product.hoverImage && (
@@ -221,7 +244,8 @@ function GridContent() {
         </div>
 
         {filteredProducts.length === 0 && (
-          <div className={styles.empty}>
+          /* FIX 4: empty → emptyState to match CSS module */
+          <div className={styles.emptyState}>
             <p>No products found in this category.</p>
           </div>
         )}
@@ -232,7 +256,7 @@ function GridContent() {
 
 export default function ProductGrid() {
   return (
-    <Suspense fallback={<div className={styles.loading}>Loading Storefront...</div>}>
+    <Suspense fallback={<div style={{ textAlign: 'center', padding: '40px', color: '#666' }}>Loading Storefront...</div>}>
       <GridContent />
     </Suspense>
   );

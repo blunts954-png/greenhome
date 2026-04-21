@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/legend/jsonosd/1.1/">
+  <ShortName>Home Grown Money</ShortName>
+  <LongName>Home Grown Money Search</LongName>
+  <Description>Search the Home Grown Money storefront for apparel and local menu items.</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Image width="32" height="32" type="image/x-icon">https://homegrownmoney.com/favicon.ico</Image>
+  <Url type="text/html" template="https://homegrownmoney.com/shop?q={searchTerms}"/>
+  <moz:SearchForm>https://homegrownmoney.com/shop</moz:SearchForm>
+</OpenSearchDescription>

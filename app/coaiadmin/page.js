@@ -169,10 +169,10 @@ export default function AdminDashboard() {
     setActionNotice('');
 
     try {
-      const response = await fetch('/api/coaiadmin/dashboard', {
+      const response = await fetch(`/api/coaiadmin/orders/${encodeURIComponent(orderId)}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'update_order', orderId, status })
+        body: JSON.stringify({ status })
       });
 
       if (!response.ok) {
@@ -218,10 +218,10 @@ export default function AdminDashboard() {
     setActionNotice('');
 
     try {
-      const response = await fetch('/api/coaiadmin/dashboard', {
+      const response = await fetch(`/api/coaiadmin/accounts/${encodeURIComponent(account.id)}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'toggle_ban', customerName: account.name, customerEmail: account.email, banned, ip: account.lastIp })
+        body: JSON.stringify({ banned, reason: 'Manual admin action' })
       });
 
       if (!response.ok) {
@@ -628,7 +628,7 @@ export default function AdminDashboard() {
                 <div className={styles.infoPanel}>
                   <h3>Admin Protocol</h3>
                   <p>Access level: **ROOT**</p>
-                  <p>User identifier: {process.env.ADMIN_DASHBOARD_USER || 'homegrownmoney'}</p>
+                  <p>User identifier: **HIDDEN (HTTP-ONLY COOKIE)**</p>
                 </div>
               </div>
             </div>

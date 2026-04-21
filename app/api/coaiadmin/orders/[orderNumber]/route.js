@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { hasAdminSession } from '@/lib/admin-auth';
 import { updateOrderStatusRecord } from '@/lib/server-store';
 
-export async function PATCH(request, { params }) {
+export async function PATCH(request, context) {
   if (!hasAdminSession(request)) {
     return NextResponse.json(
       {
@@ -14,8 +14,9 @@ export async function PATCH(request, { params }) {
   }
 
   try {
+    const { orderNumber } = await context.params;
     const { status = '' } = await request.json();
-    const order = await updateOrderStatusRecord(params.orderNumber, status);
+    const order = await updateOrderStatusRecord(orderNumber, status);
 
     return NextResponse.json({
       success: true,

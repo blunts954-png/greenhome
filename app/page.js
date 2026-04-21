@@ -24,7 +24,7 @@ export default function Home() {
             <div className={styles.statCard}>
               <Users size={40} color="#d4af37" />
               <h3>US-WIDE</h3>
-              <p>APPAREL + ACCESSORIES SHIPPING</p>
+              <p>APPAREL SHIPPING</p>
             </div>
             <div className={styles.statCard}>
               <TrendingUp size={40} color="#478527" />

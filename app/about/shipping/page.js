@@ -34,7 +34,7 @@ export default function ShippingPage() {
             <h3>DOMESTIC SHIPPING</h3>
           </div>
           <div className={styles.sectionBody}>
-             <p>We ship apparel and accessories nationwide across the US.</p>
+             <p>We ship apparel nationwide across the US.</p>
              <ul>
                <li><strong>Handling:</strong> All apparel orders are processed within 24-48 hours.</li>
                <li><strong>Carrier:</strong> USPS or UPS Ground. Tracking provided via email once shipped.</li>
@@ -81,7 +81,7 @@ export default function ShippingPage() {
           <div className={styles.sectionBody}>
              <p>Every item listed in the store is meant to represent the business clearly and accurately.</p>
              <ul>
-               <li><strong>Guarantee:</strong> We stand behind the quality of every garment, accessory, and branded product in the store.</li>
+               <li><strong>Guarantee:</strong> We stand behind the quality of every garment and branded product in the store.</li>
                <li><strong>Checkout:</strong> Shipping orders use Stripe for secure online card processing, while local pickup reservations stay separate.</li>
              </ul>
           </div>

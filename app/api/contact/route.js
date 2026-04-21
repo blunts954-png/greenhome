@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { Twilio } from 'twilio';
 
 import { getContactInbox, isMailConfigured, sendEmail } from '@/lib/server-mail';
+import { checkRateLimit, getRateLimitKey } from '@/lib/rate-limit';
 
 const recipients = [
   process.env.ALERT_PHONE_1,
@@ -22,6 +23,15 @@ function escapeHtml(value = '') {
 }
 
 export async function POST(req) {
+  // Rate Limit: 3 contact requests per minute
+  const limit = checkRateLimit(getRateLimitKey(req, 'contact'), { maxRequests: 3 });
+  if (limit.limited) {
+    return NextResponse.json(
+      { success: false, error: 'Too many requests. Please try again later.' },
+      { status: 429, headers: { 'Retry-After': String(Math.ceil(limit.retryAfterMs / 1000)) } }
+    );
+  }
+
   try {
     const { intent, category, name, email, message } = await req.json();
     const cleanIntent = String(intent || '').trim();

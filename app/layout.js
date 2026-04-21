@@ -38,6 +38,22 @@ export const metadata = {
   alternates: {
     canonical: "/",
   },
+  manifest: "/site.webmanifest",
+  appleWebApp: {
+    title: "Home Grown Money",
+    statusBarStyle: "black-translucent",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
     title: "Home Grown Money | Bakersfield Local Delivery & Nationwide Apparel",
     description: "Bakersfield local pickup and delivery for the 21+ menu, plus branded apparel with nationwide shipping and secure checkout.",
@@ -67,10 +83,27 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" />
+        <link rel="search" type="application/opensearchdescription+xml" title="Home Grown Money" href="/opensearch.xml" />
         <meta name="geo.region" content="US-CA" />
         <meta name="geo.placename" content="Bakersfield" />
         <meta name="geo.position" content="35.3733;-119.0187" />
         <meta name="ICBM" content="35.3733, -119.0187" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "Home Grown Money",
+              "url": SITE_URL,
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": `${SITE_URL}/shop?q={search_term_string}`,
+                "query-input": "required name=search_term_string"
+              }
+            })
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

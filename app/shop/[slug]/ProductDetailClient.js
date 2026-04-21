@@ -66,7 +66,7 @@ export default function ProductDetailClient({ product }) {
           <div className={styles.fulfillmentNote}>
             {isCannabis
               ? '21+ only. Cannabis reservations are for Bakersfield pickup or delivery and require valid ID at fulfillment.'
-              : 'Apparel and accessories can ship nationwide with Stripe card checkout, or be arranged for Bakersfield pickup.'}
+              : 'Apparel can ship nationwide with Stripe card checkout, or be arranged for Bakersfield pickup.'}
           </div>
 
           <div className={styles.form}>

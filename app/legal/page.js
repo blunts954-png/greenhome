@@ -25,9 +25,9 @@ export default function LegalPage() {
       </section>
 
       <section className={styles.section}>
-        <h2 className="brand-font">2. APPAREL & ACCESSORIES</h2>
+        <h2 className="brand-font">2. APPAREL</h2>
         <p>
-          HGM Apparel and Smoking Accessories (Trays, Grinders, Glassware, etc.) are available for nationwide shipping through our secure Stripe-enabled checkout. 
+          HGM Apparel is available for nationwide shipping through our secure Stripe-enabled checkout. 
           Standard shipping rates apply and are calculated at checkout.
         </p>
       </section>
@@ -37,7 +37,7 @@ export default function LegalPage() {
         <p>
           Due to the nature of our products, all cannabis sales are final. 
           Apparel items may be exchanged within 14 days of receipt if in original, unworn condition. 
-          Digital goods and some accessory items are non-refundable.
+          Digital goods are non-refundable.
         </p>
       </section>
 
