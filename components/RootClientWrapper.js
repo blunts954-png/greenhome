@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
 import SplashScreen from './SplashScreen';
 import CartDrawer from './CartDrawer';
 import BackToTop from './BackToTop';
@@ -9,8 +8,6 @@ import BackToTop from './BackToTop';
 export default function RootClientWrapper({ children }) {
   const [splashComplete, setSplashComplete] = useState(false);
   const [showContent, setShowContent] = useState(false);
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
     if (splashComplete) {
@@ -60,7 +57,7 @@ export default function RootClientWrapper({ children }) {
       observer.disconnect();
       mutationObserver.disconnect();
     };
-  }, [showContent, pathname, searchParams]);
+  }, [showContent]);
 
   return (
     <>
