@@ -512,7 +512,7 @@ export default function CartDrawer() {
                       <div className={styles.reviewItems}>
                         {cartItems.map((item) => (
                           <div key={`${item.id}-${item.selectedSize || 'na'}-review`} className={styles.reviewItem}>
-                            <span>{item.name}{item.selectedSize ? ` (${item.selectedSize})` : ''}</span>
+                            <span>{item.name}{item.selectedSize ? ` (${item.selectedSize})` : ''} <strong>x{item.quantity}</strong></span>
                             <strong>${item.price * item.quantity}</strong>
                           </div>
                         ))}
