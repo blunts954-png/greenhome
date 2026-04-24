@@ -101,7 +101,7 @@ export default function ProductDetailClient({ product }) {
               onClick={(event) => {
                 if (product.price === null) {
                   event.preventDefault();
-                  window.location.href = 'tel:6615011881';
+                  window.location.href = 'tel:6613748177';
                 } else {
                   handleAdd();
                 }

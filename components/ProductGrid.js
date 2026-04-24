@@ -131,7 +131,7 @@ function GridContent() {
           </h2>
           {activeStore === 'Cannabis' && (
             <div className={`${styles.callToAction} brand-font reveal`}>
-              CALL US NOW: (661) 501-1881
+              CALL US NOW: (661)374-8177
             </div>
           )}
         </div>
@@ -229,7 +229,7 @@ function GridContent() {
                       }
                       if (product.price === null) {
                         event.preventDefault();
-                        window.location.href = 'tel:6615011881';
+                        window.location.href = 'tel:6613748177';
                       } else {
                         handleAdd(event, product);
                       }
